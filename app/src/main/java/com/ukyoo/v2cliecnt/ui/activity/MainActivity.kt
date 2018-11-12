@@ -1,4 +1,4 @@
-package com.ukyoo.v2cliecnt.ui
+package com.ukyoo.v2cliecnt.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
