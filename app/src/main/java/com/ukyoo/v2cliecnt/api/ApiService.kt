@@ -11,7 +11,6 @@ interface ApiService {
     @GET("/topics/latest.json")
     fun queryHotTopics(): Flowable<List<TopicEntity>>
 
-
     //最新主题  topics/latest.json
     @GET("/topics/hot.json")
     fun queryLatestTopics(): Flowable<List<TopicEntity>>

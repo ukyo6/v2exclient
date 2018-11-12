@@ -1,7 +1,8 @@
-package com.ukyoo.v2cliecnt
+package com.ukyoo.v2cliecnt.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ukyoo.v2cliecnt.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,9 +11,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+
+        return super.onSupportNavigateUp()
+    }
+
+
     override fun onBackPressed() {
         super.onBackPressed()
-
 
     }
 }
