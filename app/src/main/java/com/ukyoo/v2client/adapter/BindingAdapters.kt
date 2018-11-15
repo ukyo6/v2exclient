@@ -1,4 +1,4 @@
-package com.ukyoo.v2cliecnt.adapter
+package com.ukyoo.v2client.adapter
 
 import android.view.View
 import androidx.databinding.BindingAdapter

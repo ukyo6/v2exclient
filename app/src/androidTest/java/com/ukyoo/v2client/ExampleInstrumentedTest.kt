@@ -1,4 +1,4 @@
-package com.ukyoo.v2cliecnt
+package com.ukyoo.v2client
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

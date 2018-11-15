@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">v2cliecnt</string>
+	<string name="app_name">v2cliecnt</string>
+	<string name="main_nav_home">主页</string>
+	<string name="main_nav_node">节点</string>
+	<string name="main_nav_me">个人</string>
+
 </resources>

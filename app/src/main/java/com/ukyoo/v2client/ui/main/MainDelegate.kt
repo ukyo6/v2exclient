@@ -1,4 +1,4 @@
-package com.ukyoo.v2cliecnt.ui
+package com.ukyoo.v2client.ui.main
 
 /**
  * databinding

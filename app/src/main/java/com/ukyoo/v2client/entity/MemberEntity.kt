@@ -1,4 +1,4 @@
-package com.ukyoo.v2cliecnt.entity
+package com.ukyoo.v2client.entity
 
 data class MemberEntity(
     val avatar_large: String,

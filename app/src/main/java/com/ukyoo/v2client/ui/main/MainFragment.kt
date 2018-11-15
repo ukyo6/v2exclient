@@ -1,11 +1,11 @@
-package com.ukyoo.v2cliecnt.ui.fragment
+package com.ukyoo.v2client.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.ukyoo.v2cliecnt.R
+import com.ukyoo.v2client.R
 
 /**
  * 主页

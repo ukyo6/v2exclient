@@ -1,6 +1,6 @@
-package com.ukyoo.v2cliecnt.api
+package com.ukyoo.v2client.api
 
-import com.ukyoo.v2cliecnt.entity.TopicEntity
+import com.ukyoo.v2client.entity.TopicEntity
 import io.reactivex.Flowable
 import retrofit2.http.GET
 

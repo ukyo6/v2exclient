@@ -1,4 +1,4 @@
-package com.ukyoo.v2cliecnt.api
+package com.ukyoo.v2client.api
 
 class NetManager {
 

@@ -1,8 +1,8 @@
-package com.ukyoo.v2cliecnt.ui.activity
+package com.ukyoo.v2client.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.ukyoo.v2cliecnt.R
+import androidx.appcompat.app.AppCompatActivity
+import com.ukyoo.v2client.R
 
 /**
  * 主页
@@ -15,13 +15,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-
         return super.onSupportNavigateUp()
     }
 
-
     override fun onBackPressed() {
         super.onBackPressed()
-
     }
 }
