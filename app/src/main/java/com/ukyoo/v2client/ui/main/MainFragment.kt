@@ -32,6 +32,8 @@ class MainFragment : Fragment() {
                 return list[position]
             }
         }
+
+
         subscribeUI(binding.viewpager.adapter, binding)
         return binding.root
     }
