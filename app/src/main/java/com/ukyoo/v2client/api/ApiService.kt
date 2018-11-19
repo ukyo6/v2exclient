@@ -4,7 +4,6 @@ import com.ukyoo.v2client.entity.TopicEntity
 import io.reactivex.Flowable
 import retrofit2.http.GET
 
-
 interface ApiService {
 
     //最热主题  topics/hot.json

@@ -2,5 +2,8 @@ package com.ukyoo.v2client.api
 
 class NetManager {
 
-    private val HTTPS_API_URL = "https://www.v2ex.com/api"
+    companion object {
+        val HOST_API = "https://www.v2ex.com/api"
+    }
+
 }

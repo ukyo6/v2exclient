@@ -12,39 +12,53 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.ukyoo.v2client.R
+import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentMainChildBinding
+import com.ukyoo.v2client.di.scope.FragmentScope
 import com.ukyoo.v2client.viewmodels.MainChildViewModel
 
-class MainChildFragment : Fragment() {
+@FragmentScope
+class MainChildFragment : BaseFragment<FragmentMainChildBinding>() {
 
-    private lateinit var viewModel: MainChildViewModel
+    companion object {
+        fun newIntsnace(bundle: Bundle): MainChildFragment {
+            val fragment = MainChildFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var binding =
-            DataBindingUtil.inflate<FragmentMainChildBinding>(inflater, R.layout.fragment_main_child, container, false)
-
-        //获得viewModel
-        viewModel = ViewModelProviders.of(this@MainChildFragment).get(MainChildViewModel::class.java)
-
+    override fun initView() {
         //设置adapter
-        binding.recyclerview.layoutManager = LinearLayoutManager(activity)
-        var adapter = object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main_child) {
+        mBinding.recyclerview.layoutManager = LinearLayoutManager(activity)
+        val adapter = object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main_child) {
             override fun convert(helper: BaseViewHolder, item: String) {
 
             }
         }
-        binding.recyclerview.adapter = adapter
+        mBinding.recyclerview.adapter = adapter
         //更新界面
         updateUi(adapter)
-        return binding.root
     }
+
+    override fun loadData(isRefresh: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_main_child
+    }
+
+    private lateinit var viewModel: MainChildViewModel
+
 
     /**
      * 更新界面
      */
     private fun updateUi(adapter: BaseQuickAdapter<String, BaseViewHolder>) {
-        viewModel.getData().observe(viewLifecycleOwner, Observer { dts ->
-            dts ?: adapter.setNewData(dts)
-        })
+//        viewModel.getData().observe(viewLifecycleOwner, Observer { dts ->
+//            dts ?: adapter.setNewData(dts)
+//        })
+        adapter.setNewData(null)
     }
 }
