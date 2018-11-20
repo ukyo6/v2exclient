@@ -2,6 +2,7 @@ package com.ukyoo.v2client
 
 import android.app.Application
 import com.ukyoo.v2client.di.component.AppComponent
+import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
 
 class App: Application() {
@@ -16,7 +17,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        component = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        component = DaggerAppComponent.builder().appModule(AppModule(this)).build()
         component.inject(this)
 
     }

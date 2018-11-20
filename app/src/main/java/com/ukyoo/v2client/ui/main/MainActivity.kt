@@ -1,5 +1,9 @@
 package com.ukyoo.v2client.ui.main
 
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.databinding.ActivityMainBinding
@@ -12,6 +16,7 @@ import io.reactivex.Single
 /**
  * 主页
  */
+
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private var isQuit = false

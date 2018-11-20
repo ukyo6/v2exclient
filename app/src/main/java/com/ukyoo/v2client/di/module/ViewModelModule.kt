@@ -1,6 +1,11 @@
 package com.ukyoo.v2client.di.module
 
+import androidx.lifecycle.ViewModel
+import com.ukyoo.v2client.ui.viewmodels.MainViewModel
+import com.ukyoo.v2client.viewmodel.ViewModelKey
+import dagger.Binds
 import dagger.Module
+import dagger.multibindings.IntoMap
 
 /**
  * 页面描述：ViewModelModule
@@ -21,10 +26,10 @@ abstract class ViewModelModule{
 //    @ViewModelKey(CodeDetailViewModel::class)
 //    abstract fun bindCodeDetailViewModel(viewModel: CodeDetailViewModel):ViewModel
 //
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(MainViewModel::class)
-//    abstract fun bindMainViewModel(viewModel: MainViewModel):ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 //
 //    @Binds
 //    @IntoMap
