@@ -1,33 +1,25 @@
-package com.ditclear.paonet.view.base
+package com.ukyoo.v2client.base
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.annotation.NonNull
-import android.support.transition.TransitionListenerAdapter
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.transition.TransitionListenerAdapter
-import com.ditclear.paonet.BR
-import com.ditclear.paonet.PaoApp
+import com.ukyoo.v2client.App
+import com.ukyoo.v2client.R
 import com.ukyoo.v2client.di.component.ActivityComponent
 import com.ukyoo.v2client.di.module.ActivityModule
-import com.ditclear.paonet.helper.annotation.ToastType
-import com.ditclear.paonet.helper.extens.dispatchFailure
-import com.ditclear.paonet.helper.extens.toast
+import com.ukyoo.v2client.util.annotations.ToastType
+import com.ukyoo.v2client.util.dispatchFailure
+import com.ukyoo.v2client.util.toast
 import javax.inject.Inject
 
 
@@ -53,7 +45,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     @NonNull
     fun getComponent(): ActivityComponent {
         if (activityComponent == null) {
-            val mainApplication = application as PaoApp
+            val mainApplication = application as App
             activityComponent = mainApplication.component.plus(ActivityModule(this))
         }
         return activityComponent as ActivityComponent
@@ -64,7 +56,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView<VB>(this, getLayoutId())
-        mBinding.setVariable(BR.presenter,this)
+//        mBinding.setVariable(BR.presenter,this)
         mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)
         mContext = this
@@ -76,38 +68,40 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
             loadData(true)
         }
 
-
     }
 
-    private val enterTransitionListener by lazy {
-        object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
-            override fun onTransitionResume(transition: android.transition.Transition?) {
-
-            }
-
-            override fun onTransitionPause(transition: android.transition.Transition?) {
-            }
-
-            override fun onTransitionCancel(transition: android.transition.Transition?) {
-            }
-
-            override fun onTransitionStart(transition: android.transition.Transition?) {
-            }
-
-            override fun onTransitionEnd(transition: android.transition.Transition?) {
-                loadData(true)
-            }
-
-        }
-    }
+//    private val enterTransitionListener by lazy {
+//        object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
+//            override fun onTransitionEnd(transition: android.transition.Transition?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onTransitionResume(transition: android.transition.Transition?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onTransitionPause(transition: android.transition.Transition?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onTransitionCancel(transition: android.transition.Transition?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onTransitionStart(transition: android.transition.Transition?) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//        }
+//    }
 
     private fun afterEnterTransition(){
-        window.enterTransition.addListener(enterTransitionListener)
+//        window.enterTransition.addListener(enterTransitionListener)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        window.enterTransition.removeListener(enterTransitionListener)
+//        window.enterTransition.removeListener(enterTransitionListener)
     }
 
     abstract override fun loadData(isRefresh:Boolean)
@@ -164,5 +158,15 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
             }
         } else default
 
+    }
+
+    fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment, tag: String? = null) {
+        val ft = supportFragmentManager.beginTransaction()
+        current?.run { ft.hide(this) }
+        if (!targetFg.isAdded) {
+            ft.add(R.id.container, targetFg, tag)
+        }
+        ft.show(targetFg)
+        ft.commitAllowingStateLoss()
     }
 }

@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.ditclear.paonet.view.base.BaseActivity
-import com.ditclear.paonet.view.base.Presenter
 import com.ukyoo.v2client.di.component.FragmentComponent
 import com.ukyoo.v2client.di.module.FragmentModule
 import javax.inject.Inject

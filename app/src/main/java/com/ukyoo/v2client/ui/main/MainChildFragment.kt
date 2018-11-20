@@ -21,21 +21,24 @@ import com.ukyoo.v2client.viewmodels.MainChildViewModel
 class MainChildFragment : BaseFragment<FragmentMainChildBinding>() {
 
     companion object {
-        fun newIntsnace(bundle: Bundle): MainChildFragment {
+        fun newInstance(bundle: Bundle): MainChildFragment {
             val fragment = MainChildFragment()
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    override fun initView() {
-        //设置adapter
-        mBinding.recyclerview.layoutManager = LinearLayoutManager(activity)
-        val adapter = object : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main_child) {
+    private val adapter:BaseQuickAdapter<String, BaseViewHolder> by lazy{
+        object: BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main_child) {
             override fun convert(helper: BaseViewHolder, item: String) {
 
             }
         }
+    }
+
+    override fun initView() {
+        //设置adapter
+        mBinding.recyclerview.layoutManager = LinearLayoutManager(activity)
         mBinding.recyclerview.adapter = adapter
         //更新界面
         updateUi(adapter)
