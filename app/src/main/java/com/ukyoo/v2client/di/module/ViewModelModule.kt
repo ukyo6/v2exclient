@@ -1,7 +1,9 @@
 package com.ukyoo.v2client.di.module
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.ukyoo.v2client.ui.viewmodels.MainViewModel
+import com.ukyoo.v2client.viewmodel.APPViewModelFactory
 import com.ukyoo.v2client.viewmodel.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -61,8 +63,8 @@ abstract class ViewModelModule{
 //    @IntoMap
 //    @ViewModelKey(MyCollectViewModel::class)
 //    abstract fun bindMyCollectViewModel(viewModel: MyCollectViewModel):ViewModel
-//
-//    @Binds
-//    abstract fun bindViewModelFactory(factory:APPViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    abstract fun bindViewModelFactory(factory: APPViewModelFactory): ViewModelProvider.Factory
 
 }

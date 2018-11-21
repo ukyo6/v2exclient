@@ -13,8 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.di.component.FragmentComponent
 import com.ukyoo.v2client.di.module.FragmentModule
+import com.ukyoo.v2client.util.annotations.ToastType
+import com.ukyoo.v2client.util.dispatchFailure
+import com.ukyoo.v2client.util.toast
 import javax.inject.Inject
 
 
@@ -61,7 +65,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
             return fragmentComponent as FragmentComponent
         } else {
             throw IllegalStateException(
-                "The activity of this fragment is not an instance of BaseActivity")
+                    "The activity of this fragment is not an instance of BaseActivity")
         }
     }
 
@@ -71,7 +75,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     inline fun <reified T: ViewModel> getInjectViewModel(): T =
-        ViewModelProviders.of(this, factory).get(T::class.java)
+            ViewModelProviders.of(this, factory).get(T::class.java)
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -90,7 +94,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
-//        mBinding.setVariable(BR.presenter, this)
+        mBinding.setVariable(BR.user, this)
         mBinding.executePendingBindings()
         return mBinding.root
     }
@@ -134,11 +138,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     fun toastSuccess(msg: String?) {
-//        msg?.let { activity?.toast(it, ToastType.SUCCESS) }
+        msg?.let { activity?.toast(it, ToastType.SUCCESS) }
     }
 
     fun toastFailure(error: Throwable) {
-//        activity?.dispatchFailure(error)
+        activity?.dispatchFailure(error)
     }
 
     override fun onClick(v: View?) {
@@ -146,7 +150,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     protected fun <T> autoWired(key: String, default: T? = null): T? =
-        arguments?.let { findWired(it, key, default) }
+            arguments?.let { findWired(it, key, default) }
 
     private fun <T> findWired(bundle: Bundle, key: String, default: T? = null): T? {
         return if (bundle.get(key) != null) {

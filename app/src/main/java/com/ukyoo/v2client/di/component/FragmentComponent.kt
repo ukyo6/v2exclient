@@ -2,6 +2,8 @@ package com.ukyoo.v2client.di.component
 
 import com.ukyoo.v2client.di.module.FragmentModule
 import com.ukyoo.v2client.di.scope.FragmentScope
+import com.ukyoo.v2client.ui.main.MainChildFragment
+import com.ukyoo.v2client.ui.main.HomeFragment
 import dagger.Subcomponent
 
 /**
@@ -13,23 +15,9 @@ import dagger.Subcomponent
 @Subcomponent(modules = arrayOf(FragmentModule::class))
 interface FragmentComponent {
 
-//    fun inject(fragment: ArticleListFragment)
-//    fun inject(fragment: CodeListFragment)
-//
-//    fun inject(fragment: CollectionListFragment)
-//
-//    fun inject(fragment: MyCollectFragment)
-//
-//    fun inject(fragment: HomeFragment)
-//
-//    fun inject(fragment: RecentFragment)
-//
-//
-//    fun inject(fragment: SearchResultFragment)
-//
-//    fun inject(fragment: RecentSearchFragment)
-//
-//    fun inject(fragment: MyArticleFragment)
+    fun inject(fragment: HomeFragment)
+
+    fun inject(fragment: MainChildFragment)
 
     @Subcomponent.Builder
     interface Builder {

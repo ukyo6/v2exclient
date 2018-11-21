@@ -15,22 +15,22 @@ interface ApiService {
     fun queryLatestTopics(): Flowable<List<TopicEntity>>
 
     //主题
-    fun queryTopics(): Flowable<Object>
+    fun queryTopics(): Flowable<Any>
 
     //所有节点
     @GET("/nodes/all.json")
-    fun getAllNodes(): Flowable<Object>
+    fun getAllNodes(): Flowable<Any>
 
     //节点信息  nodes/show.json
     @GET("nodes/show.json")
-    fun getNodesInfo(): Flowable<Object>
+    fun getNodesInfo(): Flowable<Any>
 
     //用户主页  members/show.json
     @GET("members/show.json")
-    fun getUserInfo(): Flowable<Object>
+    fun getUserInfo(): Flowable<Any>
 
     //所有回复  /replies/show.json
     @GET("/replies/show.json")
-    fun getAllReplies(): Flowable<Object>
+    fun getAllReplies(): Flowable<Any>
 
 }
