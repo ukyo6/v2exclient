@@ -1,9 +1,11 @@
 package com.ukyoo.v2client.ui.main
 
+import androidx.fragment.app.Fragment
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentMainBinding
 import com.ukyoo.v2client.ui.viewmodels.HomeViewModel
+import java.util.ArrayList
 
 class HomeFragment : BaseFragment<FragmentMainBinding>() {
 
@@ -12,7 +14,14 @@ class HomeFragment : BaseFragment<FragmentMainBinding>() {
     }
 
     override fun loadData(isRefresh: Boolean) {
+        val tabTitles = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_titles)
+        val TabPaths = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_paths)
 
+        val mFragments = ArrayList<Fragment>()
+        for (tabTitle in tabTitles) {
+            val fragment = TopicsFragment()
+            mFragments.add(fragment)
+        }
     }
 
     override fun getLayoutId(): Int {

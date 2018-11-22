@@ -1,8 +1,10 @@
 package com.ukyoo.v2client.di.module
 
 import android.app.Application
+import com.ukyoo.v2client.api.NetManager
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
@@ -13,7 +15,7 @@ import javax.inject.Singleton
 @Module
 class AppModule(val app:Application){
 
-    //提供App实例
+    //提供全局的App实例
     @Singleton
     @Provides
     fun provideApp() = app
