@@ -94,7 +94,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
-//        mBinding.setVariable(BR.user, this)
+        mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         return mBinding.root
     }
