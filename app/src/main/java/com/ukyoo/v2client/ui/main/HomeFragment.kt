@@ -8,7 +8,6 @@ import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
 import com.ukyoo.v2client.ui.viewmodels.HomeViewModel
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
-import java.util.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -29,26 +28,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
+        //inject
         getComponent().inject(this)
-
+        //set viewpager and tablayout
         val tabTitles = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_titles)
-        val TabPaths = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_paths)
-        val mFragments = ArrayList<Fragment>()
-        for (tabTitle in tabTitles) {
-            val fragment = TopicsFragment()
-            mFragments.add(fragment)
-        }
+        val tabPaths = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_paths)
 
         val viewPager = mBinding.viewpager
-        viewPager.offscreenPageLimit = mFragments.size - 1
         viewPager.adapter = object : AbstractPagerAdapter(manager, tabTitles) {
             override fun getItem(pos: Int): Fragment? {
                 when(pos){
-                    pos -> list[pos] = mFragments[pos]
+                    0 -> list[0] = TopicsFragment.newInstance("latest")  //最新
+                    1 -> list[1] = TopicsFragment.newInstance("hot")   //最热
+                    pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos])
                 }
                 return list[pos]
             }
         }
+        viewPager.offscreenPageLimit = mBinding.viewpager.childCount-1
         mBinding.tabLayout.setupWithViewPager(viewPager)
     }
 
@@ -59,6 +56,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
-
-
 }

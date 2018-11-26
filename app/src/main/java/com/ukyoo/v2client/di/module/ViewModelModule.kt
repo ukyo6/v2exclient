@@ -3,6 +3,7 @@ package com.ukyoo.v2client.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ukyoo.v2client.ui.viewmodels.MainViewModel
+import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
 import com.ukyoo.v2client.viewmodel.APPViewModelFactory
 import com.ukyoo.v2client.viewmodel.ViewModelKey
 import dagger.Binds
@@ -12,7 +13,7 @@ import dagger.multibindings.IntoMap
 /**
  * 页面描述：ViewModelModule
  *
- * Created by ditclear on 2018/8/17.
+ * Created by hewei
  */
 @Module
 abstract class ViewModelModule{
@@ -31,12 +32,12 @@ abstract class ViewModelModule{
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(RecentViewModel::class)
-//    abstract fun bindRecentViewModel(viewModel: RecentViewModel):ViewModel
+    abstract fun provideMainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TopicsViewModel::class)
+    abstract fun provideTopicsViewModel(viewModel: TopicsViewModel):ViewModel
 //
 //    @Binds
 //    @IntoMap
