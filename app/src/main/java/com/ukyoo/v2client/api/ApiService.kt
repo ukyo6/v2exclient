@@ -4,6 +4,7 @@ import com.ukyoo.v2client.entity.TopicEntity
 import io.reactivex.Flowable
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -16,7 +17,8 @@ interface ApiService {
     fun queryLatestTopics(): Single<List<TopicEntity>>
 
     //主题
-    fun queryTopics(): Single<Any>
+    @GET("/topics/show.json")
+    fun queryTopics(@Query("node_id") nodesId: String): Single<List<TopicEntity>>
 
     //所有节点
     @GET("/nodes/all.json")

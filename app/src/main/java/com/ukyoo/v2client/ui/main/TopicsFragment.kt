@@ -1,15 +1,16 @@
 package com.ukyoo.v2client.ui.main
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
 import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
+import com.ukyoo.v2client.util.bindLifeCycle
+import java.util.function.Consumer
 
 class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
 
-    val viewModel by lazy {
+    private val viewModel by lazy {
         getInjectViewModel<TopicsViewModel>()
     }
 
@@ -30,7 +31,13 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
     }
 
     override fun loadData(isRefresh: Boolean) {
-        val type = arguments?.get(TOPIC_TYPE)
+        val topicType = arguments?.getString(TOPIC_TYPE)
+        viewModel.topicId = topicType?:"11111"
+
+        viewModel.loadData(isRefresh = true)
+            .bindLifeCycle(this)
+            .subscribe()
+
 
     }
 
