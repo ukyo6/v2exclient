@@ -6,6 +6,8 @@ import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.di.component.AppComponent
 import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
+import java.lang.IllegalStateException
+import java.nio.channels.IllegalChannelGroupException
 
 class App: Application() {
 
@@ -14,13 +16,14 @@ class App: Application() {
 
     companion object {
         private var instance: Application? = null
-        fun instance() = instance?:throw Throwable("instance 还未初始化")
+        fun instance() = instance?:throw IllegalStateException("App instance not init yet")
     }
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        instance = this
 
+        component = DaggerAppComponent.builder().appModule(AppModule(this)).build()
         component.inject(this)
 
         //初始化log打印

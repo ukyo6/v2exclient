@@ -10,6 +10,7 @@ import okio.Buffer
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 object NetManager {
 
-    const val HOST_API = "https://www.v2ex.com/api"
+    const val HOST_API = "https://www.v2ex.com/api/"
 
     /**
      * 普通接口
@@ -32,7 +33,8 @@ object NetManager {
             .baseUrl(HOST_API)
             .client(getHttpClient())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(ScalarsConverterFactory.create())
             .build()
     }
 

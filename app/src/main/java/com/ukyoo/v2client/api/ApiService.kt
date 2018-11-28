@@ -1,7 +1,6 @@
 package com.ukyoo.v2client.api
 
-import com.ukyoo.v2client.entity.TopicEntity
-import io.reactivex.Flowable
+import com.ukyoo.v2client.entity.TopicModel
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,15 +9,15 @@ interface ApiService {
 
     //最热主题  topics/hot.json
     @GET("/topics/latest.json")
-    fun queryHotTopics(): Single<List<TopicEntity>>
+    fun queryHotTopics(): Single<List<TopicModel>>
 
     //最新主题  topics/latest.json
     @GET("/topics/hot.json")
-    fun queryLatestTopics(): Single<List<TopicEntity>>
+    fun queryLatestTopics(): Single<List<TopicModel>>
 
     //主题
-    @GET("/topics/show.json")
-    fun queryTopics(@Query("node_id") nodesId: String): Single<List<TopicEntity>>
+    @GET("/")
+    fun queryTopics(@Query("tab") nodesId: String): Single<String>
 
     //所有节点
     @GET("/nodes/all.json")

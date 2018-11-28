@@ -3,6 +3,7 @@ package com.ukyoo.v2client.ui.main
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
@@ -38,8 +39,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         viewPager.adapter = object : AbstractPagerAdapter(manager, tabTitles) {
             override fun getItem(pos: Int): Fragment? {
                 when(pos){
-                    0 -> list[0] = TopicsFragment.newInstance("latest")  //最新
-                    1 -> list[1] = TopicsFragment.newInstance("hot")   //最热
+//                    0 -> list[0] = TopicsFragment.newInstance("latest")  //最新
+//                    1 -> list[1] = TopicsFragment.newInstance("hot")   //最热
                     pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos])
                 }
                 return list[pos]
@@ -47,6 +48,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
         viewPager.offscreenPageLimit = mBinding.viewpager.childCount-1
         mBinding.tabLayout.setupWithViewPager(viewPager)
+        mBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+                //refresh topicFragment
+
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+            }
+        })
     }
 
     override fun loadData(isRefresh: Boolean) {

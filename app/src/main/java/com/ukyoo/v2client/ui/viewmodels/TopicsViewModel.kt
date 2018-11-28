@@ -2,10 +2,14 @@ package com.ukyoo.v2client.ui.viewmodels
 
 import androidx.databinding.ObservableArrayList
 import com.ukyoo.v2client.api.ApiService
-import com.ukyoo.v2client.entity.TopicEntity
+import com.ukyoo.v2client.entity.TopicListModel
+import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.V2EXDateModel
+import com.ukyoo.v2client.entity.V2EXModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.viewmodel.PagedViewModel
 import io.reactivex.Single
+import java.util.ArrayList
 import javax.inject.Inject
 
 class TopicsViewModel @Inject constructor(private var apiService: ApiService) : PagedViewModel() {
@@ -13,23 +17,26 @@ class TopicsViewModel @Inject constructor(private var apiService: ApiService) : 
     //the id of each topic
     internal lateinit var topicId: String
 
-    private var list = ObservableArrayList<TopicEntity>()
+    public var list = ObservableArrayList<TopicModel>()
 
-    fun loadData(isRefresh: Boolean): Single<Boolean> =
+    //request remote data
+    fun loadData(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
 
-        apiService.queryTopics(topicId)
+        return apiService.queryTopics(topicId)
             .async()
-            .map { it ->
+            .map { response ->
                 if (isRefresh) {
                     list.clear()
                 }
-                return@map it.let { list.addAll(it) }
+                return@map TopicListModel().parse(response)
             }.doOnSubscribe {
                 startLoad()
             }.doAfterTerminate {
                 stopLoad()
                 empty.set(list.isEmpty())
             }
+    }
+
 
 }
 

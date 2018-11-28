@@ -70,6 +70,8 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.43-alpha1'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
+    //logger
     implementation 'com.orhanobut:logger:1.15'
 
     //autodispose
@@ -79,6 +81,8 @@ dependencies {
     //di
     implementation "com.google.dagger:dagger:2.16"
     kapt "com.google.dagger:dagger-compiler:2.16"
+    //jsoup parser
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
 
 
 }
