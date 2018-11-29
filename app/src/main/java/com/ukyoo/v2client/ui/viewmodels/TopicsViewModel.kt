@@ -35,8 +35,11 @@ class TopicsViewModel @Inject constructor(private var apiService: ApiService) : 
                 startLoad()
             }.doAfterTerminate {
                 stopLoad()
-                empty.set(list.isEmpty())
+//                empty.set(list.isEmpty())
+                empty.set(false)
             }
+
     }
+
 }
 

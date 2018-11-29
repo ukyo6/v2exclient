@@ -7,8 +7,10 @@ import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
+import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.viewmodels.HomeViewModel
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -51,7 +53,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         mBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) {
                 //refresh topicFragment
-
+                val abstractPagerAdapter = viewpager.adapter as AbstractPagerAdapter
+                abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
+                    if (it is ToTopOrRefreshContract) {
+                        it.toTopOrRefresh()
+                    }
+                }
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
@@ -69,4 +76,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
+
+
 }

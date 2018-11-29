@@ -2,6 +2,7 @@ package com.ukyoo.v2client.util.binds
 
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.Presenter
+import com.ukyoo.v2client.util.ImageUtil
 import com.ukyoo.v2client.util.ScrimUtil
 import com.ukyoo.v2client.viewmodel.PagedViewModel
 
@@ -19,12 +21,11 @@ import com.ukyoo.v2client.viewmodel.PagedViewModel
  * Created by ditclear on 2017/10/2.
  */
 
-//@BindingAdapter(value = ["url", "avatar"], requireAll = false)
-//fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
-//
-//    ImageUtil.load(url, imageView, isAvatar = isAvatar ?: false)
-//}
-//
+@BindingAdapter(value = ["url", "avatar"], requireAll = false)
+fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
+    ImageUtil.load(url, imageView, isAvatar = isAvatar ?: false)
+}
+
 //@BindingAdapter(value = ["start_color", "icon"], requireAll = false)
 //fun bindTransitionArgs(v: View, color: Int, icon: Int?) {
 //    v.setTag(R.integer.start_color, color)

@@ -14,7 +14,7 @@ open class PagedViewModel : ViewModel() {
 
     val loadMore = ObservableBoolean(false)   //是否可以上拉加载更多
 
-    val empty=ObservableBoolean(false)   //是否展示空页面
+    val empty = ObservableBoolean(false)   //是否展示空页面
 
 
     /**
