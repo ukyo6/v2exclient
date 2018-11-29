@@ -1,5 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto">
+		xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -8,14 +8,14 @@
 			type="com.ukyoo.v2client.entity.TopicModel"/>
 
 		<variable
-			name="itemClick"
+			name="presenter"
 			type="com.ukyoo.v2client.inter.ItemClickPresenter"/>
-
 
 	</data>
 
 
 	<RelativeLayout
+		android:onClick="@{(v)->presenter.onItemClick(v,item)}"
 		android:id="@+id/card_container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -34,20 +34,22 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
-			android:layout_marginLeft="10dp"
-			android:layout_toLeftOf="@+id/replies_layout"
-			android:layout_toRightOf="@+id/avatar">
+			android:layout_marginStart="10dp"
+			android:layout_toStartOf="@+id/replies_layout"
+			android:layout_toEndOf="@+id/avatar">
 
 			<TextView
+				android:text="@{item.title}"
 				android:id="@+id/title"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="12dp"
-				android:text="标题1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+				tools:text="标题1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 				android:textColor="#de000000"
 				android:textSize="14sp"/>
 
 			<TextView
+				android:text="@{item.node.title}"
 				android:id="@+id/node_title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -55,20 +57,22 @@
 				android:layout_alignParentStart="true"
 				android:layout_below="@+id/title"
 				android:background="#e5e5e5"
-				android:text="V2ex"
+				tools:text="V2ex"
 				android:textSize="12sp"/>
 
 			<TextView
+				android:text="@{item.member.username}"
 				android:id="@+id/name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignTop="@+id/node_title"
 				android:layout_marginLeft="16dp"
 				android:layout_toRightOf="@+id/node_title"
-				android:text="author"
+				tools:text="author"
 				android:textSize="12sp"/>
 
 			<TextView
+				android:text="@{item.createdTime}"
 				android:id="@+id/time"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -77,7 +81,7 @@
 				android:layout_alignTop="@+id/name"
 				android:layout_gravity="center_vertical"
 				android:paddingRight="8dp"
-				android:text="2010年1月1日"
+				tools:text="2010年1月1日"
 				android:textSize="12sp"/>
 
 		</RelativeLayout>
@@ -90,13 +94,14 @@
 			android:layout_centerVertical="true">
 
 			<com.ukyoo.v2client.widget.BadgeView
+				android:text="@{String.valueOf(item.replies)}"
 				android:id="@+id/txt_replies"
 				android:layout_width="wrap_content"
 				android:layout_height="20dp"
 				android:layout_alignParentEnd="true"
 				android:layout_alignParentRight="true"
 				android:layout_centerVertical="true"
-				app:text="0"/>
+				tools:text="0"/>
 		</RelativeLayout>
 
 	</RelativeLayout>

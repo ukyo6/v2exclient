@@ -17,7 +17,7 @@ class TopicsViewModel @Inject constructor(private var apiService: ApiService) : 
     //the id of each topic
     internal lateinit var topicId: String
 
-    public var list = ObservableArrayList<TopicModel>()
+    var list = ObservableArrayList<TopicModel>()
 
     //request remote data
     fun loadData(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
@@ -28,7 +28,9 @@ class TopicsViewModel @Inject constructor(private var apiService: ApiService) : 
                 if (isRefresh) {
                     list.clear()
                 }
-                return@map TopicListModel().parse(response)
+                return@map TopicListModel().parse(response).apply {
+                    list.addAll(this)
+                }
             }.doOnSubscribe {
                 startLoad()
             }.doAfterTerminate {
@@ -36,7 +38,5 @@ class TopicsViewModel @Inject constructor(private var apiService: ApiService) : 
                 empty.set(list.isEmpty())
             }
     }
-
-
 }
 

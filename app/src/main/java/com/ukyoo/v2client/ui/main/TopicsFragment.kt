@@ -1,19 +1,21 @@
 package com.ukyoo.v2client.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
 import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
+import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 
-class TopicsFragment : BaseFragment<FragmentTopicBinding>(),ToTopOrRefreshContract {
+class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
 
     //get viewModel by di
     private val viewModel by lazy {
@@ -35,14 +37,12 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),ToTopOrRefreshContra
 
     override fun initView() {
         getComponent().inject(this)
+        var recyclerView = mBinding.recyclerView
 
-        mBinding.recyclerView.layoutManager = LinearLayoutManager(mContext)
-        mBinding.recyclerView.adapter = object : BaseQuickAdapter<TopicModel, BaseViewHolder>(R.layout.item_topic) {
-            override fun convert(helper: BaseViewHolder?, item: TopicModel?) {
-            }
+        recyclerView.layoutManager = LinearLayoutManager(mContext)
+        recyclerView.adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
+            itemPresenter = this@TopicsFragment
         }
-
-        mBinding.recyclerView.adapter = SingleTypeAdapter(mContext,R.layout.item_topic,viewModel.list)
     }
 
     /**
@@ -50,14 +50,14 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),ToTopOrRefreshContra
      */
     override fun loadData(isRefresh: Boolean) {
         val topicType = arguments?.getString(TOPIC_TYPE)
-        viewModel.topicId = topicType?:"11111"
+        viewModel.topicId = topicType ?: "11111"
 
         viewModel.loadData(isRefresh = true)
             .bindLifeCycle(this)
             .subscribe({
 
 
-            },{
+            }, {
                 toastFailure(it)
             })
     }
@@ -69,15 +69,23 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),ToTopOrRefreshContra
     /**
      * scrollToTop or refresh
      */
-    override fun toTopOrRefresh(){
-        if (mBinding.recyclerView.layoutManager is LinearLayoutManager){
+    override fun toTopOrRefresh() {
+        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
             val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
-            if (layoutManager.findLastVisibleItemPosition()> 5){
+            if (layoutManager.findLastVisibleItemPosition() > 5) {
                 mBinding.recyclerView.smoothScrollToPosition(0)
-            }else{
+            } else {
                 mBinding.recyclerView.smoothScrollToPosition(0)
                 loadData(true)
             }
         }
+    }
+
+    /**
+     * ItemClick
+     */
+    override fun onItemClick(v: View?, item: TopicModel) {
+        val intent = Intent(mContext, DetailActivity::class.java)
+        startActivity(intent)
     }
 }

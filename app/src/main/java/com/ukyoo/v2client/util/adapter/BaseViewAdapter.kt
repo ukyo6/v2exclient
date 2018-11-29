@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ItemDecorator
-import androidx.databinding.library.baseAdapters.BR
 
 /**
  * 页面描述：
@@ -31,9 +31,11 @@ abstract class BaseViewAdapter<T>(context: Context, private val list: Observable
     override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>, position: Int) {
         val item = list[position]
         holder.binding.setVariable(BR.item, item)
-        holder.binding.setVariable(BR.itemClick, itemPresenter)
+        holder.binding.setVariable(BR.presenter, itemPresenter)
         holder.binding.executePendingBindings()
         itemDecorator?.decorator(holder, position, getItemViewType(position))
+
+
     }
 
     override fun getItemCount(): Int = list.size

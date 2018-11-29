@@ -15,7 +15,7 @@ interface ApiService {
     @GET("/topics/hot.json")
     fun queryLatestTopics(): Single<List<TopicModel>>
 
-    //主题
+    //主题  (技术,创意,好玩...)
     @GET("/")
     fun queryTopics(@Query("tab") nodesId: String): Single<String>
 

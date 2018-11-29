@@ -96,4 +96,9 @@ public class TopicModel extends V2EXModel implements Parcelable {
             return new TopicModel[size];
         }
     };
+
+    //---------------------------------------------------------------------------------
+    public String createdTime = V2EXDateModel.toString(created);
+
+
 }
