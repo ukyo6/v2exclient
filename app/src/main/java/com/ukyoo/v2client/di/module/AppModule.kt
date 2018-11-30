@@ -1,11 +1,14 @@
 package com.ukyoo.v2client.di.module
 
 import android.app.Application
-import com.ukyoo.v2client.api.ApiService
+import com.ukyoo.v2client.api.HtmlService
+import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.api.NetManager
+import com.ukyoo.v2client.util.CONSTANT
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -21,16 +24,26 @@ class AppModule(val app:Application){
     @Provides
     fun provideApp() = app
 
-
-    //提供单例的Retrofit
+    //提供解析html的client
     @Singleton
     @Provides
-    fun provideRemoteClient(): Retrofit = NetManager.getClient()
+    @Named(CONSTANT.HTMLPARSE)
+    fun provideHtmlClient(): Retrofit = NetManager.getHtmlClient()
 
-    //提供单例的ApiService
+    //提供解析json的client
     @Singleton
     @Provides
-    fun privateApiService():ApiService = provideRemoteClient().create(ApiService::class.java)
+    @Named(CONSTANT.JSONPARSE)
+    fun provideJsonClient(): Retrofit = NetManager.getJsonClient()
 
+    //提供单例的htmlService
+    @Singleton
+    @Provides
+    fun privateHtmlService():HtmlService = provideHtmlClient().create(HtmlService::class.java)
+
+    //提供单例的jsonService
+    @Singleton
+    @Provides
+    fun provideJsonService():JsonService = provideJsonClient().create(JsonService::class.java)
 
 }

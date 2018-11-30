@@ -22,13 +22,11 @@ object NetManager {
     const val HOST_API = "https://www.v2ex.com/api/"
 
     /**
-     * 普通接口
+     * jsoup解析返回的html
      *
      * @return
      */
-    fun getClient(): Retrofit {
-        val gson = GsonBuilder()
-            .create()
+    fun getHtmlClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(HOST_API)
             .client(getHttpClient())
@@ -37,6 +35,20 @@ object NetManager {
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
     }
+
+    /**
+     * gson解析返回的json
+     */
+    fun getJsonClient():Retrofit{
+        return Retrofit.Builder()
+            .baseUrl(HOST_API)
+            .client(getHttpClient())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build()
+    }
+
+
 
     fun getHttpClient(): OkHttpClient {
         //只在debug下输出日志的拦截器

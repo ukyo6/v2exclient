@@ -39,9 +39,16 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(){
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_search_view,menu)
         //找到searchView
-        val findItem = menu?.findItem(R.id.action_search)
-        val actionView = MenuItemCompat.getActionView(findItem)
+        val search = menu?.findItem(R.id.action_search)
+        val actionView = MenuItemCompat.getActionView(search)
 
-        return super.onCreateOptionsMenu(menu, inflater)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.action_setting -> {}
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

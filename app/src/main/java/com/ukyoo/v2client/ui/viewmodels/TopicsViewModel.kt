@@ -1,18 +1,16 @@
 package com.ukyoo.v2client.ui.viewmodels
 
 import androidx.databinding.ObservableArrayList
-import com.ukyoo.v2client.api.ApiService
+import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.entity.TopicListModel
 import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.entity.V2EXDateModel
-import com.ukyoo.v2client.entity.V2EXModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.viewmodel.PagedViewModel
 import io.reactivex.Single
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
-class TopicsViewModel @Inject constructor(private var apiService: ApiService) : PagedViewModel() {
+class TopicsViewModel @Inject constructor(var apiService: HtmlService) : PagedViewModel() {
 
     //the id of each topic
     internal lateinit var topicId: String
@@ -35,8 +33,7 @@ class TopicsViewModel @Inject constructor(private var apiService: ApiService) : 
                 startLoad()
             }.doAfterTerminate {
                 stopLoad()
-//                empty.set(list.isEmpty())
-                empty.set(false)
+                empty.set(list.isEmpty())
             }
 
     }

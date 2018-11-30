@@ -5,7 +5,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiService {
+interface JsonService {
 
     //最热主题  topics/hot.json
     @GET("/topics/latest.json")
