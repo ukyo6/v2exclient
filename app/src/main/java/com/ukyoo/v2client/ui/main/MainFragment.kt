@@ -50,13 +50,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         mBinding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_home -> {
-                    viewpager.currentItem = 0
+                    viewpager.setCurrentItem(0,false)
                 }
                 R.id.nav_repos -> {
-                    viewpager.currentItem = 1
+                    viewpager.setCurrentItem(1,false)
                 }
                 R.id.nav_profile -> {
-                    viewpager.currentItem = 2
+                    viewpager.setCurrentItem(2,false)
                 }
             }
             true

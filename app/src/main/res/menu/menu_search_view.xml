@@ -7,12 +7,13 @@
 		android:id="@+id/action_search"
 		android:title="@string/menu_search"
 		app:actionViewClass="androidx.appcompat.widget.SearchView"
-		app:showAsAction="ifRoom"/>
+		app:showAsAction="always"/>
 
 	<!--右侧设置条目，收起-->
 	<item
 		android:id="@+id/action_setting"
 		android:title="@string/menu_setting"
 		app:showAsAction="never" />
+
 
 </menu>

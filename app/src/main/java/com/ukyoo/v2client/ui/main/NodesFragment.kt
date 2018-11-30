@@ -1,10 +1,11 @@
 package com.ukyoo.v2client.ui.main
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
 import com.ukyoo.v2client.R
+import com.ukyoo.v2client.R.id.toolbar
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentNodesBinding
 
@@ -19,7 +20,13 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(){
     }
 
     override fun initView() {
+        val appCompatActivity = activity as AppCompatActivity
+        appCompatActivity.setSupportActionBar(mBinding.toolbar)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun loadData(isRefresh: Boolean) {
@@ -30,15 +37,11 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(){
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-
-
         inflater?.inflate(R.menu.menu_search_view,menu)
-        val searchItem = menu?.findItem(R.id.action_search)
-        val actionView = searchItem?.actionView
+        //找到searchView
+        val findItem = menu?.findItem(R.id.action_search)
+        val actionView = MenuItemCompat.getActionView(findItem)
 
-        super.onCreateOptionsMenu(menu, inflater)
-
+        return super.onCreateOptionsMenu(menu, inflater)
     }
-
-
 }
