@@ -23,6 +23,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     }
 
+
     override fun initView() {
         getComponent().inject(this)
     }
