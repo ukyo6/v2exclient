@@ -4,6 +4,8 @@
 	<string name="main_nav_node">节点</string>
 	<string name="main_nav_me">个人</string>
 	<string name="v2ex">v2ex</string>
+	<string name="menu_search">搜索</string>
+	<string name="menu_setting">设置</string>
 
 	<string-array name="v2ex_favorite_tab_titles">
 		<item>技术</item>

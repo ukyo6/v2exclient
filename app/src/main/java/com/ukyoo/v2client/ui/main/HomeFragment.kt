@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
+
     @Inject
     lateinit var manager: FragmentManager
 
@@ -37,45 +38,47 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         val tabTitles = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_titles)
         val tabPaths = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_paths)
 
-        val viewPager = mBinding.viewpager
-        viewPager.adapter = object : AbstractPagerAdapter(manager, tabTitles) {
-            override fun getItem(pos: Int): Fragment? {
-                when(pos){
+        mBinding.viewpager.apply {
+            adapter = object : AbstractPagerAdapter(manager, tabTitles) {
+                override fun getItem(pos: Int): Fragment? {
+                    when (pos) {
 //                    0 -> list[0] = TopicsFragment.newInstance("latest")  //最新
 //                    1 -> list[1] = TopicsFragment.newInstance("hot")   //最热
-                    pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos])
+                        pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos])
+                    }
+                    return list[pos]
                 }
-                return list[pos]
             }
+            offscreenPageLimit = (adapter as AbstractPagerAdapter).count - 1
         }
-        viewPager.offscreenPageLimit = mBinding.viewpager.childCount-1
-        mBinding.tabLayout.setupWithViewPager(viewPager)
-        mBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-                //refresh topicFragment
-                val abstractPagerAdapter = viewpager.adapter as AbstractPagerAdapter
-                abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
-                    if (it is ToTopOrRefreshContract) {
-                        it.toTopOrRefresh()
+
+        mBinding.tabLayout.apply {
+            setupWithViewPager(mBinding.viewpager)
+
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(p0: TabLayout.Tab?) {
+                    //refresh topicFragment
+                    val abstractPagerAdapter = viewpager.adapter as AbstractPagerAdapter
+                    abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
+                        if (it is ToTopOrRefreshContract) {
+                            it.toTopOrRefresh()
+                        }
                     }
                 }
-            }
 
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-            }
+                override fun onTabUnselected(p0: TabLayout.Tab?) {
+                }
 
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-            }
-        })
-    }
-
-    override fun loadData(isRefresh: Boolean) {
-
+                override fun onTabSelected(p0: TabLayout.Tab?) {
+                }
+            })
+        }
     }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
 
-
+    override fun loadData(isRefresh: Boolean) {
+    }
 }

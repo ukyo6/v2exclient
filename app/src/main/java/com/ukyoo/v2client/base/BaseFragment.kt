@@ -88,7 +88,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
             lazyLoad()
         } else {
             // 加载数据
-            loadData(true);
+            loadData(true)
         }
     }
 

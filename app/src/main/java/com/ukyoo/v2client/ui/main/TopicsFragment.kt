@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
-import com.ukyoo.v2client.databinding.FragmentTopicBindingImpl
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
@@ -38,12 +37,19 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
 
     override fun initView() {
         getComponent().inject(this)
-        val recyclerView = mBinding.recyclerView
 
-        //set adapter
-        recyclerView.layoutManager = LinearLayoutManager(mContext)
-        recyclerView.adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
-            itemPresenter = this@TopicsFragment
+        //set lazy load
+        lazyLoad = true
+
+        mBinding.run {
+            vm = viewModel
+            recyclerView.run {
+                layoutManager = LinearLayoutManager(mContext)
+                adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
+                    itemPresenter = this@TopicsFragment
+                }
+            }
+            isPrepared = true
         }
     }
 
@@ -56,9 +62,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
 
         viewModel.loadData(isRefresh = true)
             .bindLifeCycle(this)
-            .subscribe({
-
-            }, {
+            .subscribe({}, {
                 toastFailure(it)
             })
     }

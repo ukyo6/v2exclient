@@ -34,8 +34,6 @@ abstract class BaseViewAdapter<T>(context: Context, private val list: Observable
         holder.binding.setVariable(BR.presenter, itemPresenter)
         holder.binding.executePendingBindings()
         itemDecorator?.decorator(holder, position, getItemViewType(position))
-
-
     }
 
     override fun getItemCount(): Int = list.size
