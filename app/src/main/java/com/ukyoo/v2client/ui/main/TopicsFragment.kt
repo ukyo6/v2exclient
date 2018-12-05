@@ -25,11 +25,13 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
     //fragment instance
     companion object {
         private const val TOPIC_TYPE: String = "TOPIC_TYPE"
+        private const val SOURCE: String = "SOURCE"
 
-        fun newInstance(topicType: String): TopicsFragment {
+        fun newInstance(topicType: String, source: String): TopicsFragment {
             val fragment = TopicsFragment()
             val bundle = Bundle()
             bundle.putString(TOPIC_TYPE, topicType)
+            bundle.putString(SOURCE, source)
             fragment.arguments = bundle
             return fragment
         }
@@ -38,8 +40,8 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
     override fun initView() {
         getComponent().inject(this)
 
-        //set lazy load
-        lazyLoad = true
+        //viewPager页面需要懒加载; 从nodes列表跳转过来直接加载
+        lazyLoad = "lazyOpen".equals(arguments?.get(SOURCE))
 
         mBinding.vm = viewModel
         mBinding.recyclerView.run {

@@ -44,7 +44,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     when (pos) {
 //                    0 -> list[0] = TopicsFragment.newInstance("latest")  //最新
 //                    1 -> list[1] = TopicsFragment.newInstance("hot")   //最热
-                        pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos])
+                        pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos],"lazyOpen")
                     }
                     return list[pos]
                 }
