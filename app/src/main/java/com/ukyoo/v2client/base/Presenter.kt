@@ -1,14 +1,9 @@
 package com.ukyoo.v2client.base
 
-import android.view.View
-
 /**
- * 页面描述：Presenter
- *
- * Created by ditclear on 2017/11/2.
+ * created by hewei
  */
-interface Presenter:View.OnClickListener{
+interface Presenter{
 
     fun loadData(isRefresh:Boolean)
-    override fun onClick(v: View?)
 }

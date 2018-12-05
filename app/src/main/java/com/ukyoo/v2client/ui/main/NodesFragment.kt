@@ -1,22 +1,31 @@
 package com.ukyoo.v2client.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ukyoo.v2client.R
-import com.ukyoo.v2client.R.id.toolbar
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentNodesBinding
-import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
+import com.ukyoo.v2client.entity.NodeModel
+import com.ukyoo.v2client.inter.ItemClickPresenter
+import com.ukyoo.v2client.ui.node.NodeActivity
+import com.ukyoo.v2client.ui.viewmodels.NodesViewModel
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
+import com.ukyoo.v2client.util.bindLifeCycle
 
-class NodesFragment : BaseFragment<FragmentNodesBinding>() {
+/**
+ * @desc 所有节点
+ * @author hewei
+ */
+class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<NodeModel> {
 
     //get viewModel by di
     private val viewModel by lazy {
-        getInjectViewModel<TopicsViewModel>()
+        getInjectViewModel<NodesViewModel>()
     }
 
     companion object {
@@ -33,23 +42,51 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>() {
         val appCompatActivity = activity as AppCompatActivity
         appCompatActivity.setSupportActionBar(mBinding.toolbar)
 
-        mBinding.recyclerview.run {
-            layoutManager = LinearLayoutManager(mContext)
-            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list)
-        }
+        //set lazy load
+        lazyLoad = true
 
+        mBinding.vm = viewModel
+
+        mBinding.recyclerview.run {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = SingleTypeAdapter(mContext, R.layout.item_node, viewModel.nodesList).apply {
+                itemPresenter = this@NodesFragment
+            }
+        }
+        isPrepared = true
+    }
+
+    override fun loadData(isRefresh: Boolean) {
+        viewModel.loadData(isRefresh = true)
+            .bindLifeCycle(this)
+            .subscribe({
+            }, {
+                toastFailure(it)
+            })
+    }
+
+    override fun lazyLoad() {
+        if (!isPrepared || !visible || hasLoadOnce) {
+            return
+        }
+        hasLoadOnce = true
+        loadData(true)
+    }
+
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_nodes
+    }
+
+    //item click
+    override fun onItemClick(v: View?, item: NodeModel) {
+        val intent = Intent(mContext, NodeActivity::class.java)
+        intent.putExtra("model", item as Parcelable)
+        mContext.startActivity(intent)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun loadData(isRefresh: Boolean) {
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_nodes
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

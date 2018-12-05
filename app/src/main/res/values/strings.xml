@@ -7,6 +7,8 @@
 	<string name="menu_search">搜索</string>
 	<string name="menu_setting">设置</string>
 
+	<string name="item_node_topic_num">%d个主题</string>
+
 	<string-array name="v2ex_favorite_tab_titles">
 		<item>技术</item>
 		<item>创意</item>

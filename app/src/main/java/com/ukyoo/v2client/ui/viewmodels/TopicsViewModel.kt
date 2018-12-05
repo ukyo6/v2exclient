@@ -10,6 +10,7 @@ import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
+
 class TopicsViewModel @Inject constructor(var apiService: HtmlService) : PagedViewModel() {
 
     //the id of each topic
@@ -35,8 +36,6 @@ class TopicsViewModel @Inject constructor(var apiService: HtmlService) : PagedVi
                 stopLoad()
                 empty.set(list.isEmpty())
             }
-
     }
-
 }
 

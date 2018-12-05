@@ -135,10 +135,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         dispatchFailure(error)
     }
 
-    override fun onClick(v: View?) {
-
-    }
-
     protected fun <T> autoWired(key: String, default: T? = null): T? {
         return intent?.extras?.let { findWired(it, key, default) }
     }

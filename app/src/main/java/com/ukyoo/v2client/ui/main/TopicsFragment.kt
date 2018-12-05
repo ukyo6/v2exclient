@@ -41,16 +41,14 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         //set lazy load
         lazyLoad = true
 
-        mBinding.run {
-            vm = viewModel
-            recyclerView.run {
-                layoutManager = LinearLayoutManager(mContext)
-                adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
-                    itemPresenter = this@TopicsFragment
-                }
+        mBinding.vm = viewModel
+        mBinding.recyclerView.run {
+            layoutManager = LinearLayoutManager(mContext)
+            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
+                itemPresenter = this@TopicsFragment
             }
-            isPrepared = true
         }
+        isPrepared = true
     }
 
     /**

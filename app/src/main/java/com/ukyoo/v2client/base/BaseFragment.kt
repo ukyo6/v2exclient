@@ -145,10 +145,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         activity?.dispatchFailure(error)
     }
 
-    override fun onClick(v: View?) {
-
-    }
-
     protected fun <T> autoWired(key: String, default: T? = null): T? =
             arguments?.let { findWired(it, key, default) }
 

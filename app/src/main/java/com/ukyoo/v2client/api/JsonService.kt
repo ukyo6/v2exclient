@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.api
 
+import com.ukyoo.v2client.entity.NodeModel
 import com.ukyoo.v2client.entity.TopicModel
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -15,13 +16,9 @@ interface JsonService {
     @GET("/topics/hot.json")
     fun queryLatestTopics(): Single<List<TopicModel>>
 
-    //主题  (技术,创意,好玩...)
-    @GET("/")
-    fun queryTopics(@Query("tab") nodesId: String): Single<String>
-
     //所有节点
-    @GET("/nodes/all.json")
-    fun getAllNodes(): Single<Any>
+    @GET("/api/nodes/all.json")
+    fun getAllNodes(): Single<ArrayList<NodeModel>>
 
     //节点信息  nodes/show.json
     @GET("nodes/show.json")
