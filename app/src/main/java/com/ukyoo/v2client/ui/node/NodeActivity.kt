@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.ui.node
 
+import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityNodeBinding
@@ -15,15 +16,16 @@ class NodeActivity:BaseActivity<ActivityNodeBinding>(){
         val model = intent.getParcelableExtra<NodeModel>("model")
         mBinding.toolbar.title = model.title
 
-        val nodeName = model.name
-        val nodeId = model.id
+        val name = model.name
+        val id = model.id
 
-        val topicFragment = TopicsFragment.newInstance(nodeName,"directOpen")
+        val bundle = Bundle()
+        bundle.putString(TopicsFragment.TOPIC_NAME, name)
+        val topicFragment = TopicsFragment.newInstance(bundle,"directOpen")
         supportFragmentManager.beginTransaction().add(R.id.framelayout,topicFragment).commit()
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_node
     }
-
 }

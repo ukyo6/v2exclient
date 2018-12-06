@@ -8,6 +8,7 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
+import com.ukyoo.v2client.ui.main.TopicsFragment.Companion.TOPIC_ID
 import com.ukyoo.v2client.ui.viewmodels.HomeViewModel
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -44,7 +45,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     when (pos) {
 //                    0 -> list[0] = TopicsFragment.newInstance("latest")  //最新
 //                    1 -> list[1] = TopicsFragment.newInstance("hot")   //最热
-                        pos -> list[pos] = TopicsFragment.newInstance(tabPaths[pos],"lazyOpen")
+                        pos -> {
+                            val fragment = TopicsFragment.newInstance(
+                                bundle = Bundle().apply { putString(TopicsFragment.TAB_ID, tabPaths[pos]) },
+                                source = "lazyOpen"
+                            )
+                            list[pos] = fragment
+                        }
                     }
                     return list[pos]
                 }

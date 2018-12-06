@@ -17,7 +17,7 @@ interface HtmlService {
 
     //主题  (技术,创意,好玩...)
     @GET("/")
-    fun queryTopics(@Query("tab") nodesId: String): Single<String>
+    fun queryTopicsByTab(@Query("tab") nodesId: String): Single<String>
 
     //所有节点
     @GET("/nodes/all.json")

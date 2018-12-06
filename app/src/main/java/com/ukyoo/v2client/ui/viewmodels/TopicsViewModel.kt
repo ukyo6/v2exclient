@@ -2,6 +2,7 @@ package com.ukyoo.v2client.ui.viewmodels
 
 import androidx.databinding.ObservableArrayList
 import com.ukyoo.v2client.api.HtmlService
+import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.entity.TopicListModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.async
@@ -11,23 +12,46 @@ import java.util.*
 import javax.inject.Inject
 
 
-class TopicsViewModel @Inject constructor(var apiService: HtmlService) : PagedViewModel() {
+class TopicsViewModel @Inject constructor(private var apiService: HtmlService, private var jsonService: JsonService) :
+    PagedViewModel() {
 
-    //the id of each topic
-    internal lateinit var topicId: String
+
+    internal lateinit var name: String //topicName
+    internal lateinit var tab: String  //tabId
 
     var list = ObservableArrayList<TopicModel>()
 
-    //request remote data
-    fun loadData(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
+    //loadData by tabId
+    fun loadDataByTab(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
 
-        return apiService.queryTopics(topicId)
+        return apiService.queryTopicsByTab(tab)
             .async()
             .map { response ->
                 if (isRefresh) {
                     list.clear()
                 }
                 return@map TopicListModel().parse(response).apply {
+                    list.addAll(this)
+                }
+            }.doOnSubscribe {
+                startLoad()
+            }.doAfterTerminate {
+                stopLoad()
+                empty.set(list.isEmpty())
+            }
+    }
+
+
+    //loadData by topicId
+    fun loadDataById(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
+
+        return jsonService.queryTopicsByName(name)
+            .async()
+            .map { response ->
+                if (isRefresh) {
+                    list.clear()
+                }
+                return@map response.apply {
                     list.addAll(this)
                 }
             }.doOnSubscribe {

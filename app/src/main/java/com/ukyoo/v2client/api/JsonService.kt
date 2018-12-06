@@ -16,6 +16,10 @@ interface JsonService {
     @GET("/topics/hot.json")
     fun queryLatestTopics(): Single<List<TopicModel>>
 
+    //根据名字查找主题列表
+    @GET("/api/topics/show.json")
+    fun queryTopicsByName(@Query("node_name") name: String): Single<java.util.ArrayList<TopicModel>>
+
     //所有节点
     @GET("/api/nodes/all.json")
     fun getAllNodes(): Single<ArrayList<NodeModel>>

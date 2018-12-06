@@ -24,13 +24,13 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
 
     //fragment instance
     companion object {
-        private const val TOPIC_TYPE: String = "TOPIC_TYPE"
+        const val TOPIC_ID: String = "TOPIC_ID"    //节点列表通过topicId
+        const val TOPIC_NAME: String = "TOPIC_NAME"    //节点列表通过topicName
+        const val TAB_ID: String = "TAB_ID"        //首页ViewPager通过tab
         private const val SOURCE: String = "SOURCE"
 
-        fun newInstance(topicType: String, source: String): TopicsFragment {
+        fun newInstance(bundle: Bundle, source: String): TopicsFragment {
             val fragment = TopicsFragment()
-            val bundle = Bundle()
-            bundle.putString(TOPIC_TYPE, topicType)
             bundle.putString(SOURCE, source)
             fragment.arguments = bundle
             return fragment
@@ -57,14 +57,26 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
      * get data from remote
      */
     override fun loadData(isRefresh: Boolean) {
-        val topicType = arguments?.getString(TOPIC_TYPE)
-        viewModel.topicId = topicType ?: "11111"
 
-        viewModel.loadData(isRefresh = true)
-            .bindLifeCycle(this)
-            .subscribe({}, {
-                toastFailure(it)
-            })
+        val topicId = arguments?.getString(TOPIC_NAME)
+        val tab = arguments?.getString(TAB_ID)
+
+
+        if(topicId !=null){
+            viewModel.name = topicId
+            viewModel.loadDataById(isRefresh = true)
+                .bindLifeCycle(this)
+                .subscribe({}, {
+                    toastFailure(it)
+                })
+        } else if(tab != null){
+            viewModel.tab = tab
+            viewModel.loadDataByTab(isRefresh = true)
+                .bindLifeCycle(this)
+                .subscribe({}, {
+                    toastFailure(it)
+                })
+        }
     }
 
     override fun getLayoutId(): Int {
