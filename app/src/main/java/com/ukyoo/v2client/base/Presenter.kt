@@ -1,5 +1,7 @@
 package com.ukyoo.v2client.base
 
+import android.os.Bundle
+
 /**
  * created by hewei
  */

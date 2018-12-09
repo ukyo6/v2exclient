@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.ui.main
 
+import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityMainBinding
@@ -15,13 +16,11 @@ import io.reactivex.Single
  */
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+    override fun loadData(isRefresh: Boolean) {
+    }
 
     private var isQuit = false
 
-    override fun loadData(isRefresh: Boolean) {
-
-
-    }
 
 
     override fun initView() {

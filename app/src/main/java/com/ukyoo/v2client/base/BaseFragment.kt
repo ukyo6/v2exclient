@@ -71,7 +71,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initArgs(savedInstanceState)
+        restoreArgs(savedInstanceState)
     }
 
     inline fun <reified T: ViewModel> getInjectViewModel(): T =
@@ -124,7 +124,10 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     open fun lazyLoad() {}
 
-    open fun initArgs(savedInstanceState: Bundle?) {
+    /**
+     * 恢复数据的
+     */
+    open fun restoreArgs(savedInstanceState: Bundle?) {
 
     }
 

@@ -35,8 +35,8 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
 
     private var activityComponent: ActivityComponent? = null
 
-    protected var autoRefresh =true
-    protected var delayToTransition =false
+    protected var autoRefresh = true
+    protected var delayToTransition = false
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -50,22 +50,40 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         return activityComponent as ActivityComponent
     }
 
-    inline fun <reified T : ViewModel> getInjectViewModel ()= ViewModelProviders.of(this,factory).get(T::class.java)
+    inline fun <reified T : ViewModel> getInjectViewModel() = ViewModelProviders.of(this, factory).get(T::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView<VB>(this, getLayoutId())
-        mBinding.setVariable(BR.user,this)
+        mBinding.setVariable(BR.user, this)
         mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)
         mContext = this
 
+        restoreArgs(savedInstanceState)
         initView()
-        if (delayToTransition){
+        if (delayToTransition) {
             afterEnterTransition()
-        } else if (autoRefresh){
+        } else if (autoRefresh) {
             loadData(true)
         }
+    }
+
+    /**
+     * 恢复数据的
+     */
+    open fun restoreArgs(savedInstanceState: Bundle?) {
+    }
+
+    /**
+     * 保存数据的
+     */
+    open fun saveArgs(outState: Bundle?){
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        saveArgs(outState)
+        super.onSaveInstanceState(outState)
     }
 
 //    private val enterTransitionListener by lazy {
@@ -90,7 +108,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
 //        }
 //    }
 
-    private fun afterEnterTransition(){
+    private fun afterEnterTransition() {
 //        window.enterTransition.addListener(enterTransitionListener)
     }
 
@@ -99,12 +117,11 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
 //        window.enterTransition.removeListener(enterTransitionListener)
     }
 
-    abstract override fun loadData(isRefresh:Boolean)
+    abstract override fun loadData(isRefresh: Boolean)
 
     abstract fun initView()
 
     abstract fun getLayoutId(): Int
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

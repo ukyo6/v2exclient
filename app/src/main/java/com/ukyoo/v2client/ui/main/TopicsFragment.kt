@@ -24,8 +24,8 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
 
     //fragment instance
     companion object {
-        const val TOPIC_ID: String = "TOPIC_ID"    //节点列表通过topicId
-        const val TOPIC_NAME: String = "TOPIC_NAME"    //节点列表通过topicName
+        const val NODE_ID: String = "NODE_ID"    //节点列表通过topicId
+        const val NODE_NAME: String = "NODE_NAME"    //节点列表通过topicName
         const val TAB_ID: String = "TAB_ID"        //首页ViewPager通过tab
         private const val SOURCE: String = "SOURCE"
 
@@ -58,13 +58,13 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
      */
     override fun loadData(isRefresh: Boolean) {
 
-        val topicId = arguments?.getString(TOPIC_NAME)
+        val topicId = arguments?.getString(NODE_ID)
         val tab = arguments?.getString(TAB_ID)
 
 
         if(topicId !=null){
             viewModel.name = topicId
-            viewModel.loadDataById(isRefresh = true)
+            viewModel.loadDataByName(isRefresh = true)
                 .bindLifeCycle(this)
                 .subscribe({}, {
                     toastFailure(it)

@@ -9,7 +9,6 @@ import com.ukyoo.v2client.ui.main.TopicsFragment
 
 class NodeActivity:BaseActivity<ActivityNodeBinding>(){
     override fun loadData(isRefresh: Boolean) {
-
     }
 
     override fun initView() {
@@ -20,7 +19,7 @@ class NodeActivity:BaseActivity<ActivityNodeBinding>(){
         val id = model.id
 
         val bundle = Bundle()
-        bundle.putString(TopicsFragment.TOPIC_NAME, name)
+        bundle.putString(TopicsFragment.NODE_NAME, name)
         val topicFragment = TopicsFragment.newInstance(bundle,"directOpen")
         supportFragmentManager.beginTransaction().add(R.id.framelayout,topicFragment).commit()
     }

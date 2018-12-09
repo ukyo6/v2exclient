@@ -42,8 +42,8 @@ class TopicsViewModel @Inject constructor(private var apiService: HtmlService, p
     }
 
 
-    //loadData by topicId
-    fun loadDataById(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
+    //loadData by topicName
+    fun loadDataByName(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
 
         return jsonService.queryTopicsByName(name)
             .async()

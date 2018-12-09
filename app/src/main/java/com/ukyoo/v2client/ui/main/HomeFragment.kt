@@ -8,7 +8,6 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
-import com.ukyoo.v2client.ui.main.TopicsFragment.Companion.TOPIC_ID
 import com.ukyoo.v2client.ui.viewmodels.HomeViewModel
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
