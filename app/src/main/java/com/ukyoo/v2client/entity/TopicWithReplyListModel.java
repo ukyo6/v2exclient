@@ -1,6 +1,7 @@
 package com.ukyoo.v2client.entity;
 
 import com.ukyoo.v2client.util.ContentUtils;
+import com.ukyoo.v2client.util.TimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -84,7 +85,7 @@ public class TopicWithReplyListModel extends V2EXModel {
 
             Elements agos = tdNode.getElementsByClass("ago");
             if(agos.size() > 0) {
-                reply.created = V2EXDateModel.toLong(agos.text());
+                reply.created = TimeUtils.INSTANCE.toLong(agos.text());
             }
 
             Elements aNodes = tdNode.getElementsByTag("a");
@@ -137,7 +138,7 @@ public class TopicWithReplyListModel extends V2EXModel {
         String[] components = dateString.split("·");
         if (components.length >= 2) {
             dateString = components[1].trim();
-            topic.created = V2EXDateModel.toLong(dateString);
+            topic.created = TimeUtils.INSTANCE.toLong(dateString);
         }
 
         Elements hNodes = header.get(0).getElementsByTag("h1");

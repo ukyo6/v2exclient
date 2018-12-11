@@ -3,12 +3,47 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	>
 
-	<data></data>
+	<data>
+
+		<import type="android.view.View"/>
+
+		<variable
+			name="vm"
+			type="com.ukyoo.v2client.viewmodel.PagedViewModel"/>
+
+		<variable
+			name="presenter"
+			type="com.ukyoo.v2client.base.Presenter"/>
+
+	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			app:onRefresh="@{presenter}"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<FrameLayout
+				android:id="@+id/container"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/recyclerview"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"/>
+
+				<include
+					layout="@layout/empty_layout"
+					android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
+
+			</FrameLayout>
+
+
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

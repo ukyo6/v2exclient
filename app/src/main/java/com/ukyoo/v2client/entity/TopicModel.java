@@ -3,6 +3,7 @@ package com.ukyoo.v2client.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.ukyoo.v2client.util.ContentUtils;
+import com.ukyoo.v2client.util.TimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,8 @@ public class TopicModel extends V2EXModel implements Parcelable {
     public long lastModified;
     public long lastTouched;
 
+    public String createdTime;
+
     public void parse(JSONObject jsonObject) throws JSONException {
         id = jsonObject.getInt("id");
         title = jsonObject.getString("title");
@@ -35,6 +38,8 @@ public class TopicModel extends V2EXModel implements Parcelable {
         created = jsonObject.getLong("created");
         lastModified = jsonObject.getLong("last_modified");
         lastTouched = jsonObject.getLong("last_touched");
+
+        createdTime = TimeUtils.INSTANCE.toString(created);
     }
 
     public TopicModel(){}
@@ -98,7 +103,9 @@ public class TopicModel extends V2EXModel implements Parcelable {
     };
 
     //---------------------------------------------------------------------------------
-    public String createdTime = V2EXDateModel.toString(created);
+
+
+
 
 
 }

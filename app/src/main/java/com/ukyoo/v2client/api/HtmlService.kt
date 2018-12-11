@@ -2,8 +2,11 @@ package com.ukyoo.v2client.api
 
 import com.ukyoo.v2client.entity.TopicModel
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
+import io.reactivex.Flowable
+import retrofit2.http.POST
+
+
 
 interface HtmlService {
 
@@ -31,8 +34,6 @@ interface HtmlService {
     @GET("members/show.json")
     fun getUserInfo(): Single<Any>
 
-    //所有回复  /replies/show.json
-    @GET("/replies/show.json")
-    fun getAllReplies(): Single<Any>
+
 
 }

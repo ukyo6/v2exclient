@@ -41,7 +41,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
         return this;
     }
 
-    public void parseFromNodeEntry(String responseBody, String nodeName) throws Exception {
+    public ArrayList<TopicModel> parseFromNodeEntry(String responseBody, String nodeName) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         String title = doc.title();
         title = title.replace("V2EX ›", "").trim();
@@ -66,6 +66,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
         int[] pages = ContentUtils.parsePage(body);
         mCurrentPage = pages[0];
         mTotalPage = pages[1];
+        return this;
     }
 
     private TopicModel parseTopicModel(Element el, boolean parseNode, NodeModel node) throws Exception {
