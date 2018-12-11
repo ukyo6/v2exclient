@@ -114,14 +114,14 @@ public class TopicListModel extends ArrayList<TopicModel> {
                     String contentString = spanNode.text();
                     if (contentString.contains("最后回复")
                             || contentString.contains("前")
-                            || contentString.contains("  •  ") ) {
-                        String[] components = contentString.split("  •  ");
+                            || contentString.contains(" • ") ) {
+                        String[] components = contentString.split(" • ");
                         if (parseNode && components.length <= 2) continue;
                         else if (!parseNode && components.length <= 1) continue;
                         String dateString = parseNode ? components[2] : components[1];
                         long created = System.currentTimeMillis() / 1000;
                         String[] stringArray = dateString.split(" ");
-                        if (stringArray.length > 1) {
+                        if (stringArray.length >= 1) {
                             String unitString = "";
                             try {
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

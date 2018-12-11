@@ -19,6 +19,7 @@ interface HtmlService {
     fun queryLatestTopics(): Single<List<TopicModel>>
 
     //主题  (技术,创意,好玩...)
+    @Headers("Referer: https://www.v2ex.com","Content-Type: application/x-www-form-urlencoded")
     @GET("/")
     fun queryTopicsByTab(@Query("tab") nodesId: String): Single<String>
 
