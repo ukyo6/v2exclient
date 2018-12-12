@@ -2,6 +2,7 @@ package com.ukyoo.v2client.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.ukyoo.v2client.ui.viewmodels.DetailViewModel
 import com.ukyoo.v2client.ui.viewmodels.MainViewModel
 import com.ukyoo.v2client.ui.viewmodels.NodesViewModel
 import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
@@ -44,6 +45,11 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(NodesViewModel::class)
     abstract fun provideNodesViewModel(viewModel: NodesViewModel):ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailViewModel::class)
+    abstract fun provideDetailViewModel(viewmodel:DetailViewModel):ViewModel
 
 
 //

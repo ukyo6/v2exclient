@@ -55,7 +55,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView<VB>(this, getLayoutId())
-        mBinding.setVariable(BR.user, this)
+        mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)
         mContext = this

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_share_friend"
+            style="@style/text_12sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/share_wecaht"
+            android:drawablePadding="7dp"
+            android:text="微信"
+            android:textColor="#3b4452"/>
+
+        <TextView
+            android:id="@+id/tv_share_friend_circle"
+            style="@style/text_12sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/share_friend_circle"
+            android:drawablePadding="7dp"
+            android:text="朋友圈"
+            android:textColor="#3b4452"/>
+
+        <TextView
+            android:id="@+id/tv_share_clipboard"
+            style="@style/text_12sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/clipboard"
+            android:drawablePadding="7dp"
+            android:text="复制链接"
+            android:textColor="#3b4452"/>
+
+
+        <TextView
+            android:visibility="gone"
+            style="@style/text_12sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/share_workmate"
+            android:drawablePadding="7dp"
+            android:text="同事"
+            android:textColor="#3b4452"/>
+
+        <TextView
+            android:visibility="gone"
+            style="@style/text_12sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/share_customer"
+            android:drawablePadding="7dp"
+            android:text="客户"
+            android:textColor="#3b4452"/>
+    </LinearLayout>
+
+    <View
+        style="@style/divider_line"></View>
+
+    <TextView
+        android:id="@+id/tv_share_cancel"
+        android:clickable="true"
+        android:background="@drawable/selector_button"
+        style="@style/text_15sp"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:text="取消"
+        android:textColor="#838ea6"/>
+
+
+</LinearLayout>
