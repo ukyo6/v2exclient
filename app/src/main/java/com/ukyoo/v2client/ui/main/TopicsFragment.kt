@@ -2,6 +2,7 @@ package com.ukyoo.v2client.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
@@ -111,6 +112,11 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
      */
     override fun onItemClick(v: View?, item: TopicModel) {
         val intent = Intent(mContext, DetailActivity::class.java)
+        if (item.content == null || item.contentRendered == null)
+            intent.putExtra("topic_id", item.id)
+        else
+            intent.putExtra("model", item as Parcelable)
+
         startActivity(intent)
     }
 }

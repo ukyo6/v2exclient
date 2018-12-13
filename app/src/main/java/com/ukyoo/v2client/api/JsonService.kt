@@ -21,6 +21,10 @@ interface JsonService {
     @GET("/api/topics/show.json")
     fun queryTopicsByName(@Query("node_name") name: String): Single<ArrayList<TopicModel>>
 
+    //查询帖子内容by id
+    @GET("/api/topics/show.json")
+    fun getTopicByTopicId(@Query("id") name: String): Single<ArrayList<TopicModel>>
+
     //所有节点
     @GET("/api/nodes/all.json")
     fun getAllNodes(): Single<ArrayList<NodeModel>>

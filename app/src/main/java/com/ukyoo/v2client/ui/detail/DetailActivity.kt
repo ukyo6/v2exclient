@@ -20,13 +20,10 @@ import com.ukyoo.v2client.widget.CustomDialog
 
 
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<ReplyModel> {
-    override fun onItemClick(v: View?, item: ReplyModel) {
 
-
-    }
 
     private var mTopicId: Int? = 0
-    private lateinit var model: TopicModel
+    private lateinit var mTopic: TopicModel
 
     private var dialog: Dialog? = null
 
@@ -46,24 +43,51 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     }
 
     override fun loadData(isRefresh: Boolean) {
-        if (intent.getStringExtra("topic_id") != null) {
+        if (intent.hasExtra("topic_id")) {
             mTopicId = intent.getIntExtra("topic_id", -1)
 
-            viewModel.getRepliesByTopicId(true)
-                .bindLifeCycle(this)
-                .subscribe({
+            getTopicByTopicId()
 
-                }, {
-                    toastFailure(it)
-                })
-        } else if (intent.getParcelableExtra<TopicModel>("model") != null) {
-            model = intent.getParcelableExtra("model")
-            mTopicId = model.id
+        } else if (intent.hasExtra("model")) {
+            mTopic = intent.getParcelableExtra("model")
+            mTopicId = mTopic.id
 
-            viewModel.getTopicAndRepliesByTopicId(true)
+            initHeaderView()
+            getRepliesByTopicId()
         }
+    }
 
+    /**
+     * 查询主题内容
+     */
+    private fun getTopicByTopicId() {
+        viewModel.topicId = mTopicId.toString()
+        viewModel.getTopicAndRepliesByTopicId(true)
+            .bindLifeCycle(this)
+            .subscribe({
+                mTopic = it[0]
+                mTopicId = mTopic.id
 
+                initHeaderView()
+                getRepliesByTopicId()
+            }, {
+                toastFailure(it)
+            })
+    }
+
+    /**
+     * 查询主题下的回复
+     */
+    private fun getRepliesByTopicId() {
+        viewModel.getRepliesByTopicId(true)
+            .bindLifeCycle(this)
+            .subscribe({
+            }, {
+                toastFailure(it)
+            })
+    }
+
+    private fun showShareDialog() {
         val shareView = LayoutInflater.from(mContext).inflate(R.layout.dialog_share, null)
 
         if (dialog == null) {
@@ -81,6 +105,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     override fun initView() {
         getComponent().inject(this)
 
+        mBinding.vm = viewModel
+        //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = SingleTypeAdapter(mContext, R.layout.item_reply, viewModel.replyList).apply {
@@ -89,9 +115,15 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         }
     }
 
+    //初始化主题内容
+    private fun initHeaderView(){
+
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.activity_detail
     }
 
-
+    override fun onItemClick(v: View?, item: ReplyModel) {
+    }
 }
