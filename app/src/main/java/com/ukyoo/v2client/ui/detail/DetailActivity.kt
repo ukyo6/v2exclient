@@ -2,6 +2,7 @@ package com.ukyoo.v2client.ui.detail
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +56,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             initHeaderView()
             getRepliesByTopicId()
         }
+
+//        showShareDialog()
     }
 
     /**
