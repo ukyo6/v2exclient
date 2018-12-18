@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.orhanobut.logger.LogLevel
 import com.orhanobut.logger.Logger
+import com.squareup.leakcanary.LeakCanary
 import com.ukyoo.v2client.di.component.AppComponent
 import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
@@ -39,6 +40,13 @@ class App: Application() {
         Logger.init().hideThreadInfo().logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
 
         getScreenSize()
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+        LeakCanary.install(this)
     }
 
     fun getScreenSize() {
