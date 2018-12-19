@@ -23,7 +23,7 @@ interface JsonService {
 
     //查询帖子内容by id
     @GET("/api/topics/show.json")
-    fun getTopicByTopicId(@Query("id") name: String): Single<ArrayList<TopicModel>>
+    fun getTopicByTopicId(@Query("id") name: Int): Single<ArrayList<TopicModel>>
 
     //所有节点
     @GET("/api/nodes/all.json")
@@ -39,6 +39,6 @@ interface JsonService {
 
     //所有回复
     @GET("/api/replies/show.json")
-    fun getRepliesByTopicId(@Query("topic_id") name: String): Single<ArrayList<ReplyModel>>
+    fun getRepliesByTopicId(@Query("topic_id") name: Int): Single<ArrayList<ReplyModel>>
 
 }

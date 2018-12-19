@@ -27,7 +27,7 @@ public class TopicWithReplyListModel extends V2EXModel {
 
     }
 
-    public void parse(String responseBody, boolean parseTopic, int id) throws Exception {
+    public TopicWithReplyListModel parse(String responseBody, boolean parseTopic, int id) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         Element body = doc.body();
 
@@ -57,6 +57,7 @@ public class TopicWithReplyListModel extends V2EXModel {
         currentPage = pages[0];
         totalPage = pages[1];
         android.util.Log.d("page", String.format("%d/%d", currentPage, totalPage));
+        return this;
     }
 
     ReplyModel parseReplyModel(Element element) {

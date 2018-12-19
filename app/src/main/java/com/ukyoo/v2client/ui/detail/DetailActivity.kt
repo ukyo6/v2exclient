@@ -2,11 +2,9 @@ package com.ukyoo.v2client.ui.detail
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
@@ -23,8 +21,9 @@ import com.ukyoo.v2client.widget.CustomDialog
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<ReplyModel> {
 
 
-    private var mTopicId: Int? = 0
+    private var mTopicId: Int = 0
     private lateinit var mTopic: TopicModel
+    private var page = 1
 
     private var dialog: Dialog? = null
 
@@ -35,37 +34,44 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
     override fun restoreArgs(savedInstanceState: Bundle?) {
         super.restoreArgs(savedInstanceState)
-        mTopicId = savedInstanceState?.getInt("topic_id", -1)
+        mTopicId = savedInstanceState?.getInt("topic_id", -1) ?: -1
     }
 
     override fun saveArgs(outState: Bundle?) {
         super.saveArgs(outState)
-        mTopicId?.let { outState?.putInt("topic_id", it) }
+        mTopicId.let { outState?.putInt("topic_id", it) }
     }
+
+    var isJsonApi: Boolean = false
 
     override fun loadData(isRefresh: Boolean) {
         if (intent.hasExtra("topic_id")) {
             mTopicId = intent.getIntExtra("topic_id", -1)
 
-            getTopicByTopicId()
-
+            if (isJsonApi) {
+                getTopicByTopicId()
+            } else {
+                getTopicAndRepliesByTopicId()
+            }
         } else if (intent.hasExtra("model")) {
             mTopic = intent.getParcelableExtra("model")
             mTopicId = mTopic.id
 
             initHeaderView()
-            getRepliesByTopicId()
+            if (isJsonApi) {
+                getRepliesByTopicId()
+            } else {
+                getTopicAndRepliesByTopicId()
+            }
         }
-
-//        showShareDialog()
     }
 
     /**
-     * 查询主题内容
+     * 查看话题内容
      */
     private fun getTopicByTopicId() {
-        viewModel.topicId = mTopicId.toString()
-        viewModel.getTopicAndRepliesByTopicId(true)
+        viewModel.topicId = mTopicId
+        viewModel.getTopicsByTopicId(true)
             .bindLifeCycle(this)
             .subscribe({
                 mTopic = it[0]
@@ -82,6 +88,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
      * 查询主题下的回复
      */
     private fun getRepliesByTopicId() {
+        viewModel.topicId = mTopicId
         viewModel.getRepliesByTopicId(true)
             .bindLifeCycle(this)
             .subscribe({
@@ -89,6 +96,24 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
                 toastFailure(it)
             })
     }
+
+    /**
+     * 查看主题和回复
+     */
+    private fun getTopicAndRepliesByTopicId() {
+        viewModel.topicId = mTopicId
+        viewModel.page = page
+        viewModel.getTopicAndRepliesByTopicId(true)
+            .bindLifeCycle(this)
+            .subscribe({
+                if(page == 1){
+                    initHeaderView()
+                }
+            }, {
+                toastFailure(it)
+            })
+    }
+
 
     private fun showShareDialog() {
         val shareView = LayoutInflater.from(mContext).inflate(R.layout.dialog_share, null)
@@ -119,7 +144,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     }
 
     //初始化主题内容
-    private fun initHeaderView(){
+    private fun initHeaderView() {
 
     }
 

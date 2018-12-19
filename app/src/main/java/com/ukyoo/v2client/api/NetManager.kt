@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 object NetManager {
 
-    const val HOST_API = "https://www.v2ex.com/api/"
+    const val HOST_API = "https://www.v2ex.com"
 
     /**
      * jsoup解析返回的html

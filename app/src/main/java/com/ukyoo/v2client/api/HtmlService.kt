@@ -7,7 +7,6 @@ import io.reactivex.Flowable
 import retrofit2.http.POST
 
 
-
 interface HtmlService {
 
     //最热主题  topics/hot.json
@@ -19,7 +18,7 @@ interface HtmlService {
     fun queryLatestTopics(): Single<List<TopicModel>>
 
     //主题  (技术,创意,好玩...)
-    @Headers("Referer: https://www.v2ex.com","Content-Type: application/x-www-form-urlencoded")
+    @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
     @GET("/")
     fun queryTopicsByTab(@Query("tab") nodesId: String): Single<String>
 
@@ -35,6 +34,10 @@ interface HtmlService {
     @GET("members/show.json")
     fun getUserInfo(): Single<Any>
 
+    //查看一个帖子的主题和回复
+    @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
+    @GET("t/{topicId}")
+    fun getTopicAndRepliesByTopicId(@Path("topicId") topicId: Int, @Query("p") page: Int): Single<String>
 
 
 }
