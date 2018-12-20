@@ -4,6 +4,8 @@
 		xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
+		<import
+			type="com.ukyoo.v2client.util.TimeUtils"/>
 
 		<variable
 			name="item"
@@ -32,24 +34,26 @@
 			tools:src="@drawable/user"/>
 
 		<TextView
+			android:text="@{item.member.username}"
 			android:id="@+id/replier"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
-			android:text="author"
+			tools:text="author"
 			android:textColor="#3bbd79"
 			android:textSize="12sp"
 			app:layout_constraintStart_toEndOf="@+id/iv_avatar"
 			android:layout_marginStart="8dp"/>
 
 		<TextView
+			android:text="@{TimeUtils.toString(item.created)}"
 			android:id="@+id/time"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toEndOf="@+id/replier"
 			android:layout_toRightOf="@+id/replier"
 			android:gravity="center_vertical"
-			android:text="1分钟前"
+			tools:text="1分钟前"
 			android:textColor="#aaa"
 			android:textSize="12sp"
 			app:layout_constraintStart_toEndOf="@+id/replier"
@@ -65,6 +69,26 @@
 			android:text="第1楼"
 			android:textColor="#aaa"
 			android:textSize="12sp"
+			app:layout_constraintEnd_toEndOf="parent"/>
+
+		<com.ukyoo.v2client.widget.RichTextView
+			android:id="@+id/content"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_marginTop="8dp"
+			tools:text="@string/topic"
+			app:layout_constraintTop_toBottomOf="@+id/replier"
+			app:layout_constraintStart_toStartOf="@+id/replier"/>
+
+		<CheckBox
+			android:id="@+id/commentBtn"
+			android:layout_width="50dp"
+			android:layout_height="22dp"
+			android:layout_alignParentEnd="true"
+			android:button="@drawable/checkbox_comment"
+			app:layout_constraintTop_toBottomOf="@+id/content"
+			android:layout_marginTop="8dp"
 			app:layout_constraintEnd_toEndOf="parent"/>
 
 

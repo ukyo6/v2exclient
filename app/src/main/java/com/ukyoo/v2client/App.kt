@@ -10,8 +10,6 @@ import com.squareup.leakcanary.LeakCanary
 import com.ukyoo.v2client.di.component.AppComponent
 import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
-import java.lang.IllegalStateException
-import java.nio.channels.IllegalChannelGroupException
 
 class App: Application() {
 
@@ -49,7 +47,7 @@ class App: Application() {
         LeakCanary.install(this)
     }
 
-    fun getScreenSize() {
+    private fun getScreenSize() {
         val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val dm = DisplayMetrics()
         val display = windowManager.defaultDisplay

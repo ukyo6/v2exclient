@@ -1,6 +1,5 @@
 package com.ukyoo.v2client.widget;
 
-import android.app.Application;
 import android.content.Context;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -10,13 +9,9 @@ import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.widget.TextViewCompat;
 
 import java.util.ArrayList;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by hewei
@@ -40,13 +35,13 @@ public class RichTextView extends AppCompatTextView {
         setTextIsSelectable(true);
 
         //移动网络情况下如果设置了不显示图片,则遵命
-        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
-            super.setText(Html.fromHtml(text));
-            setMovementMethod(LinkMovementMethod.getInstance());
-            return;
-        }
+//        if (NetWorkHelper.isMobile(getContext()) && !Application.getInstance().isLoadImageInMobileNetworkFromCache()) {
+//            super.setText(Html.fromHtml(text));
+//            setMovementMethod(LinkMovementMethod.getInstance());
+//            return;
+//        }
 
-        Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this));
+        Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this),null);
         SpannableStringBuilder htmlSpannable;
         if (spanned instanceof SpannableStringBuilder) {
             htmlSpannable = (SpannableStringBuilder) spanned;
