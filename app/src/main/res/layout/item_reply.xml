@@ -5,11 +5,15 @@
 
 	<data>
 		<import
-			type="com.ukyoo.v2client.util.TimeUtils"/>
+			type="com.ukyoo.v2client.util.TimeFormatUtils"/>
 
 		<variable
 			name="item"
 			type="com.ukyoo.v2client.entity.ReplyModel"/>
+
+		<variable
+			name="index"
+			type="Integer"/>
 
 		<variable
 			name="presenter"
@@ -46,12 +50,10 @@
 			android:layout_marginStart="8dp"/>
 
 		<TextView
-			android:text="@{TimeUtils.toString(item.created)}"
+			android:text="@{TimeFormatUtils.toString(item.created)}"
 			android:id="@+id/time"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_toEndOf="@+id/replier"
-			android:layout_toRightOf="@+id/replier"
 			android:gravity="center_vertical"
 			tools:text="1分钟前"
 			android:textColor="#aaa"
@@ -60,24 +62,25 @@
 			android:layout_marginStart="8dp"/>
 
 		<TextView
+			android:text="@{@string/which_floor(index+1)}"
 			android:id="@+id/which_floor"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
 			android:layout_alignParentTop="true"
-			android:text="第1楼"
+			tools:text="第1楼"
 			android:textColor="#aaa"
 			android:textSize="12sp"
 			app:layout_constraintEnd_toEndOf="parent"/>
 
 		<com.ukyoo.v2client.widget.RichTextView
+			tools:text="内容"
+			app:richText="@{item.contentRendered}"
 			android:id="@+id/content"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_centerVertical="true"
 			android:layout_marginTop="8dp"
-			tools:text="@string/topic"
+			android:gravity="left"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toBottomOf="@+id/replier"
 			app:layout_constraintStart_toStartOf="@+id/replier"/>
 
@@ -90,6 +93,11 @@
 			app:layout_constraintTop_toBottomOf="@+id/content"
 			android:layout_marginTop="8dp"
 			app:layout_constraintEnd_toEndOf="parent"/>
+
+		<View
+			style="@style/divider_line"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

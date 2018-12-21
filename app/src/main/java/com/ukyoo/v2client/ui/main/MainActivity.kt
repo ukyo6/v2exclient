@@ -1,6 +1,5 @@
 package com.ukyoo.v2client.ui.main
 
-import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityMainBinding

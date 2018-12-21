@@ -13,6 +13,7 @@ import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.viewmodels.DetailViewModel
+import com.ukyoo.v2client.util.TimeFormatUtils
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.widget.CustomDialog
@@ -145,7 +146,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
     //初始化主题内容
     private fun initHeaderView() {
-
     }
 
     override fun getLayoutId(): Int {

@@ -14,6 +14,7 @@ import com.ukyoo.v2client.base.Presenter
 import com.ukyoo.v2client.util.ImageUtil
 import com.ukyoo.v2client.util.ScrimUtil
 import com.ukyoo.v2client.viewmodel.PagedViewModel
+import com.ukyoo.v2client.widget.RichTextView
 
 /**
  * 页面描述：normal bind class
@@ -102,5 +103,9 @@ fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
     }
     view.background = ScrimUtil.makeCubicGradientScrimDrawable(color, numSteps,
             gravity)
+}
 
+@BindingAdapter(value=["richText"])
+fun setRichText(richTextView: RichTextView, content:String){
+    richTextView.setRichText(content)
 }

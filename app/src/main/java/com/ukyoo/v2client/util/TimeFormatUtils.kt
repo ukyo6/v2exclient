@@ -3,7 +3,7 @@ package com.ukyoo.v2client.util
 import android.text.format.DateUtils
 import java.text.SimpleDateFormat
 
-object TimeUtils{
+object TimeFormatUtils{
 
     fun toLong(dateString: String): Long {
         val stringArray = dateString.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -35,6 +35,7 @@ object TimeUtils{
         return created
     }
 
+    @JvmStatic
     fun toString(ts: Long): String {
         if (ts == -1L) return ""
         val created = ts * 1000

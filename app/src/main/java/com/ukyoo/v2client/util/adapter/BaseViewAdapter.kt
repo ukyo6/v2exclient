@@ -32,6 +32,7 @@ abstract class BaseViewAdapter<T>(context: Context, private val list: Observable
         val item = list[position]
         holder.binding.setVariable(BR.item, item)
         holder.binding.setVariable(BR.presenter, itemPresenter)
+        holder.binding.setVariable(BR.index,position)
         holder.binding.executePendingBindings()
         itemDecorator?.decorator(holder, position, getItemViewType(position))
     }
