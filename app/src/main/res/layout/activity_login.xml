@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	>
+
+
+	<data>
+
+
+	</data>
+
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:padding="16dp"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/text_input_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<AutoCompleteTextView
+				android:id="@+id/tv_username"
+				android:hint="用户名"
+				android:maxLines="1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+
+		<com.google.android.material.textfield.TextInputLayout
+			app:layout_constraintTop_toBottomOf="@+id/text_input_name"
+			android:id="@+id/text_input_pwd"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+
+			<AutoCompleteTextView
+				android:id="@+id/tv_pwd"
+				android:inputType="textPassword"
+				android:hint="密码"
+				android:maxLines="1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:orientation="horizontal"
+			app:layout_constraintTop_toBottomOf="@+id/text_input_pwd"
+			android:id="@+id/text_input_verify"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+
+			<AutoCompleteTextView
+				android:id="@+id/tv_verify"
+				android:hint="验证码"
+				android:maxLines="1"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="wrap_content"/>
+
+			<androidx.appcompat.widget.AppCompatImageView
+				android:layout_marginStart="20dp"
+				android:src="@color/colorBlack"
+				android:id="@+id/iv_verifycode"
+				android:layout_width="100dp"
+				android:layout_height="50dp"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+
+		<androidx.appcompat.widget.AppCompatButton
+			android:layout_marginTop="20dp"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/text_input_verify"
+			android:id="@+id/btn_login"
+			android:text="登录"
+			android:layout_width="100dp"
+			android:layout_height="50dp"/>
+
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
