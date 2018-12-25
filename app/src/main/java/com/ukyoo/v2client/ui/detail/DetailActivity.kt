@@ -115,22 +115,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             })
     }
 
-
-    private fun showShareDialog() {
-        val shareView = LayoutInflater.from(mContext).inflate(R.layout.dialog_share, null)
-
-        if (dialog == null) {
-            dialog = CustomDialog.Builder(mContext)
-                .setNotitle(true)
-                .setCancelable(true)
-                .setContentView(shareView)
-                .setBottomDialog(true)
-                .setWidth(App.SCREEN_WIDTH)
-                .create()
-        }
-        dialog?.show()
-    }
-
     override fun initView() {
         getComponent().inject(this)
 

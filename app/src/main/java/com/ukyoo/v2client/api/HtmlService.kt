@@ -39,5 +39,14 @@ interface HtmlService {
     @GET("t/{topicId}")
     fun getTopicAndRepliesByTopicId(@Path("topicId") topicId: Int, @Query("p") page: Int): Single<String>
 
+    //登录首页信息
+    @GET("/signin")
+    fun signin():Single<String>
+
+    //登录
+    @Headers("Origin: https://www.v2ex.com", "Referer: https://www.v2ex.com/signin", "Content-Type: application/x-www-form-urlencoded")
+    @POST("/signin")
+    fun login(@QueryMap params: Map<String,String>):Single<String>
+
 
 }

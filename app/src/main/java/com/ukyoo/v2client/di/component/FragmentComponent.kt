@@ -17,7 +17,7 @@ interface FragmentComponent {
     fun inject(fragment: MainFragment)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: NodesFragment)
-    fun inject(fragment: MeFragment)
+    fun inject(fragment: MyFragment)
     fun inject(fragment: TopicsFragment)
 
 

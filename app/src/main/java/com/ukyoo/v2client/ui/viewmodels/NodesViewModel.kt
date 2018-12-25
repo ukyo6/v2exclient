@@ -14,11 +14,6 @@ import javax.inject.Inject
 
 class NodesViewModel @Inject constructor(var apiService: JsonService): PagedViewModel(){
 
-
-    companion object {
-        val aa = 1
-    }
-
     var nodesList = ObservableArrayList<NodeModel>()
 
     //request remote data

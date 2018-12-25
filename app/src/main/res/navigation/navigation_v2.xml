@@ -27,8 +27,8 @@
 
     <!--<fragment-->
             <!--android:id="@+id/me_fragment"-->
-            <!--android:name="com.ukyoo.v2client.ui.main.MeFragment"-->
+            <!--android:name="com.ukyoo.v2client.ui.main.MyFragment"-->
             <!--android:label="@string/main_nav_me"-->
-            <!--tools:layout="@layout/fragment_me"/>-->
+            <!--tools:layout="@layout/fragment_my"/>-->
 
 </navigation>
