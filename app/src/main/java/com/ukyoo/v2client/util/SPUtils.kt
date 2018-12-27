@@ -63,4 +63,12 @@ object SPUtils {
     fun getFloat(key: String, defVale: Float): Float {
         return spf!!.getFloat(key, defVale)
     }
+
+    fun setStringSet(key: String, value: Set<String>) {
+        editor?.putStringSet(key, value)?.apply()
+    }
+
+    fun getStringSet(key: String): MutableSet<String>? {
+        return spf?.getStringSet(key, HashSet<String>())
+    }
 }

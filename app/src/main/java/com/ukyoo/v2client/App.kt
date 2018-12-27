@@ -10,6 +10,7 @@ import com.squareup.leakcanary.LeakCanary
 import com.ukyoo.v2client.di.component.AppComponent
 import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
+import com.ukyoo.v2client.util.SPUtils
 
 class App: Application() {
 
@@ -45,6 +46,8 @@ class App: Application() {
             return
         }
 //        LeakCanary.install(this)
+
+        SPUtils.init(instance())
     }
 
     private fun getScreenSize() {

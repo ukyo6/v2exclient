@@ -73,14 +73,14 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<ImageView
-			app:url="@={vm.verifyImgUrl}"
+			app:verifyUrl="@{vm.verifyImgUrl}"
 			app:layout_constraintRight_toRightOf="parent"
 			app:layout_constraintTop_toTopOf="@+id/text_input_verify"
 			app:layout_constraintBottom_toBottomOf="@+id/text_input_verify"
 			android:id="@+id/iv_verifycode"
-			android:layout_width="100dp"
-			android:layout_height="0dp"
-			android:layout_marginBottom="12dp"
+			android:layout_width="200dp"
+			android:layout_height="80dp"
+			android:layout_marginBottom="10dp"
 			android:layout_marginEnd="20dp"
 			/>
 

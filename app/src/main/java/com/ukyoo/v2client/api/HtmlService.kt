@@ -4,6 +4,7 @@ import com.ukyoo.v2client.entity.TopicModel
 import io.reactivex.Single
 import retrofit2.http.*
 import io.reactivex.Flowable
+import retrofit2.Response
 import retrofit2.http.POST
 
 
@@ -41,7 +42,7 @@ interface HtmlService {
 
     //登录首页信息
     @GET("/signin")
-    fun signin():Single<String>
+    fun signin():Single<Response<String>>
 
     //登录
     @Headers("Origin: https://www.v2ex.com", "Referer: https://www.v2ex.com/signin", "Content-Type: application/x-www-form-urlencoded")

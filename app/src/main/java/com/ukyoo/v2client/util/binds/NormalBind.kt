@@ -19,12 +19,18 @@ import com.ukyoo.v2client.widget.RichTextView
 /**
  * 页面描述：normal bind class
  *
- * Created by ditclear on 2017/10/2.
+ * Created by hewei
  */
 
 @BindingAdapter(value = ["url", "avatar"], requireAll = false)
 fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
     ImageUtil.load(url, imageView, isAvatar = isAvatar ?: false)
+}
+
+
+@BindingAdapter(value = ["verifyUrl"])
+fun bindVerifyUrl(imageView: ImageView, url: String?) {
+    ImageUtil.loadVerifyCode(url,imageView)
 }
 
 //@BindingAdapter(value = ["start_color", "icon"], requireAll = false)
