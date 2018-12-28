@@ -38,8 +38,6 @@ public class TopicModel extends V2EXModel implements Parcelable {
         created = jsonObject.getLong("created");
         lastModified = jsonObject.getLong("last_modified");
         lastTouched = jsonObject.getLong("last_touched");
-
-        createdTime = TimeFormatUtils.toString(created);
     }
 
     public TopicModel(){}

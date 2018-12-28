@@ -34,7 +34,7 @@
 				android:layout_height="match_parent">
 
 				<include
-					app:item="@{vm.topic}"
+					app:topic="@{vm.topic}"
 					android:id="@+id/top"
 					layout="@layout/item_topic_header"/>
 

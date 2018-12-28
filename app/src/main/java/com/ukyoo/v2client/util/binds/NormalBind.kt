@@ -30,7 +30,12 @@ fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
 
 @BindingAdapter(value = ["verifyUrl"])
 fun bindVerifyUrl(imageView: ImageView, url: String?) {
-    ImageUtil.loadVerifyCode(url,imageView)
+    ImageUtil.loadVerifyCode(url, imageView)
+}
+
+@BindingAdapter(value = ["richTexts"])
+fun bindRichText(textView: RichTextView, text: String?) {
+    textView.setRichText(text ?: "")
 }
 
 //@BindingAdapter(value = ["start_color", "icon"], requireAll = false)
@@ -53,7 +58,7 @@ fun bindVisibility(v: View, visible: Boolean) {
     v.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter(value = ["loadMore","loadMorePresenter"])
+@BindingAdapter(value = ["loadMore", "loadMorePresenter"])
 fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
     v.layoutManager = LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -107,11 +112,13 @@ fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
     if (gravity == 0) {
         gravity = Gravity.TOP
     }
-    view.background = ScrimUtil.makeCubicGradientScrimDrawable(color, numSteps,
-            gravity)
+    view.background = ScrimUtil.makeCubicGradientScrimDrawable(
+        color, numSteps,
+        gravity
+    )
 }
 
-@BindingAdapter(value=["richText"])
-fun setRichText(richTextView: RichTextView, content:String){
+@BindingAdapter(value = ["richText"])
+fun setRichText(richTextView: RichTextView, content: String) {
     richTextView.setRichText(content)
 }
