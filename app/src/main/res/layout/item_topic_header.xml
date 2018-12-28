@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	>
+
+	<data>
+
+		<variable
+			name="item"
+			type="com.ukyoo.v2client.entity.TopicModel"/>
+
+	</data>
+
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="visible">
+
+		<RelativeLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/topic_row"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingBottom="12dp">
+
+			<com.ukyoo.v2client.widget.CircleImageView
+				app:url="@{item.member.avatar}"
+				app:avatar="@{true}"
+				android:id="@+id/iv_avatar"
+				android:layout_width="36dp"
+				android:layout_height="36dp"
+				android:scaleType="centerCrop"
+				tools:src="@drawable/user"/>
+
+
+			<TextView
+				android:id="@+id/text_author"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignTop="@id/iv_avatar"
+				android:layout_marginLeft="8dp"
+				android:layout_toRightOf="@id/iv_avatar"
+				android:text="author"
+				android:textColor="#3bbd79"
+				android:textSize="12sp"/>
+
+
+			<TextView
+				android:id="@+id/text_timeline"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignBottom="@+id/iv_avatar"
+				android:layout_marginLeft="8dp"
+				android:layout_toRightOf="@id/iv_avatar"
+				android:text="一分钟前"
+				android:textColor="#aaa"
+				android:textSize="12sp"/>
+
+			<TextView
+				android:id="@+id/text_replies"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignTop="@+id/text_timeline"
+				android:layout_marginLeft="8dp"
+				android:layout_toRightOf="@+id/text_timeline"
+				android:text="1个回复"
+				android:textColor="#aaa"
+				android:textSize="12sp"/>
+
+			<TextView
+				android:id="@+id/text_node"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_alignTop="@+id/text_author"
+				android:layout_marginRight="16dp"
+				android:background="#e5e5e5"
+				tools:text="Python"/>
+
+			<TextView
+				android:id="@+id/text_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignEnd="@+id/text_node"
+				android:layout_alignLeft="@+id/iv_avatar"
+				android:layout_alignRight="@+id/text_node"
+				android:layout_below="@+id/iv_avatar"
+				android:layout_marginTop="8dp"
+				android:text="@string/topic"
+				android:textColor="#de000000"
+				android:textSize="18sp"/>
+
+			<View xmlns:android="http://schemas.android.com/apk/res/android"
+				  android:id="@+id/divide_line"
+				  android:layout_width="match_parent"
+				  android:layout_height="1dp"
+				  android:layout_below="@+id/text_title"
+				  android:layout_marginTop="8dp"
+				  android:background="#ffe4e4e4"/>
+
+			<com.ukyoo.v2client.widget.RichTextView
+				android:id="@+id/text_content"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignEnd="@+id/text_title"
+				android:layout_alignLeft="@+id/iv_avatar"
+				android:layout_alignRight="@+id/text_title"
+				android:layout_below="@+id/divide_line"
+				android:layout_marginTop="8dp"
+				android:lineSpacingExtra="1.25dp"
+				android:text="帖子内容"/>
+
+			<View xmlns:android="http://schemas.android.com/apk/res/android"
+				  android:id="@+id/divide_line2"
+				  android:layout_width="match_parent"
+				  android:layout_height="1dp"
+				  android:layout_below="@+id/text_content"
+				  android:layout_marginTop="8dp"
+				  android:background="#ffe4e4e4"/>
+
+		</RelativeLayout>
+
+	</LinearLayout>
+
+</layout>

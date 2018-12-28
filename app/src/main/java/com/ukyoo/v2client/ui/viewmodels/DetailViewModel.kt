@@ -1,9 +1,12 @@
 package com.ukyoo.v2client.ui.viewmodels
 
 import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableField
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.entity.*
+import com.ukyoo.v2client.util.ErrorHanding
+import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.viewmodel.PagedViewModel
 import io.reactivex.Single
@@ -16,6 +19,8 @@ class DetailViewModel @Inject constructor(var jsonApi: JsonService, var htmlServ
     var page: Int = 0
 
     var replyList = ObservableArrayList<ReplyModel>()
+
+    var topic = ObservableField<TopicModel>()
 
     fun getRepliesByTopicId(isRefresh: Boolean): Single<ArrayList<ReplyModel>> {
         return jsonApi.getRepliesByTopicId(topicId)
@@ -45,22 +50,26 @@ class DetailViewModel @Inject constructor(var jsonApi: JsonService, var htmlServ
             }
     }
 
-    fun getTopicAndRepliesByTopicId(isRefresh: Boolean): Single<TopicWithReplyListModel> {
-        return htmlService.getTopicAndRepliesByTopicId(topicId, page)
+    fun getTopicAndRepliesByTopicId(isRefresh: Boolean) {
+        htmlService.getTopicAndRepliesByTopicId(topicId, page)
             .async()
             .map { response ->
-                if(isRefresh)replyList.clear()
-
                 return@map TopicWithReplyListModel().parse(response, page == 1, topicId)
-                    .apply {
-                        replyList.addAll(this.replies)
-                    }
             }
             .doOnSubscribe {
                 startLoad()
             }.doAfterTerminate {
                 stopLoad()
-            }
+            }.subscribe({
+                //更新回复列表
+                if (isRefresh) replyList.clear()
+                replyList.addAll(it.replies)
+
+                //更新主题
+                topic.set(it.topic)
+            }, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
     }
 
 }

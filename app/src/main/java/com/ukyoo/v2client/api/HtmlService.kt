@@ -42,12 +42,11 @@ interface HtmlService {
 
     //登录首页信息
     @GET("/signin")
-    fun signin():Single<Response<String>>
+    fun signin(): Single<Response<String>>
 
     //登录
-    @Headers("Origin: https://www.v2ex.com", "Referer: https://www.v2ex.com/signin", "Content-Type: application/x-www-form-urlencoded")
     @POST("/signin")
-    fun login(@QueryMap params: Map<String,String>):Single<String>
+    fun login(@HeaderMap headers: Map<String, String>, @QueryMap params: Map<String, String>): Single<String>
 
 
 }

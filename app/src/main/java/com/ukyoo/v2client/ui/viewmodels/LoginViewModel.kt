@@ -9,6 +9,7 @@ import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.viewmodel.BaseViewModel
 import org.jsoup.Jsoup
+import retrofit2.http.Headers
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseViewModel() {
@@ -88,7 +89,23 @@ class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseVie
                 params.put(passwordVal, password.get() ?: "")
                 params.put(verifyCodeVal, verifyCode.get() ?: "")
 
-                htmlService.login(params)
+
+                val headers = HashMap<String, String>()
+                val stringSet = SPUtils.getStringSet("cookie")
+                val stringBuffer = StringBuffer()
+                stringSet?.forEach {
+                    if (stringSet.indexOf(it) != stringSet.size - 1) {
+                        stringBuffer.append(it).append("; ")
+                    } else {
+                        stringBuffer.append(it)
+                    }
+                }
+                headers.put("cookie", stringBuffer.toString())
+                headers.put("Origin", "https://www.v2ex.com")
+                headers.put("Referer", "https://www.v2ex.com/signin")
+                headers.put("Content-Type", "application/x-www-form-urlencoded")
+
+                htmlService.login(headers, params)
                     .async()
                     .subscribe({
 

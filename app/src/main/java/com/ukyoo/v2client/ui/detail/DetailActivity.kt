@@ -4,8 +4,10 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ukyoo.v2client.App
+import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
@@ -13,15 +15,13 @@ import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.viewmodels.DetailViewModel
-import com.ukyoo.v2client.util.TimeFormatUtils
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
-import com.ukyoo.v2client.widget.CustomDialog
 
-
+/**
+ * 主题详情页
+ */
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<ReplyModel> {
-
-
     private var mTopicId: Int = 0
     private lateinit var mTopic: TopicModel
     private var page = 1
@@ -67,6 +67,10 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         }
     }
 
+    private fun initHeaderView() {
+
+    }
+
     /**
      * 查看话题内容
      */
@@ -105,20 +109,12 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         viewModel.topicId = mTopicId
         viewModel.page = page
         viewModel.getTopicAndRepliesByTopicId(true)
-            .bindLifeCycle(this)
-            .subscribe({
-                if(page == 1){
-                    initHeaderView()
-                }
-            }, {
-                toastFailure(it)
-            })
     }
 
     override fun initView() {
         getComponent().inject(this)
 
-        mBinding.vm = viewModel
+        mBinding.setVariable(BR.vm,viewModel)
         //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
@@ -126,10 +122,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
                 itemPresenter = this@DetailActivity
             }
         }
-    }
-
-    //初始化主题内容
-    private fun initHeaderView() {
     }
 
     override fun getLayoutId(): Int {

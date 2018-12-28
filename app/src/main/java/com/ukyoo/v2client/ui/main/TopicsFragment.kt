@@ -16,6 +16,9 @@ import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 
+/**
+ * 主题列表页  (技术/创意/好玩...)
+ */
 class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
 
     //get viewModel by di

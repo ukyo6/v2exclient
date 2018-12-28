@@ -5,9 +5,7 @@
 
 	<data>
 
-		<variable
-			name="user"
-			type="com.ukyoo.v2client.ui.viewmodels.HomeViewModel"/>
+
 	</data>
 
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
