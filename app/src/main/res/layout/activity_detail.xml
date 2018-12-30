@@ -21,38 +21,71 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-			android:id="@+id/refresh_layout"
-			app:onRefresh="@{presenter}"
-			app:refreshing="@{vm.loading}"
+		<androidx.coordinatorlayout.widget.CoordinatorLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
-			<RelativeLayout
-				android:id="@+id/container"
+			<com.google.android.material.appbar.AppBarLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:theme="@style/AppTheme.AppBarOverlay">
+
+				<com.google.android.material.appbar.CollapsingToolbarLayout
+					android:fitsSystemWindows="true"
+					app:contentScrim="?attr/colorPrimary"
+					app:layout_scrollFlags="scroll|exitUntilCollapsed"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:theme="@style/AppTheme.AppBarOverlay">
+
+					<include
+						android:fitsSystemWindows="true"
+						app:layout_collapseMode="parallax"
+						app:topic="@{vm.topic}"
+						android:id="@+id/top"
+						layout="@layout/item_topic_header"/>
+
+					<androidx.appcompat.widget.Toolbar
+						app:layout_collapseMode="pin"
+						android:id="@+id/toolbar"
+						android:layout_width="match_parent"
+						android:layout_height="?attr/actionBarSize"
+						app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+
+				</com.google.android.material.appbar.CollapsingToolbarLayout>
+
+			</com.google.android.material.appbar.AppBarLayout>
+
+
+			<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+				app:layout_behavior="@string/appbar_scrolling_view_behavior"
+				android:id="@+id/refresh_layout"
+				app:onRefresh="@{presenter}"
+				app:refreshing="@{vm.loading}"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent">
 
-				<include
-					app:topic="@{vm.topic}"
-					android:id="@+id/top"
-					layout="@layout/item_topic_header"/>
-
-				<androidx.recyclerview.widget.RecyclerView
-					android:layout_below="@+id/top"
-					android:id="@+id/recyclerview"
+				<RelativeLayout
+					android:id="@+id/container"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"/>
+					android:layout_height="match_parent">
 
-				<include
-					layout="@layout/empty_layout"
-					android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
+					<androidx.recyclerview.widget.RecyclerView
+						android:id="@+id/recyclerview"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"/>
 
-			</RelativeLayout>
+					<include
+						layout="@layout/empty_layout"
+						android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
+
+				</RelativeLayout>
 
 
-		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+			</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+		</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
