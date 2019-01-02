@@ -3,6 +3,7 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.TextUtils
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -96,14 +97,12 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         searchView.queryHint = "输入节点名字"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                newText?.let { viewModel.queryByName(it) }
+                return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    viewModel.queryByName(query)
-                }
-                return true
+                return false
             }
         })
 
