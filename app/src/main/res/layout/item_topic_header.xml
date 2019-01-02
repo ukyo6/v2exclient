@@ -7,6 +7,7 @@
 	>
 
 	<data>
+
 		<import type="com.ukyoo.v2client.util.TimeFormatUtils"/>
 
 		<variable
@@ -35,7 +36,7 @@
 				android:id="@+id/iv_avatar"
 				android:layout_width="36dp"
 				android:layout_height="36dp"
-				android:layout_marginLeft="16dp"
+				android:layout_marginStart="16dp"
 				android:scaleType="centerCrop"
 				tools:src="@drawable/user"/>
 
@@ -46,8 +47,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignTop="@id/iv_avatar"
-				android:layout_marginLeft="8dp"
-				android:layout_toRightOf="@id/iv_avatar"
+				android:layout_marginStart="8dp"
+				android:layout_toEndOf="@id/iv_avatar"
 				tools:text="author"
 				android:textColor="#3bbd79"
 				android:textSize="12sp"/>
@@ -59,8 +60,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignBottom="@+id/iv_avatar"
-				android:layout_marginLeft="8dp"
-				android:layout_toRightOf="@id/iv_avatar"
+				android:layout_marginStart="8dp"
+				android:layout_toEndOf="@id/iv_avatar"
 				tools:text="一分钟前"
 				android:textColor="#aaa"
 				android:textSize="12sp"/>
@@ -71,8 +72,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignTop="@+id/text_timeline"
-				android:layout_marginLeft="8dp"
-				android:layout_toRightOf="@+id/text_timeline"
+				android:layout_marginStart="8dp"
+				android:layout_toEndOf="@+id/text_timeline"
 				tools:text="1个回复"
 				android:textColor="#aaa"
 				android:textSize="12sp"/>
@@ -82,9 +83,9 @@
 				android:id="@+id/text_node"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
+				android:layout_alignParentEnd="true"
 				android:layout_alignTop="@+id/text_author"
-				android:layout_marginRight="16dp"
+				android:layout_marginEnd="16dp"
 				android:background="#e5e5e5"
 				tools:text="Python"/>
 
@@ -102,13 +103,13 @@
 				android:textColor="#de000000"
 				android:textSize="18sp"/>
 
-			<View xmlns:android="http://schemas.android.com/apk/res/android"
-				  android:id="@+id/divide_line"
-				  android:layout_width="match_parent"
-				  android:layout_height="1dp"
-				  android:layout_below="@+id/text_title"
-				  android:layout_marginTop="8dp"
-				  android:background="#ffe4e4e4"/>
+			<View
+				android:id="@+id/divide_line"
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_below="@+id/text_title"
+				android:layout_marginTop="8dp"
+				android:background="#ffe4e4e4"/>
 
 			<com.ukyoo.v2client.widget.RichTextView
 				app:richTexts="@{topic.contentRendered}"
@@ -123,13 +124,13 @@
 				android:lineSpacingExtra="1.25dp"
 				tools:text="帖子内容"/>
 
-			<View xmlns:android="http://schemas.android.com/apk/res/android"
-				  android:id="@+id/divide_line2"
-				  android:layout_width="match_parent"
-				  android:layout_height="1dp"
-				  android:layout_below="@+id/text_content"
-				  android:layout_marginTop="8dp"
-				  android:background="#ffe4e4e4"/>
+			<View
+				android:id="@+id/divide_line2"
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_below="@+id/text_content"
+				android:layout_marginTop="8dp"
+				android:background="#ffe4e4e4"/>
 
 		</RelativeLayout>
 

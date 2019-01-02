@@ -2,11 +2,17 @@ package com.ukyoo.v2client.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+@Entity(tableName = "nodemodel")
 public class NodeModel extends V2EXModel implements Parcelable {
     private static final long serialVersionUID = 2015050103L;
+
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
 
     public int id;
     public String name;
@@ -26,20 +32,21 @@ public class NodeModel extends V2EXModel implements Parcelable {
         title = jsonObject.getString("title");
         url = jsonObject.getString("url");
         topics = jsonObject.getInt("topics");
-        if(!jsonObject.optString("title_alternative").equals("null")){
+        if (!jsonObject.optString("title_alternative").equals("null")) {
             titleAlternative = jsonObject.optString("title_alternative");
         }
-        if(!jsonObject.optString("header").equals("null")){
+        if (!jsonObject.optString("header").equals("null")) {
             header = jsonObject.optString("header");
         }
-        if(!jsonObject.optString("footer").equals("null")){
+        if (!jsonObject.optString("footer").equals("null")) {
             footer = jsonObject.optString("footer");
         }
     }
 
-    public NodeModel(){}
+    public NodeModel() {
+    }
 
-    private NodeModel(Parcel in){
+    private NodeModel(Parcel in) {
         int[] ints = new int[2];
         in.readIntArray(ints);
         id = ints[0];
@@ -49,13 +56,13 @@ public class NodeModel extends V2EXModel implements Parcelable {
         name = strings[0];
         title = strings[1];
         url = strings[2];
-        if((titleAlternative = strings[3]).equals("")){
+        if ((titleAlternative = strings[3]).equals("")) {
             titleAlternative = null;
         }
-        if((header = strings[4]).equals("")){
+        if ((header = strings[4]).equals("")) {
             header = null;
         }
-        if((footer = strings[5]).equals("")){
+        if ((footer = strings[5]).equals("")) {
             footer = null;
         }
 
@@ -79,17 +86,17 @@ public class NodeModel extends V2EXModel implements Parcelable {
         strings[0] = name;
         strings[1] = title;
         strings[2] = url;
-        if((strings[3] = titleAlternative) == null){
+        if ((strings[3] = titleAlternative) == null) {
             strings[3] = "";
         }
-        if((strings[4] = header) == null){
+        if ((strings[4] = header) == null) {
             strings[4] = "";
         }
-        if((strings[5] = footer) == null){
+        if ((strings[5] = footer) == null) {
             strings[5] = "";
         }
         dest.writeStringArray(strings);
-        dest.writeBooleanArray(new boolean[]{ isCollected });
+        dest.writeBooleanArray(new boolean[]{isCollected});
     }
 
     public static final Creator<NodeModel> CREATOR = new Creator<NodeModel>() {
@@ -104,7 +111,7 @@ public class NodeModel extends V2EXModel implements Parcelable {
         }
     };
 
-    public String toString(){
+    public String toString() {
         return String.format("%s / %s", title, name);
     }
 }

@@ -2,10 +2,7 @@ package com.ukyoo.v2client.ui.detail
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R

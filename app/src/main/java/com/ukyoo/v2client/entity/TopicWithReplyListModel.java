@@ -165,7 +165,7 @@ public class TopicWithReplyListModel extends V2EXModel {
                     String spanString = spanNode.text();
                     if (!spanString.contains("回复"))
                         continue;
-                    String[] components2 = spanString.split("  \\|  ");
+                    String[] components2 = spanString.split(" \\| ");
                     if (components2.length < 2) {
                         topic.replies = 0;
                     } else {

@@ -1,9 +1,12 @@
 package com.ukyoo.v2client.di.module
 
 import android.app.Application
+import androidx.room.RoomDatabase
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.api.NetManager
+import com.ukyoo.v2client.db.AppDataBase
+import com.ukyoo.v2client.db.NodeModelDao
 import com.ukyoo.v2client.util.CONSTANT
 import dagger.Module
 import dagger.Provides
@@ -45,5 +48,9 @@ class AppModule(val app:Application){
     @Singleton
     @Provides
     fun provideJsonService():JsonService = provideJsonClient().create(JsonService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideRoomDataBase():NodeModelDao = AppDataBase.getDataBase().nodeModelDao()
 
 }

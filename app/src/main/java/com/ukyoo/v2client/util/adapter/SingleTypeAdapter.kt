@@ -3,6 +3,7 @@ package com.ukyoo.v2client.util.adapter
 import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
 
@@ -12,7 +13,7 @@ import androidx.databinding.ViewDataBinding
  *
  * Created by ditclear on 2017/10/3.
  */
-open class SingleTypeAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableList<T>) : BaseViewAdapter<T>(context, list) {
+open class SingleTypeAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableArrayList<T>) : BaseViewAdapter<T>(context, list) {
 
     init {
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {

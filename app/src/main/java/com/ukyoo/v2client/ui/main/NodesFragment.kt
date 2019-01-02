@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ukyoo.v2client.R
+import com.ukyoo.v2client.api.NetManager
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentNodesBinding
 import com.ukyoo.v2client.entity.NodeModel
@@ -46,23 +48,20 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         lazyLoad = true
 
         mBinding.vm = viewModel
-
         mBinding.recyclerview.run {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = SingleTypeAdapter(mContext, R.layout.item_node, viewModel.nodesList).apply {
                 itemPresenter = this@NodesFragment
             }
         }
+
         isPrepared = true
+
+        NetManager.getHtmlClient()
     }
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh = true)
-            .bindLifeCycle(this)
-            .subscribe({
-            }, {
-                toastFailure(it)
-            })
+        viewModel.loadData()
     }
 
     override fun lazyLoad() {
@@ -91,18 +90,23 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_search_view, menu)
-        //找到searchView
-        val search = menu?.findItem(R.id.action_search)
-        val actionView = MenuItemCompat.getActionView(search)
+        //searchView
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = "输入节点名字"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    viewModel.queryByName(query)
+                }
+                return true
+            }
+        })
 
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_setting -> {
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 }
