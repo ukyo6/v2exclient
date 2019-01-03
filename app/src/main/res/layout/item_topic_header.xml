@@ -11,7 +11,7 @@
 		<import type="com.ukyoo.v2client.util.TimeFormatUtils"/>
 
 		<variable
-			name="topic"
+			name="item"
 			type="com.ukyoo.v2client.entity.TopicModel"/>
 
 	</data>
@@ -31,7 +31,7 @@
 			android:paddingTop="12dp">
 
 			<com.ukyoo.v2client.widget.CircleImageView
-				app:url="@{topic.member.avatar}"
+				app:url="@{item.member.avatar}"
 				app:avatar="@{true}"
 				android:id="@+id/iv_avatar"
 				android:layout_width="36dp"
@@ -42,7 +42,7 @@
 
 
 			<TextView
-				android:text="@{topic.member.username}"
+				android:text="@{item.member.username}"
 				android:id="@+id/text_author"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
 
 
 			<TextView
-				android:text="@{TimeFormatUtils.toString(topic.created)}"
+				android:text="@{TimeFormatUtils.toString(item.created)}"
 				android:id="@+id/text_timeline"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
 				android:textSize="12sp"/>
 
 			<TextView
-				android:text="@{@string/item_node_reply_num(topic.replies)}"
+				android:text="@{@string/item_node_reply_num(item.replies)}"
 				android:id="@+id/text_replies"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
 				android:textSize="12sp"/>
 
 			<TextView
-				android:text="@{topic.node.title}"
+				android:text="@{item.node.title}"
 				android:id="@+id/text_node"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
 				tools:text="Python"/>
 
 			<TextView
-				android:text="@{topic.title}"
+				android:text="@{item.title}"
 				android:id="@+id/text_title"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
 				android:background="#ffe4e4e4"/>
 
 			<com.ukyoo.v2client.widget.RichTextView
-				app:richTexts="@{topic.contentRendered}"
+				app:richTexts="@{item.contentRendered}"
 				android:id="@+id/text_content"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

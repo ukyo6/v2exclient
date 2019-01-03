@@ -13,7 +13,7 @@ import androidx.databinding.ViewDataBinding
  *
  * Created by ditclear on 2017/10/3.
  */
-open class SingleTypeAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableArrayList<T>) : BaseViewAdapter<T>(context, list) {
+ class SingleTypeAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableArrayList<T>) : BaseViewAdapter<T>(context, list) {
 
     init {
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {

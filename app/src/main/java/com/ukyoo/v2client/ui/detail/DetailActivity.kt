@@ -12,6 +12,7 @@ import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.viewmodels.DetailViewModel
+import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 
@@ -65,7 +66,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     }
 
     private fun initHeaderView() {
-
     }
 
     /**
@@ -111,20 +111,36 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     override fun initView() {
         getComponent().inject(this)
 
-        mBinding.setVariable(BR.vm,viewModel)
+        mBinding.setVariable(BR.vm, viewModel)
         //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = SingleTypeAdapter(mContext, R.layout.item_reply, viewModel.replyList).apply {
                 itemPresenter = this@DetailActivity
             }
+
+            adapter = MultiTypeAdapter(mContext, viewModel.multiDataList, object : MultiTypeAdapter.MultiViewTyper {
+                override fun getViewType(item: Any): Int {
+                    return if(item is TopicModel) ITEM_TOPIC else ITEM_REPLY
+                }
+
+            }).apply {
+                addViewTypeToLayoutMap(ITEM_TOPIC, R.layout.item_topic_header)
+                addViewTypeToLayoutMap(ITEM_REPLY, R.layout.item_reply)
+            }
         }
     }
+
 
     override fun getLayoutId(): Int {
         return R.layout.activity_detail
     }
 
     override fun onItemClick(v: View?, item: ReplyModel) {
+    }
+
+    companion object {
+        const val ITEM_TOPIC = 1
+        const val ITEM_REPLY = 2
     }
 }

@@ -14,8 +14,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
-
     @Inject
     lateinit var manager: FragmentManager
 

@@ -21,6 +21,7 @@ import io.reactivex.functions.Function
 import org.jsoup.helper.StringUtil
 import org.reactivestreams.Publisher
 import java.util.ArrayList
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NodesViewModel @Inject constructor(var apiService: JsonService) : PagedViewModel() {
@@ -74,6 +75,7 @@ class NodesViewModel @Inject constructor(var apiService: JsonService) : PagedVie
         nodeModelDao
             .queryNodesByName("%$name%")
             .async()
+            .throttleFirst(100,TimeUnit.MILLISECONDS) //限制一下搜索的频率
             .subscribe({
                 nodesList.clear()
                 nodesList.addAll(it)

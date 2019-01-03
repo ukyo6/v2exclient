@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
     implementation "android.arch.navigation:navigation-fragment:$rootProject.navigationVersion"

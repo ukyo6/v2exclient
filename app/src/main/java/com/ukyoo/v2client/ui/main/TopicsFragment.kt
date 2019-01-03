@@ -62,12 +62,12 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
      */
     override fun loadData(isRefresh: Boolean) {
 
-        val topicId = arguments?.getString(NODE_ID)
+        val node_name = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
 
 
-        if(topicId !=null){
-            viewModel.name = topicId
+        if(node_name !=null){
+            viewModel.name = node_name
             viewModel.loadDataByName(isRefresh = true)
                 .bindLifeCycle(this)
                 .subscribe({}, {

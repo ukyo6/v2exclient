@@ -15,14 +15,12 @@ import com.ukyoo.v2client.inter.ItemDecorator
  *
  * Created by ditclear on 2017/10/30.
  */
-abstract class BaseViewAdapter<T>(context: Context, private val list: ObservableList<T>) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
+abstract class BaseViewAdapter<T>(context: Context, private val list: ObservableList<T>) :
+    RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
 
     protected val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     var itemPresenter: ItemClickPresenter<T>? = null
-
-    var itemDecorator: ItemDecorator? = null
-
 
     var mLastPosition = -1
     var isFirstOnly = false
@@ -32,15 +30,14 @@ abstract class BaseViewAdapter<T>(context: Context, private val list: Observable
         val item = list[position]
         holder.binding.setVariable(BR.item, item)
         holder.binding.setVariable(BR.presenter, itemPresenter)
-        holder.binding.setVariable(BR.index,position)
+        holder.binding.setVariable(BR.index, position)
         holder.binding.executePendingBindings()
-        itemDecorator?.decorator(holder, position, getItemViewType(position))
     }
+
 
     override fun getItemCount(): Int = list.size
 
     fun getItem(position: Int): T? = list[position]
-
 
     private fun clear(v: View) {
         v.alpha = 1f

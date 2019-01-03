@@ -2,11 +2,13 @@ package com.ukyoo.v2client.ui.viewmodels
 
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
+import com.ukyoo.v2client.R.string.topic
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.entity.*
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
+import com.ukyoo.v2client.util.adapter.Dummy
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.viewmodel.PagedViewModel
 import io.reactivex.Single
@@ -19,6 +21,7 @@ class DetailViewModel @Inject constructor(var jsonApi: JsonService, var htmlServ
     var page: Int = 0
 
     var replyList = ObservableArrayList<ReplyModel>()
+    var multiDataList = ObservableArrayList<Any>()
 
     var topic = ObservableField<TopicModel>()
 
@@ -26,7 +29,9 @@ class DetailViewModel @Inject constructor(var jsonApi: JsonService, var htmlServ
         return jsonApi.getRepliesByTopicId(topicId)
             .async()
             .map {
-                if (isRefresh) replyList.clear()
+                if (isRefresh) {
+                    replyList.clear()
+                }
 
                 replyList.addAll(it)
                 return@map it
@@ -62,11 +67,16 @@ class DetailViewModel @Inject constructor(var jsonApi: JsonService, var htmlServ
                 stopLoad()
             }.subscribe({
                 //更新回复列表
-                if (isRefresh) replyList.clear()
-                replyList.addAll(it.replies)
+                if (isRefresh) {
+                    replyList.clear()
+                    multiDataList.clear()
+                }
 
-                //更新主题
-                topic.set(it.topic)
+                replyList.addAll(it.replies)
+                multiDataList.apply {
+                    add(it.topic) //主题内容
+                    addAll(replyList) //回复列表
+                }
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })

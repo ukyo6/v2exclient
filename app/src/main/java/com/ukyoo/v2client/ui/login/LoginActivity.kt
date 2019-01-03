@@ -1,16 +1,9 @@
 package com.ukyoo.v2client.ui.login
 
-import android.net.Uri
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
-import com.ukyoo.v2client.ui.A
 import com.ukyoo.v2client.ui.viewmodels.LoginViewModel
-import com.ukyoo.v2client.util.GlideApp
-import java.util.concurrent.ThreadPoolExecutor
 
 /**
  * 登录

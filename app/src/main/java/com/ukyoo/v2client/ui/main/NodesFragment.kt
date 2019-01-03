@@ -57,8 +57,6 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         }
 
         isPrepared = true
-
-        NetManager.getHtmlClient()
     }
 
     override fun loadData(isRefresh: Boolean) {
