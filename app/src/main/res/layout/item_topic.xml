@@ -4,6 +4,10 @@
 
 	<data>
 
+		<import type="android.view.View"/>
+
+		<import type="com.ukyoo.v2client.util.TimeFormatUtils"/>
+
 		<variable
 			name="item"
 			type="com.ukyoo.v2client.entity.TopicModel"/>
@@ -75,7 +79,7 @@
 				android:textSize="12sp"/>
 
 			<TextView
-				android:text="@{item.createdTime}"
+				android:text="@{item.created}"
 				android:id="@+id/time"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -97,6 +101,7 @@
 			android:layout_centerVertical="true">
 
 			<com.ukyoo.v2client.widget.BadgeView
+				android:visibility="@{item.replies!=0 ?View.VISIBLE:View.GONE}"
 				android:text="@{String.valueOf(item.replies)}"
 				android:id="@+id/txt_replies"
 				android:layout_width="wrap_content"

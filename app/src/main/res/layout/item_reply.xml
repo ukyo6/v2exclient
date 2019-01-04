@@ -51,7 +51,7 @@
 			android:layout_marginStart="8dp"/>
 
 		<TextView
-			android:text="@{TimeFormatUtils.toString(item.created)}"
+			android:text="@{item.created}"
 			android:id="@+id/time"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

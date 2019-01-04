@@ -2,19 +2,20 @@ package com.ukyoo.v2client.ui.viewmodels
 
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import com.ukyoo.v2client.R.string.topic
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
-import com.ukyoo.v2client.entity.*
+import com.ukyoo.v2client.entity.ReplyModel
+import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.TopicWithReplyListModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
-import com.ukyoo.v2client.util.adapter.Dummy
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.viewmodel.PagedViewModel
 import io.reactivex.Single
 import javax.inject.Inject
 
-class DetailViewModel @Inject constructor(var jsonApi: JsonService, var htmlService: HtmlService) : PagedViewModel() {
+class DetailViewModel @Inject constructor(private var jsonApi: JsonService, private var htmlService: HtmlService) :
+    PagedViewModel() {
 
     var topicId: Int = 0
 

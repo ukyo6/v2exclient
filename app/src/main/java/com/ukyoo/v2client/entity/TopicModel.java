@@ -18,11 +18,9 @@ public class TopicModel extends V2EXModel implements Parcelable {
     public int replies;
     public MemberModel member;
     public NodeModel node;
-    public long created;
+    public String created;
     public long lastModified;
     public long lastTouched;
-
-    public String createdTime;
 
     public void parse(JSONObject jsonObject) throws JSONException {
         id = jsonObject.getInt("id");
@@ -35,7 +33,7 @@ public class TopicModel extends V2EXModel implements Parcelable {
         member.parse(jsonObject.getJSONObject("member"));
         node = new NodeModel();
         node.parse(jsonObject.getJSONObject("node"));
-        created = jsonObject.getLong("created");
+        created = jsonObject.getString("created");
         lastModified = jsonObject.getLong("last_modified");
         lastTouched = jsonObject.getLong("last_touched");
     }
@@ -47,15 +45,15 @@ public class TopicModel extends V2EXModel implements Parcelable {
         in.readIntArray(ints);
         id = ints[0];
         replies = ints[1];
-        String[] strings = new String[4];
+        String[] strings = new String[5];
         in.readStringArray(strings);
         title = strings[0];
         url = strings[1];
         content = strings[2];
         contentRendered = strings[3];
-        long[] longs = new long[3];
+        created = strings[4];
+        long[] longs = new long[2];
         in.readLongArray(longs);
-        created = longs[0];
         lastModified = longs[1];
         lastTouched = longs[2];
         member = (MemberModel) in.readValue(MemberModel.class.getClassLoader());
@@ -77,10 +75,10 @@ public class TopicModel extends V2EXModel implements Parcelable {
                 title,
                 url,
                 content,
-                contentRendered
+                contentRendered,
+                created
         });
         dest.writeLongArray(new long[]{
-                created,
                 lastModified,
                 lastTouched
         });
@@ -99,11 +97,4 @@ public class TopicModel extends V2EXModel implements Parcelable {
             return new TopicModel[size];
         }
     };
-
-    //---------------------------------------------------------------------------------
-
-
-
-
-
 }

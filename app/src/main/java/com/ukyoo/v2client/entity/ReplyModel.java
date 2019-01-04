@@ -14,7 +14,7 @@ public class ReplyModel extends V2EXModel implements Parcelable {
     public String content;
     public String contentRendered;
     public MemberModel member;
-    public long created;
+    public String created;
     public long lastModified;
 
     public void parse(JSONObject jsonObject) throws JSONException {
@@ -24,7 +24,7 @@ public class ReplyModel extends V2EXModel implements Parcelable {
         contentRendered = ContentUtils.formatContent(jsonObject.getString("content_rendered"));
         member = new MemberModel();
         member.parse(jsonObject.getJSONObject("member"));
-        created = jsonObject.getLong("created");
+        created = jsonObject.getString("created");
         lastModified = jsonObject.getLong("last_modified");
     }
 
@@ -39,9 +39,9 @@ public class ReplyModel extends V2EXModel implements Parcelable {
         in.readStringArray(strings);
         content = strings[0];
         contentRendered = strings[1];
-        long[] longs = new long[2];
+        created = strings[2];
+        long[] longs = new long[1];
         in.readLongArray(longs);
-        created = longs[0];
         lastModified = longs[1];
         member = (MemberModel) in.readValue(MemberModel.class.getClassLoader());
     }
@@ -59,10 +59,10 @@ public class ReplyModel extends V2EXModel implements Parcelable {
         });
         dest.writeStringArray(new String[]{
                 content,
-                contentRendered
+                contentRendered,
+                created
         });
         dest.writeLongArray(new long[]{
-                created,
                 lastModified,
         });
         dest.writeValue(member);

@@ -1,5 +1,7 @@
 package com.ukyoo.v2client.entity;
 
+import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import com.ukyoo.v2client.util.ContentUtils;
 import org.jsoup.Jsoup;
@@ -119,38 +121,13 @@ public class TopicListModel extends ArrayList<TopicModel> {
                         if (parseNode && components.length <= 2) continue;
                         else if (!parseNode && components.length <= 1) continue;
                         String dateString = parseNode ? components[2] : components[1];
-                        long created = System.currentTimeMillis() / 1000;
-                        String[] stringArray = dateString.split(" ");
-                        if (stringArray.length >= 1) {
-                            String unitString = "";
-                            try {
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                                Date date = sdf.parse(dateString);
-                                created = date.getTime() / 1000;
-                                topic.created = created;
-                                break;
-                            } catch (Exception e) {
-                            }
-
-                            int how = Integer.parseInt(stringArray[0]);
-                            String subString = stringArray[1].substring(0, 1);
-                            if (subString.equals("分")) {
-                                unitString = "分钟前";
-                                created -= 60 * how;
-                            } else if (subString.equals("小")) {
-                                unitString = "小时前";
-                                created -= 3600 * how;
-                            } else if (subString.equals("天")) {
-                                created -= 24 * 3600 * how;
-                                unitString = "天前";
-                            }
-                            dateString = String.format("%s%s", stringArray[0], unitString);
+                        if (!TextUtils.isEmpty(dateString)) {
+                            topic.created = dateString;
                         } else {
-                            dateString = "刚刚";
+                            topic.created = "刚刚";
                         }
-                        topic.created = created;
                     } else {
-                        topic.created = -1;
+                        topic.created = "刚刚";
                     }
                 }
             }

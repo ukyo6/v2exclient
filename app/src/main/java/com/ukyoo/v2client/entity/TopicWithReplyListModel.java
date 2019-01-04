@@ -43,7 +43,7 @@ public class TopicWithReplyListModel extends V2EXModel {
             }
         }
 
-        replies = new ArrayList<ReplyModel>();
+        replies = new ArrayList<>();
         Elements elements = body.getElementsByAttributeValueMatching("id", Pattern.compile("r_(.*)"));
         for (Element el : elements) {
             try {
@@ -87,7 +87,7 @@ public class TopicWithReplyListModel extends V2EXModel {
 
             Elements agos = tdNode.getElementsByClass("ago");
             if(agos.size() > 0) {
-                reply.created = TimeFormatUtils.INSTANCE.toLong(agos.text());
+                reply.created = agos.text();
             }
 
             Elements aNodes = tdNode.getElementsByTag("a");
@@ -139,7 +139,7 @@ public class TopicWithReplyListModel extends V2EXModel {
         String[] components = dateString.split("·");
         if (components.length >= 2) {
             dateString = components[1].trim();
-            topic.created = TimeFormatUtils.INSTANCE.toLong(dateString);
+            topic.created = dateString;
         }
 
         Elements hNodes = header.get(0).getElementsByTag("h1");
