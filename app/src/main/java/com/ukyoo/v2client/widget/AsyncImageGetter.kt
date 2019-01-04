@@ -30,7 +30,7 @@ class AsyncImageGetter (var context:Context,var tv:TextView) : Html.ImageGetter 
             transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
         ) {
             //获取原图大小
-            val mMaxWidth = App.SCREEN_WIDTH
+            val mMaxWidth = tv.width
             val width: Int
             val height: Int
             if (resource.width > mMaxWidth) {

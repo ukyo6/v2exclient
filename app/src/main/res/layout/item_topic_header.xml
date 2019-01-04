@@ -96,7 +96,6 @@
 				android:layout_height="wrap_content"
 				android:layout_alignEnd="@+id/text_node"
 				android:layout_alignStart="@+id/iv_avatar"
-				android:layout_alignRight="@+id/text_node"
 				android:layout_below="@+id/iv_avatar"
 				android:layout_marginTop="8dp"
 				tools:text="@string/topic"
