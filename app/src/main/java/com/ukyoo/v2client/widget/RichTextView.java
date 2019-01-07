@@ -10,6 +10,7 @@ import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.appcompat.widget.AppCompatTextView;
+import com.ukyoo.v2client.ui.detail.PhotoBrowseActivity;
 
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ public class RichTextView extends AppCompatTextView {
 //            return;
 //        }
 
-        Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this),null);
+        Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this), null);
         SpannableStringBuilder htmlSpannable;
         if (spanned instanceof SpannableStringBuilder) {
             htmlSpannable = (SpannableStringBuilder) spanned;
@@ -60,21 +61,21 @@ public class RichTextView extends AppCompatTextView {
             imageUrls.add(imageUrl);
         }
 
-        for(ImageSpan span : spans){
+        for (ImageSpan span : spans) {
             final int start = htmlSpannable.getSpanStart(span);
-            final int end   = htmlSpannable.getSpanEnd(span);
+            final int end = htmlSpannable.getSpanEnd(span);
 
             ClickableSpan clickableSpan = new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-//                    PhotoViewActivity.launch(getContext(), imagePositions.indexOf(start + "/" + end), imageUrls);
+                    PhotoBrowseActivity.Companion.loadPhotos(getContext(), imagePositions.indexOf(start + "/" + end), imageUrls);
                 }
             };
 
             ClickableSpan[] clickSpans = htmlSpannable.getSpans(start, end, ClickableSpan.class);
-            if(clickSpans != null && clickSpans.length != 0) {
+            if (clickSpans != null && clickSpans.length != 0) {
 
-                for(ClickableSpan c_span : clickSpans) {
+                for (ClickableSpan c_span : clickSpans) {
                     htmlSpannable.removeSpan(c_span);
                 }
             }

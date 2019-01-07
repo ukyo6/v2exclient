@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.text.Html
 import android.widget.TextView
 import com.bumptech.glide.request.target.SimpleTarget
-import com.ukyoo.v2client.App
 import com.ukyoo.v2client.util.GlideApp
 
 
