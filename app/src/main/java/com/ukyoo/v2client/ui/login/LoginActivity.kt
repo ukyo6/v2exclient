@@ -17,6 +17,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
 
     override fun loadData(isRefresh: Boolean) {
+
+
     }
 
     override fun initView() {

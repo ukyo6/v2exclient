@@ -18,13 +18,40 @@
 
 
 	<androidx.constraintlayout.widget.ConstraintLayout
-		android:padding="16dp"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/text_input_name"
+		<androidx.appcompat.widget.Toolbar
+			app:title="登录V2EX"
+			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			android:theme="@style/AppTheme.AppBarOverlay"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			/>
+
+		<androidx.constraintlayout.widget.Guideline
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/guideline"
+			app:layout_constraintGuide_begin="16dp"
+			android:orientation="vertical"/>
+
+		<androidx.constraintlayout.widget.Guideline
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/guideline2"
+			app:layout_constraintGuide_end="16dp"
+			android:orientation="vertical"/>
+
+		<com.google.android.material.textfield.TextInputLayout
+			app:layout_constraintTop_toBottomOf="@+id/toolbar"
+			app:layout_constraintLeft_toLeftOf="@+id/guideline"
+			app:layout_constraintRight_toRightOf="@+id/guideline2"
+			android:id="@+id/text_input_name"
+			android:layout_marginTop="10dp"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content">
 
 			<AutoCompleteTextView
@@ -33,15 +60,17 @@
 				android:hint="用户名"
 				android:maxLines="1"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+				android:layout_height="match_parent"/>
 
 		</com.google.android.material.textfield.TextInputLayout>
 
 
 		<com.google.android.material.textfield.TextInputLayout
 			app:layout_constraintTop_toBottomOf="@+id/text_input_name"
+			app:layout_constraintLeft_toLeftOf="@+id/guideline"
+			app:layout_constraintRight_toRightOf="@+id/guideline2"
 			android:id="@+id/text_input_pwd"
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content">
 
 
@@ -57,9 +86,10 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<com.google.android.material.textfield.TextInputLayout
+			app:layout_constraintLeft_toLeftOf="@+id/guideline"
 			app:layout_constraintTop_toBottomOf="@+id/text_input_pwd"
 			android:id="@+id/text_input_verify"
-			android:layout_width="match_parent"
+			android:layout_width="200dp"
 			android:layout_height="wrap_content">
 
 			<AutoCompleteTextView
@@ -73,19 +103,21 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<ImageView
+			android:layout_marginLeft="5dp"
+			app:layout_constraintLeft_toRightOf="@+id/text_input_verify"
 			app:verifyUrl="@{vm.verifyImgUrl}"
-			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintRight_toRightOf="@+id/guideline2"
 			app:layout_constraintTop_toTopOf="@+id/text_input_verify"
 			app:layout_constraintBottom_toBottomOf="@+id/text_input_verify"
 			android:id="@+id/iv_verifycode"
-			android:layout_width="200dp"
-			android:layout_height="80dp"
+			android:layout_width="0dp"
+			android:layout_height="50dp"
 			android:layout_marginBottom="10dp"
-			android:layout_marginEnd="20dp"
 			/>
 
 
 		<androidx.appcompat.widget.AppCompatButton
+			android:background="@drawable/shape_coener30_black"
 			android:onClick="@{() -> vm.login()}"
 			android:layout_marginTop="20dp"
 			app:layout_constraintLeft_toLeftOf="parent"
@@ -93,9 +125,9 @@
 			app:layout_constraintTop_toBottomOf="@+id/text_input_verify"
 			android:id="@+id/btn_login"
 			android:text="登录"
-			android:layout_width="100dp"
-			android:layout_height="50dp"/>
-
+			android:textColor="@color/white"
+			android:layout_width="150dp"
+			android:layout_height="40dp"/>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
