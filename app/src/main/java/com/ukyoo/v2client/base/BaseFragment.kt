@@ -36,16 +36,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     protected var lazyLoad = false
 
-    protected var visible = false
-
-    /**
-     * 标志位，标志已经初始化完成
-     */
-    protected var isPrepared: Boolean = false
-    /**
-     * 是否已被加载过一次，第二次就不再去请求数据了
-     */
-    protected var hasLoadOnce: Boolean = false
+    // 标志位，标志已经初始化完成，因为setUserVisibleHint是在onCreateView之前调用的，
+    // 在视图未初始化的时候，在lazyLoad当中就使用的话，就会有空指针的异常
+    private var isPrepared: Boolean = false
+    //标志当前页面是否可见
+    private var visible: Boolean = false
+    //是否已经加载过
+    private var isLoaded: Boolean = false
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -65,7 +62,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
             return fragmentComponent as FragmentComponent
         } else {
             throw IllegalStateException(
-                    "The activity of this fragment is not an instance of BaseActivity")
+                "The activity of this fragment is not an instance of BaseActivity"
+            )
         }
     }
 
@@ -74,21 +72,23 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         restoreArgs(savedInstanceState)
     }
 
-    inline fun <reified T: ViewModel> getInjectViewModel(): T =
-            ViewModelProviders.of(this, factory).get(T::class.java)
+    inline fun <reified T : ViewModel> getInjectViewModel(): T =
+        ViewModelProviders.of(this, factory).get(T::class.java)
 
+    var savedInstanceState: Bundle? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mContext = activity ?: throw Exception("activity 为null")
         retainInstance = true
         initView()
+
+        this.savedInstanceState = savedInstanceState
+        isPrepared = true
         if (lazyLoad) {
-            //延迟加载，需重写lazyLoad方法
             lazyLoad()
         } else {
-            // 加载数据
-            loadData(true)
+            loadData(true, savedInstanceState)//数据请求
         }
     }
 
@@ -113,7 +113,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         }
     }
 
-    protected fun onInvisible() {
+    open fun onInvisible() {
 
     }
 
@@ -122,7 +122,16 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
 
-    open fun lazyLoad() {}
+    private fun lazyLoad() {
+        if (!isVisible || !isPrepared) {
+            return
+        }
+
+        if (!isLoaded) {
+            loadData(true, savedInstanceState)//数据请求
+            isLoaded = true
+        }
+    }
 
     /**
      * 恢复数据的
@@ -132,7 +141,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     abstract fun initView()
-    abstract override fun loadData(isRefresh: Boolean)
+    abstract override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?)
 
     abstract fun getLayoutId(): Int
 
@@ -149,7 +158,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     protected fun <T> autoWired(key: String, default: T? = null): T? =
-            arguments?.let { findWired(it, key, default) }
+        arguments?.let { findWired(it, key, default) }
 
     private fun <T> findWired(bundle: Bundle, key: String, default: T? = null): T? {
         return if (bundle.get(key) != null) {
@@ -162,5 +171,4 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         } else default
 
     }
-
 }

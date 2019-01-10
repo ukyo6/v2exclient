@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.ui.viewmodels
+package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
@@ -10,7 +10,7 @@ import com.ukyoo.v2client.entity.TopicWithReplyListModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
-import com.ukyoo.v2client.viewmodel.PagedViewModel
+import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -33,7 +33,6 @@ class DetailViewModel @Inject constructor(private var jsonApi: JsonService, priv
                 if (isRefresh) {
                     replyList.clear()
                 }
-
                 replyList.addAll(it)
                 return@map it
             }
@@ -82,5 +81,4 @@ class DetailViewModel @Inject constructor(private var jsonApi: JsonService, priv
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
     }
-
 }

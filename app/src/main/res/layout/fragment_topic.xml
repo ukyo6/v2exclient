@@ -9,7 +9,7 @@
 
 		<variable
 			name="vm"
-			type="com.ukyoo.v2client.viewmodel.PagedViewModel"/>
+			type="com.ukyoo.v2client.viewmodels.TopicsViewModel"/>
 
 		<variable
 			name="presenter"

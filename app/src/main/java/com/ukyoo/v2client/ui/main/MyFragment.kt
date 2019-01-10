@@ -26,7 +26,7 @@ class MyFragment: BaseFragment<FragmentMyBinding>() {
         }
     }
 
-    override fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
     }
 
     override fun getLayoutId(): Int {

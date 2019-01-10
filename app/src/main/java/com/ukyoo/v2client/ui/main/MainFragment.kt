@@ -13,22 +13,24 @@ import javax.inject.Inject
 class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     @Inject
-    lateinit var manager:FragmentManager
+    lateinit var manager: FragmentManager
 
     override fun initView() {
         //inject
         getComponent().inject(this)
-        //init viewpager and btmNavigationView
-        val viewpager = mBinding.viewpager
-        viewpager.adapter = object : AbstractPagerAdapter(manager, arrayOf("1", "2", "3")) {
-            override fun getItem(pos: Int): Fragment? {
-                when (pos) {
-                    0 -> list[0] = HomeFragment.newInstance(Bundle())
-                    1 -> list[1] = NodesFragment.newInstance(Bundle())
-                    2 -> list[2] = MyFragment.newInstance(Bundle())
+        //初始化viewpager
+        mBinding.viewpager.run {
+            adapter = object : AbstractPagerAdapter(manager, arrayOf("1", "2", "3")) {
+                override fun getItem(pos: Int): Fragment? {
+                    when (pos) {
+                        0 -> list[0] = HomeFragment.newInstance(Bundle())
+                        1 -> list[1] = NodesFragment.newInstance(Bundle())
+                        2 -> list[2] = MyFragment.newInstance(Bundle())
+                    }
+                    return list[pos]
                 }
-                return list[pos]
             }
+            offscreenPageLimit = (adapter as AbstractPagerAdapter).count - 1
         }
 
         mBinding.viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -50,20 +52,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         mBinding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_home -> {
-                    viewpager.setCurrentItem(0,false)
+                    mBinding.viewpager.setCurrentItem(0, false)
                 }
                 R.id.nav_repos -> {
-                    viewpager.setCurrentItem(1,false)
+                    mBinding.viewpager.setCurrentItem(1, false)
                 }
                 R.id.nav_profile -> {
-                    viewpager.setCurrentItem(2,false)
+                    mBinding.viewpager.setCurrentItem(2, false)
                 }
             }
             true
         }
     }
 
-    override fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
 
 
     }

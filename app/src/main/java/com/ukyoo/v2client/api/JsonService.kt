@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.api
 
+import com.ukyoo.v2client.entity.MemberModel
 import com.ukyoo.v2client.entity.NodeModel
 import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
@@ -31,7 +32,7 @@ interface JsonService {
 
     //用户主页
     @GET("members/show.json")
-    fun getUserInfo(): Single<Any>
+    fun getUserInfo(@Query("username") username: String): Single<ArrayList<MemberModel>>
 
     //查询帖子内容
     @GET("/api/topics/show.json")

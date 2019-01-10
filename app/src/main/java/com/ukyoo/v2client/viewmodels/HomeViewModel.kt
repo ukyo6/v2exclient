@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.ui.viewmodels
+package com.ukyoo.v2client.viewmodels
 
 import androidx.lifecycle.ViewModel
 

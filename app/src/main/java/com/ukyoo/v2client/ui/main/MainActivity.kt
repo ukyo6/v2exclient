@@ -1,9 +1,10 @@
 package com.ukyoo.v2client.ui.main
 
+import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityMainBinding
-import com.ukyoo.v2client.ui.viewmodels.MainViewModel
+import com.ukyoo.v2client.viewmodels.MainViewModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.util.toast
@@ -15,7 +16,7 @@ import io.reactivex.Single
  */
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
-    override fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
     }
 
     private var isQuit = false

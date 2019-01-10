@@ -5,6 +5,7 @@ import com.ukyoo.v2client.di.scope.ActivityScope
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.ui.main.MainActivity
+import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
 import dagger.Subcomponent
 
 /**
@@ -21,6 +22,8 @@ interface ActivityComponent {
     fun inject(activity: DetailActivity)
 
     fun inject(activity: LoginActivity)
+
+    fun inject(activity: UserInfoActivity)
 
     fun supplyFragmentComponentBuilder(): FragmentComponent.Builder
 

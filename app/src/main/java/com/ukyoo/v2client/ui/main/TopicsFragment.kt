@@ -12,7 +12,7 @@ import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
-import com.ukyoo.v2client.ui.viewmodels.TopicsViewModel
+import com.ukyoo.v2client.viewmodels.TopicsViewModel
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 
@@ -54,26 +54,23 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
                 itemPresenter = this@TopicsFragment
             }
         }
-        isPrepared = true
     }
 
     /**
      * get data from remote
      */
-    override fun loadData(isRefresh: Boolean) {
-
-        val node_name = arguments?.getString(NODE_NAME)
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        val nodeName = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
 
-
-        if(node_name !=null){
-            viewModel.name = node_name
+        if (nodeName != null) {
+            viewModel.name = nodeName
             viewModel.loadDataByName(isRefresh = true)
                 .bindLifeCycle(this)
                 .subscribe({}, {
                     toastFailure(it)
                 })
-        } else if(tab != null){
+        } else if (tab != null) {
             viewModel.tab = tab
             viewModel.loadDataByTab(isRefresh = true)
                 .bindLifeCycle(this)
@@ -87,14 +84,6 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         return R.layout.fragment_topic
     }
 
-    override fun lazyLoad() {
-        if (!isPrepared || !visible || hasLoadOnce) {
-            return
-        }
-        hasLoadOnce = true
-        loadData(true)
-    }
-
     /**
      * scrollToTop or refresh
      */
@@ -105,7 +94,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
                 mBinding.recyclerView.smoothScrollToPosition(0)
             } else {
                 mBinding.recyclerView.smoothScrollToPosition(0)
-                loadData(true)
+                loadData(true, null)
             }
         }
     }

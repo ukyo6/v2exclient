@@ -2,6 +2,7 @@ package com.ukyoo.v2client.ui.detail
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
@@ -30,7 +31,7 @@ class PhotoBrowseActivity : BaseActivity<ActivityPhotobrowseBinding>() {
     private lateinit var mPhohoUrls: ArrayList<String>
     private var mPosition: Int = 0
 
-    override fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
 
     }
 

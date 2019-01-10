@@ -3,22 +3,18 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.TextUtils
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ukyoo.v2client.R
-import com.ukyoo.v2client.api.NetManager
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentNodesBinding
 import com.ukyoo.v2client.entity.NodeModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.node.NodeActivity
-import com.ukyoo.v2client.ui.viewmodels.NodesViewModel
+import com.ukyoo.v2client.viewmodels.NodesViewModel
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
-import com.ukyoo.v2client.util.bindLifeCycle
 
 /**
  * @desc 所有节点
@@ -45,9 +41,6 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         val appCompatActivity = activity as AppCompatActivity
         appCompatActivity.setSupportActionBar(mBinding.toolbar)
 
-        //set lazy load
-        lazyLoad = true
-
         mBinding.vm = viewModel
         mBinding.recyclerview.run {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -56,20 +49,12 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
             }
         }
 
-        isPrepared = true
     }
 
-    override fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         viewModel.loadData()
     }
 
-    override fun lazyLoad() {
-        if (!isPrepared || !visible || hasLoadOnce) {
-            return
-        }
-        hasLoadOnce = true
-        loadData(true)
-    }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_nodes

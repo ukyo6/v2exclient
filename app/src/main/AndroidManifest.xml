@@ -27,7 +27,33 @@
 		<activity android:name=".ui.node.NodeActivity"/>
 		<activity android:name=".ui.login.LoginActivity"/>
 		<activity android:name=".ui.detail.PhotoBrowseActivity"/>
-		<activity android:name=".ui.userinfo.UserInfoActivity"/>
+
+		<activity
+			android:name=".ui.userinfo.UserInfoActivity" >
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data
+					android:host="www.v2ex.com"
+					android:pathPattern="/member/.*"
+					android:scheme="http" />
+				<data
+					android:host="www.v2ex.com"
+					android:pathPattern="/member/.*"
+					android:scheme="https" />
+				<data
+					android:host="v2ex.com"
+					android:pathPattern="/member/.*"
+					android:scheme="http" />
+				<data
+					android:host="v2ex.com"
+					android:pathPattern="/member/.*"
+					android:scheme="https" />
+			</intent-filter>
+		</activity>
 	</application>
 
 </manifest>

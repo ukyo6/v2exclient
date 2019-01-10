@@ -1,14 +1,13 @@
-package com.ukyoo.v2client.viewmodel
+package com.ukyoo.v2client.base.viewmodel
 
 import androidx.databinding.ObservableBoolean
-import androidx.lifecycle.ViewModel
 
 /**
  * 页面描述：PagedViewModel
  *
  * Created by ditclear on 2017/9/28.
  */
-open class PagedViewModel : ViewModel() {
+open class PagedViewModel : BaseViewModel() {
 
     val loading = ObservableBoolean(true) //正在请求数据加载中...
 

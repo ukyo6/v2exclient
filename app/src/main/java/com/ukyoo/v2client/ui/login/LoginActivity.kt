@@ -1,9 +1,10 @@
 package com.ukyoo.v2client.ui.login
 
+import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
-import com.ukyoo.v2client.ui.viewmodels.LoginViewModel
+import com.ukyoo.v2client.viewmodels.LoginViewModel
 
 /**
  * 登录
@@ -16,8 +17,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
 
-    override fun loadData(isRefresh: Boolean) {
-
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
 
     }
 

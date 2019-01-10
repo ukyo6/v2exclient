@@ -62,12 +62,11 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         mBinding.setLifecycleOwner(this)
         mContext = this
 
-        restoreArgs(savedInstanceState)
         initView()
         if (delayToTransition) {
             afterEnterTransition()
         } else if (autoRefresh) {
-            loadData(true)
+            loadData(true, savedInstanceState)
         }
     }
 
@@ -119,7 +118,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
 //        window.enterTransition.removeListener(enterTransitionListener)
     }
 
-    abstract override fun loadData(isRefresh: Boolean)
+    abstract override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?)
 
     abstract fun initView()
 

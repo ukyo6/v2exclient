@@ -11,10 +11,11 @@ import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
-import com.ukyoo.v2client.ui.viewmodels.DetailViewModel
+import com.ukyoo.v2client.viewmodels.DetailViewModel
 import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
+import com.ukyoo.v2client.base.viewmodel.IViewModel
 
 /**
  * 主题详情页
@@ -43,7 +44,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
     var isJsonApi: Boolean = false
 
-    override fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         if (intent.hasExtra("topic_id")) {
             mTopicId = intent.getIntExtra("topic_id", -1)
 

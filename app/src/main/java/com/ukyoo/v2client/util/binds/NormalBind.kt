@@ -13,7 +13,7 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.Presenter
 import com.ukyoo.v2client.util.ImageUtil
 import com.ukyoo.v2client.util.ScrimUtil
-import com.ukyoo.v2client.viewmodel.PagedViewModel
+import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.widget.RichTextView
 
 /**
@@ -70,7 +70,7 @@ fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
                 if (!recyclerView.canScrollVertically(1)) {
                     vm?.let {
                         if (vm.loadMore.get() && !vm.loading.get()) {
-                            presenter.loadData(false)
+                            presenter.loadData(false, null)
                         }
                     }
                 }
@@ -81,7 +81,7 @@ fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
 
 @BindingAdapter(value = ["onRefresh"])
 fun bindOnRefresh(v: SwipeRefreshLayout, presenter: Presenter) {
-    v.setOnRefreshListener { presenter.loadData(true) }
+    v.setOnRefreshListener { presenter.loadData(true, null) }
 }
 
 @BindingAdapter(value = ["vertical"], requireAll = false)

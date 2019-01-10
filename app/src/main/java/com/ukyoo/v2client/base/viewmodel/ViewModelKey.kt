@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.viewmodel
+package com.ukyoo.v2client.base.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

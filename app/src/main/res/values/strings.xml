@@ -6,6 +6,7 @@
 	<string name="v2ex">v2ex</string>
 	<string name="menu_search">搜索</string>
 	<string name="menu_setting">设置</string>
+	<string name="username">用户名</string>
 
 	<string name="item_node_topic_num">%d个主题</string>
 	<string name="item_node_reply_num">%d个回复</string>

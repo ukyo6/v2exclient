@@ -2,9 +2,9 @@ package com.ukyoo.v2client.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ukyoo.v2client.ui.viewmodels.*
-import com.ukyoo.v2client.viewmodel.APPViewModelFactory
-import com.ukyoo.v2client.viewmodel.ViewModelKey
+import com.ukyoo.v2client.viewmodels.*
+import com.ukyoo.v2client.base.viewmodel.APPViewModelFactory
+import com.ukyoo.v2client.base.viewmodel.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -52,6 +52,11 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     abstract fun provideLoginViewModel(viewModel:LoginViewModel):ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserInfoViewModel::class)
+    abstract fun provideUserInfoViewModel(viewModel:UserInfoViewModel):ViewModel
 
 //
 //    @Binds

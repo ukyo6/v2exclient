@@ -1,8 +1,7 @@
-package com.ukyoo.v2client.ui.viewmodels
+package com.ukyoo.v2client.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.ukyoo.v2client.di.scope.ActivityScope
-import com.ukyoo.v2client.di.scope.FragmentScope
 import javax.inject.Inject
 
 @ActivityScope

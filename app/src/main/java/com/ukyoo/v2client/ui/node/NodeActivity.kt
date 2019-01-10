@@ -7,8 +7,8 @@ import com.ukyoo.v2client.databinding.ActivityNodeBinding
 import com.ukyoo.v2client.entity.NodeModel
 import com.ukyoo.v2client.ui.main.TopicsFragment
 
-class NodeActivity:BaseActivity<ActivityNodeBinding>(){
-    override fun loadData(isRefresh: Boolean) {
+class NodeActivity : BaseActivity<ActivityNodeBinding>() {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
     }
 
     override fun initView() {
@@ -20,8 +20,8 @@ class NodeActivity:BaseActivity<ActivityNodeBinding>(){
 
         val bundle = Bundle()
         bundle.putString(TopicsFragment.NODE_NAME, name)
-        val topicFragment = TopicsFragment.newInstance(bundle,"directOpen")
-        supportFragmentManager.beginTransaction().add(R.id.framelayout,topicFragment).commit()
+        val topicFragment = TopicsFragment.newInstance(bundle, "directOpen")
+        supportFragmentManager.beginTransaction().add(R.id.framelayout, topicFragment).commit()
     }
 
     override fun getLayoutId(): Int {

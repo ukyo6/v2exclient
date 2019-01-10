@@ -1,15 +1,14 @@
-package com.ukyoo.v2client.ui.viewmodels
+package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableField
-import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
+import com.ukyoo.v2client.api.NetManager
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.SPUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
-import com.ukyoo.v2client.viewmodel.BaseViewModel
+import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import org.jsoup.Jsoup
-import retrofit2.http.Headers
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseViewModel() {
@@ -28,7 +27,9 @@ class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseVie
         getLoginData()
     }
 
-    //从首页获取登录需要的信息
+    /**
+     *  从首页获取登录需要的信息
+     */
     private fun getLoginData() {
         htmlService.signin()
             .async()
@@ -105,7 +106,8 @@ class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseVie
                 headers.put("Referer", "https://www.v2ex.com/signin")
                 headers.put("Content-Type", "application/x-www-form-urlencoded")
 
-                htmlService.login(headers, params)
+                NetManager.getHtmlClient2().create(HtmlService::class.java)
+                    .login(headers, params)
                     .async()
                     .subscribe({
 
