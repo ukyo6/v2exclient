@@ -31,8 +31,8 @@ interface JsonService {
     fun getNodesInfo(): Single<Any>
 
     //用户主页
-    @GET("members/show.json")
-    fun getUserInfo(@Query("username") username: String): Single<ArrayList<MemberModel>>
+    @GET("/api/members/show.json")
+    fun getUserInfo(@Query("username") username: String): Single<MemberModel>
 
     //查询帖子内容
     @GET("/api/topics/show.json")

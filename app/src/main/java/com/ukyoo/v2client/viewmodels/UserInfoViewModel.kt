@@ -1,5 +1,7 @@
 package com.ukyoo.v2client.viewmodels
 
+import android.graphics.Color
+import android.widget.ImageView
 import androidx.databinding.ObservableField
 import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
@@ -10,7 +12,7 @@ import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 
-class UserInfoViewModel@Inject constructor(private var jsonService: JsonService) : BaseViewModel() {
+class UserInfoViewModel@Inject constructor(private var jsonService: JsonService) : PagedViewModel() {
 
     var memberModel = ObservableField<MemberModel>()
 
@@ -18,13 +20,22 @@ class UserInfoViewModel@Inject constructor(private var jsonService: JsonService)
         jsonService.getUserInfo(username)
             .async()
             .doOnSubscribe {
-//                startLoad()
+                startLoad()
             }.doAfterTerminate {
-//                stopLoad()
+                stopLoad()
             }.subscribe({
-                memberModel.set(it[0])
+                memberModel.set(it)
             },{
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
     }
+
+    fun loadBlurBg(iamgeView:ImageView){
+
+
+
+
+    }
+
+
 }
