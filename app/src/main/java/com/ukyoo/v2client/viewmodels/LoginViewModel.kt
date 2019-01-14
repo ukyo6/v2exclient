@@ -1,36 +1,45 @@
 package com.ukyoo.v2client.viewmodels
 
+import androidx.annotation.Nullable
 import androidx.databinding.ObservableField
+import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.NetManager
+import com.ukyoo.v2client.base.viewmodel.BaseViewModel
+import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.navigator.LoginNavigator
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.SPUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
-import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import org.jsoup.Jsoup
+import retrofit2.HttpException
+import java.lang.ref.WeakReference
 import javax.inject.Inject
+import javax.inject.Named
 
-class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseViewModel() {
+class LoginViewModel @Inject constructor(@Named("cached") private var htmlService: HtmlService) : BaseViewModel() {
     var username = ObservableField<String>()
     var password = ObservableField<String>()
     var verifyCode = ObservableField<String>()
     var verifyImgUrl = ObservableField<String>()
 
     //请求参数的key
-    var nameVal: String = ""
-    var passwordVal: String = ""
-    var verifyCodeVal: String = ""
-    var once: String = ""
+    private var nameVal: String = ""
+    private var passwordVal: String = ""
+    private var verifyCodeVal: String = ""
+    private var once: String = ""
 
-    fun initViewModel() {
-        getLoginData()
+    @Nullable
+    private var navigator: WeakReference<LoginNavigator>? = null
+
+    fun setLoginNavigator(navigator: LoginNavigator) {
+        this.navigator = WeakReference(navigator)
     }
 
     /**
      *  从首页获取登录需要的信息
      */
-    private fun getLoginData() {
+    fun getLoginData() {
         htmlService.signin()
             .async()
             .subscribe({ content ->
@@ -101,18 +110,24 @@ class LoginViewModel @Inject constructor(var htmlService: HtmlService) : BaseVie
                         stringBuffer.append(it)
                     }
                 }
-                headers.put("cookie", stringBuffer.toString())
+//                headers.put("cookie", stringBuffer.toString())
                 headers.put("Origin", "https://www.v2ex.com")
                 headers.put("Referer", "https://www.v2ex.com/signin")
                 headers.put("Content-Type", "application/x-www-form-urlencoded")
 
-                NetManager.getHtmlClient2().create(HtmlService::class.java)
+                htmlService
                     .login(headers, params)
                     .async()
                     .subscribe({
-
+                        Logger.d("onSuccess")
                     }, {
-                        ToastUtil.shortShow(ErrorHanding.handleError(it))
+                        if (it is HttpException && it.code() == 302) {
+                            if (navigator != null && navigator?.get() != null) {
+                                navigator?.get()?.loginSuccess()
+                            }
+                        } else {
+                            ToastUtil.shortShow(ErrorHanding.handleError(it))
+                        }
                     })
             }
         }

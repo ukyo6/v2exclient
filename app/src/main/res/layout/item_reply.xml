@@ -5,8 +5,7 @@
 
 	<data>
 
-		<import
-			type="com.ukyoo.v2client.util.TimeFormatUtils"/>
+
 
 		<variable
 			name="item"
@@ -75,7 +74,7 @@
 
 		<com.ukyoo.v2client.widget.RichTextView
 			tools:text="内容"
-			app:richText="@{item.contentRendered}"
+			app:richTexts="@{item.contentRendered}"
 			android:id="@+id/content"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"

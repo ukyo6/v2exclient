@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.util.binds
 
+import android.graphics.Bitmap
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -9,11 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.Presenter
 import com.ukyoo.v2client.util.ImageUtil
 import com.ukyoo.v2client.util.ScrimUtil
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.util.GlideApp
 import com.ukyoo.v2client.widget.RichTextView
 
 /**
@@ -28,6 +33,7 @@ fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
 }
 
 
+//加载验证码
 @BindingAdapter(value = ["verifyUrl"])
 fun bindVerifyUrl(imageView: ImageView, url: String?) {
     ImageUtil.loadVerifyCode(url, imageView)
@@ -38,20 +44,6 @@ fun bindRichText(textView: RichTextView, text: String?) {
     textView.setRichText(text ?: "")
 }
 
-//@BindingAdapter(value = ["start_color", "icon"], requireAll = false)
-//fun bindTransitionArgs(v: View, color: Int, icon: Int?) {
-//    v.setTag(R.integer.start_color, color)
-//    if (v is FloatingActionButton) {
-//        icon?.let { v.setTag(R.integer.fab_icon, icon) }
-//    }
-//}
-//
-//@BindingAdapter(value = ["markdown"])
-//fun bindMarkDown(v: MarkdownView, markdown: String?) {
-//    markdown?.let {
-//        v.setMarkdown(markdown)
-//    }
-//}
 
 @BindingAdapter(value = ["visible"])
 fun bindVisibility(v: View, visible: Boolean) {
@@ -118,7 +110,12 @@ fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
     )
 }
 
-@BindingAdapter(value = ["richText"])
-fun setRichText(richTextView: RichTextView, content: String) {
-    richTextView.setRichText(content)
+
+@BindingAdapter(value = ["blurBg"])
+fun bindBlurBg(imageView: ImageView, url: String?) {
+    GlideApp.with(App.instance()).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
+        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+            ImageUtil.loadBlurBg(imageView, resource)
+        }
+    })
 }

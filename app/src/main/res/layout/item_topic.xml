@@ -6,7 +6,7 @@
 
 		<import type="android.view.View"/>
 
-		<import type="com.ukyoo.v2client.util.TimeFormatUtils"/>
+
 
 		<variable
 			name="item"

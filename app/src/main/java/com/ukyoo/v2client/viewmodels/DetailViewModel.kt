@@ -13,8 +13,9 @@ import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import io.reactivex.Single
 import javax.inject.Inject
+import javax.inject.Named
 
-class DetailViewModel @Inject constructor(private var jsonApi: JsonService, private var htmlService: HtmlService) :
+class DetailViewModel @Inject constructor(private var jsonApi: JsonService,  @Named("non_cached") private var htmlService: HtmlService) :
     PagedViewModel() {
 
     var topicId: Int = 0

@@ -3,7 +3,6 @@ package com.ukyoo.v2client.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.ukyoo.v2client.util.ContentUtils;
-import com.ukyoo.v2client.util.TimeFormatUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 

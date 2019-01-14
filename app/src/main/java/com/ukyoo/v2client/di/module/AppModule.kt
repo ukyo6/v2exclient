@@ -39,15 +39,22 @@ class AppModule(val app:Application){
     @Named(CONSTANT.JSONPARSE)
     fun provideJsonClient(): Retrofit = NetManager.getJsonClient()
 
-    //提供单例的htmlService
+    //html API
     @Singleton
     @Provides
-    fun privateHtmlService():HtmlService = provideHtmlClient().create(HtmlService::class.java)
+    @Named("non_cached")
+    fun privideHtmlService():HtmlService = provideHtmlClient().create(HtmlService::class.java)
 
-    //提供单例的jsonService
+    //json API
     @Singleton
     @Provides
     fun provideJsonService():JsonService = provideJsonClient().create(JsonService::class.java)
+
+    //html API with cookie
+    @Singleton
+    @Provides
+    @Named("cached")
+    fun provideHtmlCookieService():HtmlService = NetManager.getHtmlClient2().create(HtmlService::class.java)
 
     @Singleton
     @Provides

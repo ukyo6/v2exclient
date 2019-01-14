@@ -22,7 +22,7 @@ import android.content.Context.CONNECTIVITY_SERVICE
 import com.ukyoo.v2client.App
 import androidx.core.content.ContextCompat.getSystemService
 import android.net.ConnectivityManager
-
+import com.uber.autodispose.FlowableSubscribeProxy
 
 
 fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @ToastType type: Int = ToastType.NORMAL) {
@@ -41,6 +41,9 @@ fun <T> Single<T>.async(withDelay: Long = 0): Single<T> =
     this.subscribeOn(Schedulers.io()).delay(withDelay, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
 
 fun <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> =
+    this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
+
+fun <T> Flowable<T>.bindLifeCycle(owner: LifecycleOwner): FlowableSubscribeProxy<T> =
     this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
 
 fun <T> T.apply(f: T.() -> Unit): T { f(); return this }

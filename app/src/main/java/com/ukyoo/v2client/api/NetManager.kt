@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 
 /**
@@ -64,6 +65,7 @@ object NetManager {
             chain.proceed(request)
         }
     }
+
     //设置缓存拦截器
     private val cacheInterceptor = Interceptor { chain ->
         var request = chain.request()
@@ -91,6 +93,29 @@ object NetManager {
         response
     }
 
+    private val cookieInterceptor = Interceptor { chain ->
+        var request = chain.request()
+
+        val builder = request.newBuilder()
+            .addHeader("Cache-Control", "max-age=0")
+            .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+            .addHeader("Accept-Charset", "utf-8, iso-8859-1, utf-16, *;q=0.7")
+            .addHeader("Accept-Language", "zh-CN, en-US")
+            .addHeader("Host", "www.v2ex.com")
+
+
+        if (true) {
+            builder.addHeader("X-Requested-With", "com.android.browser")
+            builder.addHeader(
+                "User-Agent",
+                "Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+            )
+        } else {
+            builder.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko")
+        }
+        chain.proceed(request)
+    }
+
     /**
      * jsoup解析返回的html
      */
@@ -106,7 +131,7 @@ object NetManager {
     /**
      * gson解析返回的json
      */
-    fun getJsonClient():Retrofit{
+    fun getJsonClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(HOST_API)
             .client(getHttpClient())
@@ -119,16 +144,16 @@ object NetManager {
      * jsoup解析返回的html
      * 带cookie
      */
-    fun getHtmlClient2():Retrofit{
+    fun getHtmlClient2(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(HOST_API)
-            .client(getHttpClient())
+            .client(getHttpClient2())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
     }
 
-    private fun getHttpClient2():OkHttpClient{
+    private fun getHttpClient2(): OkHttpClient {
         return OkHttpClient.Builder()
             .followRedirects(false)  //禁制OkHttp的重定向操作，我们自己处理重定向
             .followSslRedirects(false)
@@ -137,6 +162,7 @@ object NetManager {
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(okhttpLogInterceptor)
+            .addInterceptor(cookieInterceptor)
             .build()
     }
 

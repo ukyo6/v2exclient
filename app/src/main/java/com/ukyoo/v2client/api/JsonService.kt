@@ -1,9 +1,6 @@
 package com.ukyoo.v2client.api
 
-import com.ukyoo.v2client.entity.MemberModel
-import com.ukyoo.v2client.entity.NodeModel
-import com.ukyoo.v2client.entity.ReplyModel
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.*
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -32,7 +29,7 @@ interface JsonService {
 
     //用户主页
     @GET("/api/members/show.json")
-    fun getUserInfo(@Query("username") username: String): Single<MemberModel>
+    fun getUserInfo(@Query("username") username: String): Single<MemberModel1>
 
     //查询帖子内容
     @GET("/api/topics/show.json")

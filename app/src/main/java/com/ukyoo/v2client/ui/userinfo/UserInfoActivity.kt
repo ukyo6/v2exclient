@@ -1,15 +1,26 @@
 package com.ukyoo.v2client.ui.userinfo
 
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.appbar.AppBarLayout
+import android.os.Parcelable
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
 import com.ukyoo.v2client.entity.MemberModel
+import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.inter.ItemClickPresenter
+import com.ukyoo.v2client.ui.detail.DetailActivity
+import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.viewmodels.UserInfoViewModel
 
-class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>() {
+/**
+ * 用户信息
+ */
+class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> {
+
     private lateinit var mMember: MemberModel
     private var mUsername: String = ""
 
@@ -23,10 +34,17 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
 
-        setSupportActionBar(mBinding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        mBinding.toolbar.setNavigationOnClickListener {
-            finish()
+//        setSupportActionBar(mBinding.toolbar)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        mBinding.toolbar.setNavigationOnClickListener {
+//            finish()
+//        }
+
+        mBinding.recyclerview.run {
+            layoutManager = LinearLayoutManager(mContext)
+            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.createdTopics).apply {
+                itemPresenter = this@UserInfoActivity
+            }
         }
     }
 
@@ -71,6 +89,16 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>() {
     }
 
     private fun updateTitle(username: String) {
-        mBinding.toolbar.title = username
+//        mBinding.toolbar.title = username
+    }
+
+    override fun onItemClick(v: View?, item: TopicModel) {
+        val intent = Intent(mContext, DetailActivity::class.java)
+        if (item.content == null || item.contentRendered == null)
+            intent.putExtra("topic_id", item.id)
+        else
+            intent.putExtra("model", item as Parcelable)
+
+        startActivity(intent)
     }
 }

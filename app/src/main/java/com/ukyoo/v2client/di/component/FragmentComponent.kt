@@ -11,13 +11,13 @@ import dagger.Subcomponent
  * Created by ditclear on 2017/9/29.
  */
 @FragmentScope
-@Subcomponent(modules = arrayOf(FragmentModule::class))
+@Subcomponent(modules = [FragmentModule::class])
 interface FragmentComponent {
 
     fun inject(fragment: MainFragment)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: NodesFragment)
-    fun inject(fragment: MyFragment)
+    fun inject(fragment: PersonalFragment)
     fun inject(fragment: TopicsFragment)
 
 

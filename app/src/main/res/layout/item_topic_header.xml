@@ -8,7 +8,7 @@
 
 	<data>
 
-		<import type="com.ukyoo.v2client.util.TimeFormatUtils"/>
+
 
 		<variable
 			name="item"

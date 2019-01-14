@@ -10,9 +10,10 @@ import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Named
 
 
-class TopicsViewModel @Inject constructor(private var apiService: HtmlService, private var jsonService: JsonService) :
+class TopicsViewModel @Inject constructor(@Named("non_cached") private var apiService: HtmlService, private var jsonService: JsonService) :
     PagedViewModel() {
 
 

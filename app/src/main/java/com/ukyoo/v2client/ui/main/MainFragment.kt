@@ -25,7 +25,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     when (pos) {
                         0 -> list[0] = HomeFragment.newInstance(Bundle())
                         1 -> list[1] = NodesFragment.newInstance(Bundle())
-                        2 -> list[2] = MyFragment.newInstance(Bundle())
+                        2 -> list[2] = PersonalFragment.newInstance(Bundle())
                     }
                     return list[pos]
                 }

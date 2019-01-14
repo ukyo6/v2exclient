@@ -58,34 +58,11 @@ abstract class ViewModelModule{
     @ViewModelKey(UserInfoViewModel::class)
     abstract fun provideUserInfoViewModel(viewModel:UserInfoViewModel):ViewModel
 
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ArticleListViewModel::class)
-//    abstract fun bindArticleListViewModel(viewModel: ArticleListViewModel):ViewModel
-//
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(CodeListViewModel::class)
-//    abstract fun bindCodeListViewModel(viewModel: CodeListViewModel):ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(RecentSearchViewModel::class)
-//    abstract fun bindRecentSearchViewModel(viewModel: RecentSearchViewModel):ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(MyArticleViewModel::class)
-//    abstract fun bindMyArticleViewModel(viewModel: MyArticleViewModel):ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(MyCollectViewModel::class)
-//    abstract fun bindMyCollectViewModel(viewModel: MyCollectViewModel):ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(PersonalViewModel::class)
+    abstract fun providePersonViewModel(viewModel:PersonalViewModel):ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: APPViewModelFactory): ViewModelProvider.Factory
-
 }
