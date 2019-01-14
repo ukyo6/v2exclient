@@ -6,7 +6,9 @@ import android.widget.ImageView
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.ukyoo.v2client.App
+import com.ukyoo.v2client.R
 
 /**
  * 加载图片
@@ -16,7 +18,10 @@ import com.ukyoo.v2client.App
 object ImageUtil {
 
     fun load(uri: String?, imageView: ImageView, isAvatar: Boolean = false) {
-        GlideApp.with(App.instance()).load(uri)
+        GlideApp.with(App.instance())
+            .load(uri)
+            .error(R.drawable.user)
+            .placeholder(R.drawable.user)
             .into(imageView)
     }
 

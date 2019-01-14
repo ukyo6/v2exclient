@@ -132,4 +132,11 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
             }
         }
     }
+
+    /**
+     * 刷新验证码
+     */
+    fun refreshVerifyImg(){
+        getLoginData()
+    }
 }

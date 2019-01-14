@@ -13,7 +13,6 @@
 			name="vm"
 			type="com.ukyoo.v2client.viewmodels.LoginViewModel"/>
 
-
 	</data>
 
 
@@ -103,7 +102,10 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<ImageView
-			android:layout_marginLeft="5dp"
+			android:onClick="@{() -> vm.refreshVerifyImg()}"
+			android:src="@drawable/ic_default_img"
+			android:scaleType="centerCrop"
+			android:layout_marginEnd="5dp"
 			app:layout_constraintLeft_toRightOf="@+id/text_input_verify"
 			app:verifyUrl="@{vm.verifyImgUrl}"
 			app:layout_constraintRight_toRightOf="@+id/guideline2"

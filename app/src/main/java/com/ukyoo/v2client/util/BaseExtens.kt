@@ -2,12 +2,15 @@ package com.ukyoo.v2client.util
 
 import android.app.Activity
 import android.content.Context
+import android.net.ConnectivityManager
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.FlowableSubscribeProxy
 import com.uber.autodispose.SingleSubscribeProxy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import com.ukyoo.v2client.App
 import com.ukyoo.v2client.BuildConfig
 import com.ukyoo.v2client.util.annotations.ToastType
 import io.reactivex.Flowable
@@ -18,11 +21,6 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
-import android.content.Context.CONNECTIVITY_SERVICE
-import com.ukyoo.v2client.App
-import androidx.core.content.ContextCompat.getSystemService
-import android.net.ConnectivityManager
-import com.uber.autodispose.FlowableSubscribeProxy
 
 
 fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @ToastType type: Int = ToastType.NORMAL) {

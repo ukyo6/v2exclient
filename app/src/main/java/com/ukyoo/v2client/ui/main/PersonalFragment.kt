@@ -3,6 +3,7 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentPersonalBinding
@@ -33,10 +34,13 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(),PersonalNavigat
     }
 
     override fun initView() {
-
+        getComponent().inject(this)
+        mBinding.setVariable(BR.vm, viewModel)
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        viewModel.setPersonalNavigator(this@PersonalFragment)
+
         //登录后获取用户信息
         RxBus.getDefault()
             .toFlowable(LoginSuccessEvent::class.java)
@@ -52,7 +56,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(),PersonalNavigat
 
     override fun gotoLogin() {
         //未登录就跳转到登录界面
-        if (SPUtils.getBoolean("isLogin", false)) {
+        if (!SPUtils.getBoolean("isLogin", false)) {
             startActivity(Intent(activity, LoginActivity::class.java))
         }
     }

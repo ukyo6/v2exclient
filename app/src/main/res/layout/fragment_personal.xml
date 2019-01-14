@@ -6,6 +6,8 @@
 
 	<data>
 
+		<import type="android.view.View"/>
+
 		<variable
 			name="vm"
 			type="com.ukyoo.v2client.viewmodels.PersonalViewModel"/>

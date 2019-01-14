@@ -15,31 +15,34 @@ import com.ukyoo.v2client.viewmodels.LoginViewModel
  */
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
 
-    //登录成功
-    override fun loginSuccess() {
-        SPUtils.setBoolean("isLogin", true)
-        finish()
-        RxBus.getDefault()
-            .post(LoginSuccessEvent())
-    }
-
     //get viewModel by di
     private val viewModel by lazy {
         getInjectViewModel<LoginViewModel>()
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        viewModel.setLoginNavigator(this@LoginActivity)
 
+        viewModel.getLoginData()
     }
 
     override fun initView() {
         getComponent().inject(this)
-        mBinding.vm = viewModel.apply {
-            getLoginData()
-        }
+        mBinding.vm = viewModel
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_login
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
+
+    //登录成功
+    override fun loginSuccess() {
+        SPUtils.setBoolean("isLogin", true)
+        finish()
+        RxBus.getDefault()
+            .post(LoginSuccessEvent())
     }
 }

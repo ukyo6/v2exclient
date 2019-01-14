@@ -25,8 +25,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     private lateinit var mTopic: TopicModel
     private var page = 1
 
-    private var dialog: Dialog? = null
-
     //get viewModel by di
     private val viewModel by lazy {
         getInjectViewModel<DetailViewModel>()
