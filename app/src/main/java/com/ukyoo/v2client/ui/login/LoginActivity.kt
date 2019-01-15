@@ -1,6 +1,7 @@
 package com.ukyoo.v2client.ui.login
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
@@ -21,7 +22,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        viewModel.setLoginNavigator(this@LoginActivity)
+        viewModel.apply {
+            //登录成功的回调
+            loginSuccessEvent.observe(this@LoginActivity, Observer {
+                loginSuccess()
+            })
+        }
 
         viewModel.getLoginData()
     }
@@ -42,7 +48,5 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
     override fun loginSuccess() {
         SPUtils.setBoolean("isLogin", true)
         finish()
-        RxBus.getDefault()
-            .post(LoginSuccessEvent())
     }
 }

@@ -2,6 +2,11 @@ package com.ukyoo.v2client.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -15,12 +20,17 @@ import java.util.regex.Pattern;
 /**
  * Created by yw on 2015/6/12.
  */
+@Entity(tableName = "user_profile")
 public class ProfileModel extends V2EXModel implements Parcelable {
 
     private static final long serialVersionUID = 2015050110L;
 
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
+
     public String username;
     public String avatar;
+
     public int nodes;
     public int topics;
     public int followings;
@@ -64,7 +74,7 @@ public class ProfileModel extends V2EXModel implements Parcelable {
                         nodes = Integer.parseInt(text);
                         found[1] = 1;
                     } catch (Exception e) {
-
+                        nodes = 0;
                     }
                 } else if (found[2] == 0 && content.contains("a href=\"/my/topics\"")) {
                     //text = 20 主题收藏
@@ -74,7 +84,7 @@ public class ProfileModel extends V2EXModel implements Parcelable {
                         topics = Integer.parseInt(text);
                         found[2] = 1;
                     } catch (Exception e) {
-
+                        topics = 0;
                     }
                 } else if (found[3] == 0 && content.contains("a href=\"/my/following\"")) {
                     //text = 20 特别关注
@@ -84,6 +94,7 @@ public class ProfileModel extends V2EXModel implements Parcelable {
                         followings = Integer.parseInt(text);
                         found[3] = 1;
                     } catch (Exception e) {
+                        followings = 0;
                     }
                 }
             }

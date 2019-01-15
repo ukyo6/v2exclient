@@ -3,6 +3,7 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
@@ -18,7 +19,10 @@ import com.ukyoo.v2client.viewmodels.PersonalViewModel
 /**
  * 个人中心
  */
-class PersonalFragment : BaseFragment<FragmentPersonalBinding>(),PersonalNavigator {
+class PersonalFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNavigator {
+    override fun gotoLogin() {
+        startActivity(Intent(activity, LoginActivity::class.java))
+    }
 
     companion object {
         fun newInstance(bundle: Bundle): PersonalFragment {
@@ -39,25 +43,16 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(),PersonalNavigat
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        viewModel.setPersonalNavigator(this@PersonalFragment)
-
-        //登录后获取用户信息
-        RxBus.getDefault()
-            .toFlowable(LoginSuccessEvent::class.java)
-            .bindLifeCycle(this)
-            .subscribe {
-                viewModel.getUserProfiler()
-            }
+        viewModel.apply {
+            hasLogin.observe(this@PersonalFragment, Observer { isLogin ->
+                if(!isLogin){
+                    gotoLogin()
+                }
+            })
+        }
     }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_personal
-    }
-
-    override fun gotoLogin() {
-        //未登录就跳转到登录界面
-        if (!SPUtils.getBoolean("isLogin", false)) {
-            startActivity(Intent(activity, LoginActivity::class.java))
-        }
     }
 }

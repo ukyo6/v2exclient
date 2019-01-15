@@ -1,19 +1,14 @@
 package com.ukyoo.v2client.viewmodels
 
-import androidx.annotation.Nullable
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import com.ukyoo.v2client.entity.ProfileModel
-import com.ukyoo.v2client.navigator.LoginNavigator
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.SPUtils
-import com.ukyoo.v2client.util.ToastUtil
-import com.ukyoo.v2client.util.async
+import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import retrofit2.HttpException
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -29,12 +24,9 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
     private var verifyCodeVal: String = ""
     private var once: String = ""
 
-    @Nullable
-    private var navigator: WeakReference<LoginNavigator>? = null
 
-    fun setLoginNavigator(navigator: LoginNavigator) {
-        this.navigator = WeakReference(navigator)
-    }
+    //liveData
+    var loginSuccessEvent = SingleLiveEvent<Void>()
 
     /**
      *  从首页获取登录需要的信息
@@ -122,15 +114,36 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
                         Logger.d("onSuccess")
                     }, {
                         if (it is HttpException && it.code() == 302) {
-                            if (navigator != null && navigator?.get() != null) {
-                                navigator?.get()?.loginSuccess()
-                            }
+
+                            getUserProfiler()
+
+
                         } else {
                             ToastUtil.shortShow(ErrorHanding.handleError(it))
                         }
                     })
             }
         }
+    }
+
+    var profileModel = ObservableField<ProfileModel>()
+
+
+    /**
+     * 获取用户基本信息
+     */
+    private fun getUserProfiler() {
+        htmlService.getMyNodes()
+            .async()
+            .subscribe({
+                profileModel.set(ProfileModel().apply {
+                    parse(it)
+                })
+
+                loginSuccessEvent.call()
+            }, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
     }
 
     /**
