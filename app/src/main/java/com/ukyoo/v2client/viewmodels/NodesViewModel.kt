@@ -31,13 +31,13 @@ class NodesViewModel @Inject constructor(var apiService: JsonService) : PagedVie
                 }
                 return@map it
             }
-            .async()
             .doOnSubscribe {
                 startLoad()
             }.doAfterTerminate {
                 stopLoad()
                 empty.set(nodesList.isEmpty())
             }
+            .async()
             .subscribe({
                 nodesList.clear()
                 nodesList.addAll(it)

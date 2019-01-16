@@ -16,7 +16,6 @@ import androidx.room.migration.Migration
 @Database(entities = [NodeModel::class, ProfileModel::class], version = 3)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun nodeModelDao(): NodeModelDao
-
     abstract fun profileModelDao(): ProfileModelDao
 
     companion object {

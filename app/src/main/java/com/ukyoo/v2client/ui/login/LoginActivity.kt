@@ -5,6 +5,8 @@ import androidx.lifecycle.Observer
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
+import com.ukyoo.v2client.db.AppDataBase
+import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.event.LoginSuccessEvent
 import com.ukyoo.v2client.navigator.LoginNavigator
 import com.ukyoo.v2client.util.RxBus
@@ -25,7 +27,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
         viewModel.apply {
             //登录成功的回调
             loginSuccessEvent.observe(this@LoginActivity, Observer {
-                loginSuccess()
+                loginSuccess(it)
             })
         }
 
@@ -45,8 +47,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
 
 
     //登录成功
-    override fun loginSuccess() {
-        SPUtils.setBoolean("isLogin", true)
+    override fun loginSuccess(model: ProfileModel) {
+        RxBus.getDefault().post(LoginSuccessEvent(model))
         finish()
     }
 }

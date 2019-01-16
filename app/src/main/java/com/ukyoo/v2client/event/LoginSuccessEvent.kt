@@ -1,3 +1,8 @@
 package com.ukyoo.v2client.event
 
-class LoginSuccessEvent
+import com.ukyoo.v2client.entity.ProfileModel
+
+class LoginSuccessEvent(var model: ProfileModel){
+
+
+}

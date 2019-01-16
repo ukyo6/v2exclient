@@ -1,6 +1,7 @@
 package com.ukyoo.v2client.base.viewmodel
 
 import androidx.databinding.ObservableBoolean
+import com.orhanobut.logger.Logger
 
 /**
  * 页面描述：PagedViewModel

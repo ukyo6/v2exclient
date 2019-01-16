@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
+import com.ukyoo.v2client.db.AppDataBase
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
@@ -26,7 +27,7 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
 
 
     //liveData
-    var loginSuccessEvent = SingleLiveEvent<Void>()
+    var loginSuccessEvent = SingleLiveEvent<ProfileModel>()
 
     /**
      *  从首页获取登录需要的信息
@@ -126,8 +127,6 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
         }
     }
 
-    var profileModel = ObservableField<ProfileModel>()
-
 
     /**
      * 获取用户基本信息
@@ -135,12 +134,16 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
     private fun getUserProfiler() {
         htmlService.getMyNodes()
             .async()
-            .subscribe({
-                profileModel.set(ProfileModel().apply {
+            .map {
+                val profileModel = ProfileModel().apply {
                     parse(it)
-                })
-
-                loginSuccessEvent.call()
+                }
+                AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
+                SPUtils.setBoolean("isLogin", true)
+                return@map profileModel
+            }
+            .subscribe({
+                loginSuccessEvent.value = it
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
@@ -149,7 +152,7 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
     /**
      * 刷新验证码
      */
-    fun refreshVerifyImg(){
+    fun refreshVerifyImg() {
         getLoginData()
     }
 }

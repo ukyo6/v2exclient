@@ -8,11 +8,13 @@ import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentPersonalBinding
+import com.ukyoo.v2client.db.AppDataBase
 import com.ukyoo.v2client.event.LoginSuccessEvent
 import com.ukyoo.v2client.navigator.PersonalNavigator
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.util.RxBus
 import com.ukyoo.v2client.util.SPUtils
+import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.viewmodels.PersonalViewModel
 
@@ -44,12 +46,23 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         viewModel.apply {
+
+            viewModel.getUserInfo()
+
             hasLogin.observe(this@PersonalFragment, Observer { isLogin ->
-                if(!isLogin){
+                if (!isLogin) {
                     gotoLogin()
                 }
             })
         }
+
+        //登录后返回
+        RxBus.getDefault()
+            .toFlowable(LoginSuccessEvent::class.java)
+            .bindLifeCycle(this)
+            .subscribe {
+                viewModel.setUserProfiler(it.model)
+            }
     }
 
     override fun getLayoutId(): Int {
