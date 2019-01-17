@@ -17,8 +17,7 @@
 
 	</data>
 
-	<LinearLayout
-		android:orientation="vertical"
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
@@ -34,14 +33,15 @@
 
 
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			app:layout_constraintTop_toBottomOf="@+id/toolbar"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior"
 			android:id="@+id/refresh_layout"
 			app:onRefresh="@{presenter}"
 			app:refreshing="@{vm.loading}"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="0dp">
 
-			<RelativeLayout
+			<FrameLayout
 				android:focusableInTouchMode="true"
 				android:focusable="true"
 				android:id="@+id/container"
@@ -57,12 +57,20 @@
 					layout="@layout/empty_layout"
 					android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
 
-			</RelativeLayout>
+			</FrameLayout>
 
 
 		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-	</LinearLayout>
+
+		<include
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintBottom_toBottomOf="parent"
+			layout="@layout/common_enter_layout" />
+
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

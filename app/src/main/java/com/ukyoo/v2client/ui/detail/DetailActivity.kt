@@ -1,6 +1,5 @@
 package com.ukyoo.v2client.ui.detail
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,11 +10,10 @@ import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
-import com.ukyoo.v2client.viewmodels.DetailViewModel
 import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
-import com.ukyoo.v2client.base.viewmodel.IViewModel
+import com.ukyoo.v2client.viewmodels.DetailViewModel
 
 /**
  * 主题详情页
@@ -136,6 +134,10 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     }
 
     override fun onItemClick(v: View?, item: ReplyModel) {
+        //回复
+
+
+
     }
 
     companion object {
