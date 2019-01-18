@@ -1,5 +1,8 @@
 package com.ukyoo.v2client.api
 
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.google.gson.GsonBuilder
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.App
@@ -113,6 +116,7 @@ object NetManager {
         } else {
             builder.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko")
         }
+        builder.build()
         chain.proceed(request)
     }
 
@@ -157,12 +161,12 @@ object NetManager {
         return OkHttpClient.Builder()
             .followRedirects(false)  //禁制OkHttp的重定向操作，我们自己处理重定向
             .followSslRedirects(false)
-            .cookieJar(LocalCookieJar())   //为OkHttp设置自动携带Cookie的功能
+            .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.instance())))   //为OkHttp设置自动携带Cookie的功能
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(okhttpLogInterceptor)
             .addInterceptor(cookieInterceptor)
+            .addInterceptor(okhttpLogInterceptor)
             .build()
     }
 
@@ -178,19 +182,4 @@ object NetManager {
             .cache(cache)
             .build()
     }
-
-
-    //CookieJar是用于保存Cookie的
-    internal class LocalCookieJar : CookieJar {
-        var cookies: List<Cookie>? = null
-        override fun loadForRequest(arg0: HttpUrl): List<Cookie> {
-            return if (cookies != null) cookies!! else ArrayList()
-        }
-
-        override fun saveFromResponse(arg0: HttpUrl, cookies: List<Cookie>) {
-            this.cookies = cookies
-        }
-    }
-
-
 }

@@ -11,7 +11,7 @@ import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 import javax.inject.Named
 
-class PersonalViewModel @Inject constructor(@Named("cached") private var htmlService: HtmlService) : BaseViewModel() {
+class PersonalViewModel @Inject constructor() : BaseViewModel() {
 
     var profileModel = ObservableField<ProfileModel>()
 

@@ -134,7 +134,6 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
      */
     private fun getUserProfiler() {
         htmlService.getMyNodes()
-            .async()
             .map {
                 val profileModel = ProfileModel().apply {
                     parse(it)
@@ -143,6 +142,7 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
                 SPUtils.setBoolean("isLogin", true)
                 return@map profileModel
             }
+            .async()
             .subscribe({
                 loginSuccessEvent.value = it
             }, {

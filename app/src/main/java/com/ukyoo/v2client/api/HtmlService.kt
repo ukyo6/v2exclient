@@ -18,10 +18,18 @@ interface HtmlService {
     fun getTopicAndRepliesByTopicId(@Path("topicId") topicId: Int, @Query("p") page: Int): Single<String>
 
     //登录首页信息
+//    @Headers(
+////        "X-Requested-With: com.android.browser",
+////        "User-Agent: Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+////    )
     @GET("/signin")
     fun signin(): Single<Response<String>>
 
     //登录
+//    @Headers(
+//        "X-Requested-With: com.android.browser",
+//        "User-Agent: Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+//    )
     @POST("/signin")
     fun login(@HeaderMap headers: Map<String, String>, @QueryMap params: Map<String, String>): Single<String>
 
@@ -39,14 +47,14 @@ interface HtmlService {
     fun getMyTopics(): Single<String>
 
     //获取回复需要的参数
-    @Headers("Referer: https://www.v2ex.com")
     @GET("t/{topicId}")
     fun getReplyOnce(@Path("topicId") topicId: Int): Single<String>
 
     //回复
     @Headers("Origin: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
-    @GET("t/{topicId}")
-    fun reply(@Path("topicId") topicId: Int, @Query("content") content: String, @Query("once") once: String): Single<String>
+    @FormUrlEncoded
+    @POST("t/{topicId}")
+    fun reply(@Header("Referer") refer:String, @Path("topicId") topicId: Int, @Field("content") content: String, @Field("once") once: String): Single<String>
 
 
 }
