@@ -32,11 +32,21 @@ interface HtmlService {
 
     //获取用户收藏的节点
     @GET("/")
-    fun getMyNodes():Single<String>
+    fun getMyNodes(): Single<String>
 
     //获取用户收藏的主题
     @GET()
-    fun getMyTopics():Single<String>
+    fun getMyTopics(): Single<String>
+
+    //获取回复需要的参数
+    @Headers("Referer: https://www.v2ex.com")
+    @GET("t/{topicId}")
+    fun getReplyOnce(@Path("topicId") topicId: Int): Single<String>
+
+    //回复
+    @Headers("Origin: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
+    @GET("t/{topicId}")
+    fun reply(@Path("topicId") topicId: Int, @Query("content") content: String, @Query("once") once: String): Single<String>
 
 
 }

@@ -117,8 +117,6 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
                         if (it is HttpException && it.code() == 302) {
 
                             getUserProfiler()
-
-
                         } else {
                             ToastUtil.shortShow(ErrorHanding.handleError(it))
                         }

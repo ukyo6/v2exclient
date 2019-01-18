@@ -33,6 +33,7 @@
 
 
 		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			app:layout_constraintBottom_toTopOf="@+id/include_reply"
 			app:layout_constraintTop_toBottomOf="@+id/toolbar"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior"
 			android:id="@+id/refresh_layout"
@@ -64,10 +65,12 @@
 
 
 		<include
+			app:layout_constraintTop_toBottomOf="@+id/refresh_layout"
+			android:id="@+id/include_reply"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			app:layout_constraintBottom_toBottomOf="parent"
-			layout="@layout/common_enter_layout" />
+			layout="@layout/common_enter_layout"/>
 
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

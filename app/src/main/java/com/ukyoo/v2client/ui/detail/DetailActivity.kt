@@ -1,6 +1,7 @@
 package com.ukyoo.v2client.ui.detail
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.BR
@@ -9,11 +10,15 @@ import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.V2EXModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
+import com.ukyoo.v2client.util.InputUtils
+import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.viewmodels.DetailViewModel
+import com.ukyoo.v2client.widget.EnterLayout
 
 /**
  * 主题详情页
@@ -69,8 +74,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
      * 查看话题内容
      */
     private fun getTopicByTopicId() {
-        viewModel.topicId = mTopicId
-        viewModel.getTopicsByTopicId(true)
+        viewModel.getTopicsByTopicId(mTopicId, true)
             .bindLifeCycle(this)
             .subscribe({
                 mTopic = it[0]
@@ -87,8 +91,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
      * 查询主题下的回复
      */
     private fun getRepliesByTopicId() {
-        viewModel.topicId = mTopicId
-        viewModel.getRepliesByTopicId(true)
+        viewModel.getRepliesByTopicId(mTopicId, true)
             .bindLifeCycle(this)
             .subscribe({
             }, {
@@ -100,15 +103,16 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
      * 查看主题和回复
      */
     private fun getTopicAndRepliesByTopicId() {
-        viewModel.topicId = mTopicId
         viewModel.page = page
-        viewModel.getTopicAndRepliesByTopicId(true)
+        viewModel.getTopicAndRepliesByTopicId(mTopicId, true)
     }
+
+    private lateinit var mEnterLayout: EnterLayout
 
     override fun initView() {
         getComponent().inject(this)
-
         mBinding.setVariable(BR.vm, viewModel)
+
         //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
@@ -118,7 +122,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
             adapter = MultiTypeAdapter(mContext, viewModel.multiDataList, object : MultiTypeAdapter.MultiViewTyper {
                 override fun getViewType(item: Any): Int {
-                    return if(item is TopicModel) ITEM_TOPIC else ITEM_REPLY
+                    return if (item is TopicModel) ITEM_TOPIC else ITEM_REPLY
                 }
 
             }).apply {
@@ -126,6 +130,21 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
                 addViewTypeToLayoutMap(ITEM_REPLY, R.layout.item_reply)
             }
         }
+
+        mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
+        mEnterLayout.setDefaultHint("评论主题")
+//        mEnterLayout.hide()
+    }
+
+    private var onClickSend: View.OnClickListener = View.OnClickListener {
+        val content = mEnterLayout.getContent()
+        if (content.isEmpty()) {
+            ToastUtil.shortShow("回复内容不能为空")
+            return@OnClickListener
+        }
+        InputUtils.popSoftkeyboard(mContext, mEnterLayout.content, false)
+
+        viewModel.getReplyOnce(mTopicId)
     }
 
 
@@ -135,9 +154,29 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
     override fun onItemClick(v: View?, item: ReplyModel) {
         //回复
+        prepareAddComment(item, true)
+    }
 
+    private fun prepareAddComment(data: V2EXModel, popKeyboard: Boolean) {
+        val content = mEnterLayout.content
+        var replyToWho = ""
+        mEnterLayout.clearContent()
+        if (data is ReplyModel) {
+            val replyObj = data as ReplyModel
+            content.hint = "回复 " + replyObj.member.username
+            replyToWho = "@" + replyObj.member.username + " "
+        }
 
-
+        if (popKeyboard) {
+            InputUtils.popSoftkeyboard(mContext, content, true)
+            val replyToWho_ = replyToWho
+            Handler().postDelayed({
+                content.setText(replyToWho_)
+                content.setSelection(content.text.length)
+            }, 500)
+        } else {
+            InputUtils.popSoftkeyboard(mContext, content, false)
+        }
     }
 
     companion object {

@@ -1,7 +1,9 @@
 package com.ukyoo.v2client.viewmodels
 
+import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
+import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.entity.ReplyModel
@@ -12,22 +14,26 @@ import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import io.reactivex.Single
+import retrofit2.HttpException
+import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
 
-class DetailViewModel @Inject constructor(private var jsonApi: JsonService,  @Named("non_cached") private var htmlService: HtmlService) :
-    PagedViewModel() {
-
-    var topicId: Int = 0
+class DetailViewModel @Inject constructor(
+    private var jsonApi: JsonService,
+    @Named("non_cached") private var htmlService: HtmlService,
+    @Named("cached") private var htmlService2: HtmlService
+) : PagedViewModel() {
 
     var page: Int = 0
 
-    var replyList = ObservableArrayList<ReplyModel>()
     var multiDataList = ObservableArrayList<Any>()
+    var replyList = ObservableArrayList<ReplyModel>() //回复
+    var topic = ObservableField<TopicModel>() //主题
 
-    var topic = ObservableField<TopicModel>()
+    var replyContent = ObservableField<String>()  //回复内容
 
-    fun getRepliesByTopicId(isRefresh: Boolean): Single<ArrayList<ReplyModel>> {
+    fun getRepliesByTopicId(topicId: Int, isRefresh: Boolean): Single<ArrayList<ReplyModel>> {
         return jsonApi.getRepliesByTopicId(topicId)
             .async()
             .map {
@@ -45,7 +51,7 @@ class DetailViewModel @Inject constructor(private var jsonApi: JsonService,  @Na
             }
     }
 
-    fun getTopicsByTopicId(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
+    fun getTopicsByTopicId(topicId: Int, isRefresh: Boolean): Single<ArrayList<TopicModel>> {
         return jsonApi.getTopicByTopicId(topicId)
             .async()
             .doOnSubscribe {
@@ -56,7 +62,10 @@ class DetailViewModel @Inject constructor(private var jsonApi: JsonService,  @Na
             }
     }
 
-    fun getTopicAndRepliesByTopicId(isRefresh: Boolean) {
+    /**
+     * 获取主题和回复
+     */
+    fun getTopicAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) {
         htmlService.getTopicAndRepliesByTopicId(topicId, page)
             .async()
             .map { response ->
@@ -67,7 +76,7 @@ class DetailViewModel @Inject constructor(private var jsonApi: JsonService,  @Na
             }.doAfterTerminate {
                 stopLoad()
             }.subscribe({
-                //更新回复列表
+                //更新主题和回复列表
                 if (isRefresh) {
                     replyList.clear()
                     multiDataList.clear()
@@ -82,4 +91,51 @@ class DetailViewModel @Inject constructor(private var jsonApi: JsonService,  @Na
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
     }
+
+    /**
+     * 获取回复需要的ONCE
+     */
+    fun getReplyOnce(topicId: Int) {
+        htmlService2.getReplyOnce(topicId)
+            .async()
+            .subscribe({ content ->
+                val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
+                val matcher = pattern.matcher(content)
+                if (matcher.find()) {
+                    val once = matcher.group(1)
+                    //回复
+                    reply(once, topicId)
+                } else {
+                    ToastUtil.shortShow("找不到once")
+                }
+            }, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
+    }
+
+    /**
+     * 回复
+     */
+    fun reply(once: String, topicId: Int) {
+        val replyContents = replyContent.get()
+        if (TextUtils.isEmpty(replyContents)) {
+            ToastUtil.shortShow("回复内容不得为空")
+            return
+        }
+
+        replyContents?.let {
+            htmlService2.reply(topicId, replyContents, once)
+                .async()
+                .subscribe({
+                    Logger.d("onSuccess")
+                }, { throwable ->
+                    if (throwable is HttpException && throwable.code() == 302) {
+                        Logger.d("回复成功了")
+                    } else {
+                        ToastUtil.shortShow(ErrorHanding.handleError(throwable))
+                    }
+                })
+        }
+    }
+
 }
