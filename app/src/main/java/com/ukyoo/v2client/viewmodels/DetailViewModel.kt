@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
+import com.ukyoo.v2client.api.NetManager
 import com.ukyoo.v2client.entity.ReplyModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.entity.TopicWithReplyListModel
@@ -66,7 +67,7 @@ class DetailViewModel @Inject constructor(
      * 获取主题和回复
      */
     fun getTopicAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) {
-        htmlService.getTopicAndRepliesByTopicId(topicId, page)
+        htmlService2.getTopicAndRepliesByTopicId(topicId, page)
             .async()
             .map { response ->
                 return@map TopicWithReplyListModel().parse(response, page == 1, topicId)

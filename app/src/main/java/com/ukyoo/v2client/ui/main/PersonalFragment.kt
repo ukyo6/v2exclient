@@ -47,7 +47,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         viewModel.apply {
 
-            viewModel.getUserInfo()
+            viewModel.getUserInfoCache()
 
             hasLogin.observe(this@PersonalFragment, Observer { isLogin ->
                 if (!isLogin) {

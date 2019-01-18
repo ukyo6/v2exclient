@@ -46,6 +46,9 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
                 }
                 SPUtils.setStringSet("cookie", cookies)
 
+                if (content?.body() == null) {
+                    return@subscribe
+                }
                 val body = Jsoup.parse(content.body())
                 val boxes = body.getElementsByClass("box")
                 for (el in boxes) {
