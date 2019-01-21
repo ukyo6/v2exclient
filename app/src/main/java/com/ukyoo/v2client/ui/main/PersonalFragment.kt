@@ -22,6 +22,10 @@ import com.ukyoo.v2client.viewmodels.PersonalViewModel
  * 个人中心
  */
 class PersonalFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNavigator {
+    override fun isLazyLoad(): Boolean {
+        return true
+    }
+
     override fun gotoLogin() {
         startActivity(Intent(activity, LoginActivity::class.java))
     }

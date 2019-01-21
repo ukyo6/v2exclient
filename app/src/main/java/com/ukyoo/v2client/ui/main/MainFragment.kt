@@ -11,6 +11,9 @@ import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<FragmentMainBinding>() {
+    override fun isLazyLoad(): Boolean {
+        return false
+    }
 
     @Inject
     lateinit var manager: FragmentManager

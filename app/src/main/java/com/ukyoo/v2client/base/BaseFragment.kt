@@ -85,7 +85,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
         this.savedInstanceState = savedInstanceState
         isPrepared = true
-        if (lazyLoad) {
+        if (isLazyLoad()) {
             lazyLoad()
         } else {
             loadData(true, savedInstanceState)//数据请求
@@ -144,6 +144,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     abstract override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?)
 
     abstract fun getLayoutId(): Int
+
+    abstract fun isLazyLoad(): Boolean
 
     fun toast(msg: String) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()

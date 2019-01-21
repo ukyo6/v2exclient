@@ -16,6 +16,10 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+    override fun isLazyLoad(): Boolean {
+        return true
+    }
+
     @Inject
     lateinit var manager: FragmentManager
 

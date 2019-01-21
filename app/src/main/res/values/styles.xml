@@ -56,13 +56,16 @@
 	</style>
 
 
-	<!-- 使用style方式定义activity切换动画 -->
-	<style name="AnimationActivity" parent="@android:style/Animation.Activity">
-		<item name="android:activityOpenEnterAnimation">@anim/activity_slide_enter_right</item>
-		<item name="android:activityOpenExitAnimation">@anim/activity_slide_exit_left</item>
-		<item name="android:activityCloseEnterAnimation">@anim/activity_slide_enter_left</item>
-		<item name="android:activityCloseExitAnimation">@anim/activity_slide_exit_right</item>
-	</style>
+	<!--设置的条目 -->
+	<declare-styleable name="SettingViews">
+		<attr name="img_left" format="reference"/>
+		<attr name="tv_desc" format="string"/>
+		<attr name="img_right" format="reference"/>
+		<attr name="right_visible" format="boolean"/>
+		<attr name="left_visible" format="boolean"/>
+		<attr name="text_color1" format="color"/>
+		<attr name="text_size1" format="dimension"/>
+	</declare-styleable>
 
 
 </resources>

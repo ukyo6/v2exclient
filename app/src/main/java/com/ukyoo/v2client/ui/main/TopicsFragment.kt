@@ -21,6 +21,9 @@ import com.ukyoo.v2client.util.bindLifeCycle
  */
 class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
 
+    
+    override fun isLazyLoad(): Boolean = "lazyOpen".equals(arguments?.get(SOURCE))
+
     //get viewModel by di
     private val viewModel by lazy {
         getInjectViewModel<TopicsViewModel>()
@@ -43,9 +46,6 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
 
     override fun initView() {
         getComponent().inject(this)
-
-        //viewPager页面需要懒加载; 从nodes列表跳转过来直接加载
-        lazyLoad = "lazyOpen".equals(arguments?.get(SOURCE))
 
         mBinding.vm = viewModel
         mBinding.recyclerView.run {

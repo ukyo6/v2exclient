@@ -21,6 +21,9 @@ import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
  * @author hewei
  */
 class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<NodeModel> {
+    override fun isLazyLoad(): Boolean {
+        return true
+    }
 
     //get viewModel by di
     private val viewModel by lazy {
@@ -91,4 +94,6 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
         super.onCreateOptionsMenu(menu, inflater)
     }
+
+
 }

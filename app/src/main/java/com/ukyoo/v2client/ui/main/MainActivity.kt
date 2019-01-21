@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityMainBinding
-import com.ukyoo.v2client.viewmodels.MainViewModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.util.toast
@@ -21,18 +20,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private var isQuit = false
 
-
-
     override fun initView() {
         getComponent().inject(this)
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_main
-    }
-
-    private val viewModel  by lazy {
-        getInjectViewModel<MainViewModel>()
     }
 
     override fun onBackPressed() {
