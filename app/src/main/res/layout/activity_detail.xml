@@ -69,7 +69,7 @@
 			app:layout_constraintTop_toBottomOf="@+id/refresh_layout"
 			android:id="@+id/include_reply"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="65dp"
 			app:layout_constraintBottom_toBottomOf="parent"
 			layout="@layout/common_enter_layout"/>
 

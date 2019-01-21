@@ -10,4 +10,6 @@
 
     <color name="white">#ffffff</color>
     <color name="white_pressed">#ECECEC</color>
+
+    <color name="bg_gray">#f7f7f7</color>
 </resources>

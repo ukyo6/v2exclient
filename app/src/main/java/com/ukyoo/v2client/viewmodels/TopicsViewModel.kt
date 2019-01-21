@@ -7,6 +7,8 @@ import com.ukyoo.v2client.entity.TopicListModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.util.ErrorHanding
+import com.ukyoo.v2client.util.ToastUtil
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
@@ -23,9 +25,8 @@ class TopicsViewModel @Inject constructor(@Named("non_cached") private var apiSe
     var list = ObservableArrayList<TopicModel>()
 
     //loadData by tabId
-    fun loadDataByTab(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
-
-        return apiService.queryTopicsByTab(tab)
+    fun loadDataByTab(isRefresh: Boolean) {
+        apiService.queryTopicsByTab(tab)
             .async()
             .map { response ->
                 if (isRefresh) {
@@ -39,14 +40,15 @@ class TopicsViewModel @Inject constructor(@Named("non_cached") private var apiSe
             }.doAfterTerminate {
                 stopLoad()
                 empty.set(list.isEmpty())
-            }
+            }.subscribe({}, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
     }
 
 
     //loadData by topicName
-    fun loadDataByName(isRefresh: Boolean): Single<ArrayList<TopicModel>> {
-
-        return jsonService.queryTopicsByName(name)
+    fun loadDataByName(isRefresh: Boolean) {
+        jsonService.queryTopicsByName(name)
             .async()
             .map { response ->
                 if (isRefresh) {
@@ -60,7 +62,9 @@ class TopicsViewModel @Inject constructor(@Named("non_cached") private var apiSe
             }.doAfterTerminate {
                 stopLoad()
                 empty.set(list.isEmpty())
-            }
+            }.subscribe({}, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
     }
 }
 

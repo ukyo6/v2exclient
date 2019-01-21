@@ -21,7 +21,7 @@ import com.ukyoo.v2client.util.bindLifeCycle
  */
 class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
 
-    
+
     override fun isLazyLoad(): Boolean = "lazyOpen".equals(arguments?.get(SOURCE))
 
     //get viewModel by di
@@ -66,17 +66,9 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         if (nodeName != null) {
             viewModel.name = nodeName
             viewModel.loadDataByName(isRefresh = true)
-                .bindLifeCycle(this)
-                .subscribe({}, {
-                    toastFailure(it)
-                })
         } else if (tab != null) {
             viewModel.tab = tab
             viewModel.loadDataByTab(isRefresh = true)
-                .bindLifeCycle(this)
-                .subscribe({}, {
-                    toastFailure(it)
-                })
         }
     }
 
