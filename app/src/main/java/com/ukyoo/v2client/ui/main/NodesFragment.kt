@@ -94,6 +94,4 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
         super.onCreateOptionsMenu(menu, inflater)
     }
-
-
 }

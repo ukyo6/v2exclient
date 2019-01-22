@@ -1,6 +1,9 @@
 package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableField
+import com.ukyoo.v2client.App
+import com.ukyoo.v2client.R
+import com.ukyoo.v2client.api.NetManager
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import com.ukyoo.v2client.db.AppDataBase
 import com.ukyoo.v2client.entity.ProfileModel
@@ -35,8 +38,21 @@ class PersonalViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun callToLogin() {
-        if (!SPUtils.getBoolean("isLoin", false)) {
+        if (!SPUtils.getBoolean("isLogin", false)) {
             hasLogin.value = false
         }
+    }
+
+    /**
+     * 退出登录
+     */
+    fun exitLogin() {
+        NetManager.clearCookie()
+
+        SPUtils.setBoolean("isLogin", false)
+        val model = ProfileModel()
+        model.username = App.instance().getString(R.string.please_login)
+        model.avatar = null
+        profileModel.set(model)
     }
 }

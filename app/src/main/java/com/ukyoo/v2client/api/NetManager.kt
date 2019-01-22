@@ -156,17 +156,23 @@ object NetManager {
             .build()
     }
 
+    private var persistentCookieJar: PersistentCookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.instance()))
+
     private fun getHttpClient2(): OkHttpClient {
         return OkHttpClient.Builder()
             .followRedirects(false)  //禁制OkHttp的重定向操作，我们自己处理重定向
             .followSslRedirects(false)
-            .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.instance())))   //为OkHttp设置自动携带Cookie的功能
+            .cookieJar(persistentCookieJar)   //为OkHttp设置自动携带Cookie的功能
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(cookieInterceptor)
             .addInterceptor(okhttpLogInterceptor)
             .build()
+    }
+
+    public fun clearCookie() {
+        persistentCookieJar.clear()
     }
 
     private fun getHttpClient(): OkHttpClient {

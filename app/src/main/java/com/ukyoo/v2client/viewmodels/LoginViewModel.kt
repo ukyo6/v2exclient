@@ -1,19 +1,23 @@
 package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.api.HtmlService
+import com.ukyoo.v2client.api.NetManager
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import com.ukyoo.v2client.db.AppDataBase
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import retrofit2.HttpException
+import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
 
-class LoginViewModel @Inject constructor(@Named("cached") private var htmlService: HtmlService) : BaseViewModel() {
+class LoginViewModel @Inject constructor(
+    @Named("cached") private var htmlService: HtmlService
+) : BaseViewModel() {
     var username = ObservableField<String>()
     var password = ObservableField<String>()
     var verifyCode = ObservableField<String>()
@@ -33,6 +37,8 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
      *  从首页获取登录需要的信息
      */
     fun getLoginData() {
+        NetManager.clearCookie()
+
         htmlService.signin()
             .async()
             .subscribe({ content ->
@@ -106,7 +112,7 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
                         stringBuffer.append(it)
                     }
                 }
-//                headers.put("cookie", stringBuffer.toString())
+
                 headers.put("Origin", "https://www.v2ex.com")
                 headers.put("Referer", "https://www.v2ex.com/signin")
                 headers.put("Content-Type", "application/x-www-form-urlencoded")
@@ -115,7 +121,7 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
                     .login(headers, params)
                     .async()
                     .subscribe({
-                        Logger.d("onSuccess")
+                        Logger.d(getProblemFromHtmlResponse(it))
                     }, {
                         if (it is HttpException && it.code() == 302) {
 
@@ -155,5 +161,18 @@ class LoginViewModel @Inject constructor(@Named("cached") private var htmlServic
      */
     fun refreshVerifyImg() {
         getLoginData()
+    }
+
+
+    private fun getProblemFromHtmlResponse(response: String): String {
+        val errorPattern = Pattern.compile("<div class=\"problem\">(.*)</div>")
+        val errorMatcher = errorPattern.matcher(response)
+        val errorContent: String
+        if (errorMatcher.find()) {
+            errorContent = errorMatcher.group(1).replace("<[^>]+>".toRegex(), "")
+        } else {
+            errorContent = "未知错误"
+        }
+        return errorContent
     }
 }

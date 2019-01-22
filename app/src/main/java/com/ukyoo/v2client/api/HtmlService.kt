@@ -26,10 +26,6 @@ interface HtmlService {
     fun signin(): Single<Response<String>>
 
     //登录
-//    @Headers(
-//        "X-Requested-With: com.android.browser",
-//        "User-Agent: Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-//    )
     @POST("/signin")
     fun login(@HeaderMap headers: Map<String, String>, @QueryMap params: Map<String, String>): Single<String>
 

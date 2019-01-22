@@ -3,6 +3,7 @@ package com.ukyoo.v2client.util
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
+import android.widget.VideoView
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
@@ -41,6 +42,7 @@ object ImageUtil {
             uri, builder.build()
         )
         GlideApp.with(App.instance()).load(glideUrl).into(imageView)
+
     }
 
 

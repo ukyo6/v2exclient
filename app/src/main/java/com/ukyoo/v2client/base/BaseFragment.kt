@@ -123,7 +123,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
 
     private fun lazyLoad() {
-        if (!isVisible || !isPrepared) {
+        if (!visible || !isPrepared) {
             return
         }
 
