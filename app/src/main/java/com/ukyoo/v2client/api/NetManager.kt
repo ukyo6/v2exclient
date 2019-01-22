@@ -43,8 +43,8 @@ object NetManager {
                     + "\ntime->" + time
                     + "ms\nheaders->" + request.headers()
                     + "\nresponse code->" + response.code()
-                    + "\nresponse headers->" + response.headers()
-                    + "\nbody->" + bodyString)
+                    + "\nresponse headers->" + response.headers())
+//                    + "\nbody->" + bodyString)
 
             if (request.method() == "GET") {
                 Logger.i(msg)

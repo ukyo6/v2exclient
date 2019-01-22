@@ -86,6 +86,7 @@ public class EnterLayout {
 
     public void setDefaultHint(String hint) {
         this.hint = hint;
+        content.setHint(hint);
     }
 
     public void deleteOneChar() {
