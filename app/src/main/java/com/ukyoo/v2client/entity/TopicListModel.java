@@ -1,6 +1,5 @@
 package com.ukyoo.v2client.entity;
 
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import com.ukyoo.v2client.util.ContentUtils;
@@ -9,9 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 /**

@@ -64,6 +64,83 @@
 
 		</androidx.cardview.widget.CardView>
 
+		<LinearLayout
+			android:padding="10dp"
+			android:background="@color/white"
+			android:layout_marginTop="20dp"
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="100dp">
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:gravity="center"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="match_parent">
+
+				<TextView
+					android:gravity="center"
+					android:text="节点收藏"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+				<TextView
+					android:text="@{String.valueOf(vm.profileModel.nodes)}"
+					tools:text="111"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+
+			</LinearLayout>
+
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:gravity="center"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="match_parent">
+
+				<TextView
+					android:gravity="center"
+					android:text="主题收藏"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+				<TextView
+					android:text="@{String.valueOf(vm.profileModel.topics)}"
+					tools:text="111"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:gravity="center"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="match_parent">
+
+				<TextView
+					android:gravity="center"
+					android:text="特别关注"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+				<TextView
+					android:text="@{String.valueOf(vm.profileModel.followings)}"
+					tools:text="111"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+
+
+			</LinearLayout>
+
+		</LinearLayout>
+
 		<com.ukyoo.v2client.widget.SettingView
 			android:layout_marginTop="30dp"
 			android:layout_width="match_parent"

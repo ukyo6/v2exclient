@@ -2,11 +2,8 @@ package com.ukyoo.v2client.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;

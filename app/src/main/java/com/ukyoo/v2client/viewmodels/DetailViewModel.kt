@@ -124,7 +124,7 @@ class DetailViewModel @Inject constructor(
             return
         }
 
-        var url = "https://www.v2ex.com/t/$topicId"
+        val url = "https://www.v2ex.com/t/$topicId"
         replyContents?.let {
             htmlService2.reply(url, topicId, replyContents, once)
                 .async()

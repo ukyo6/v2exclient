@@ -74,9 +74,13 @@ class UserInfoViewModel @Inject constructor(
     /**
      * 获取用户回复
      */
-    fun getUserReplies() {
+    fun getUserReplies(memberModel:MemberModel1) {
+        htmlService.getUserReplies(memberModel.username, 1)
+            .async()
+            .subscribe({
 
+            },{
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
     }
-
-
 }

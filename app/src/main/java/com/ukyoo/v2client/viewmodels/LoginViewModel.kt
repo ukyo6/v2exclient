@@ -121,7 +121,7 @@ class LoginViewModel @Inject constructor(
                     .login(headers, params)
                     .async()
                     .subscribe({
-                        Logger.d(getProblemFromHtmlResponse(it))
+                        Logger.d(ErrorHanding.getProblemFromHtmlResponse(it))
                     }, {
                         if (it is HttpException && it.code() == 302) {
 
@@ -139,7 +139,7 @@ class LoginViewModel @Inject constructor(
      * 获取用户基本信息
      */
     private fun getUserProfiler() {
-        htmlService.getMyNodes()
+        htmlService.getProfiler()
             .map {
                 val profileModel = ProfileModel().apply {
                     parse(it)
@@ -161,18 +161,5 @@ class LoginViewModel @Inject constructor(
      */
     fun refreshVerifyImg() {
         getLoginData()
-    }
-
-
-    private fun getProblemFromHtmlResponse(response: String): String {
-        val errorPattern = Pattern.compile("<div class=\"problem\">(.*)</div>")
-        val errorMatcher = errorPattern.matcher(response)
-        val errorContent: String
-        if (errorMatcher.find()) {
-            errorContent = errorMatcher.group(1).replace("<[^>]+>".toRegex(), "")
-        } else {
-            errorContent = "未知错误"
-        }
-        return errorContent
     }
 }

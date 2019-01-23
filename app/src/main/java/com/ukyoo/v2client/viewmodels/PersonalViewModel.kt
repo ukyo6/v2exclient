@@ -37,6 +37,9 @@ class PersonalViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
+    /**
+     * 登录
+     */
     fun callToLogin() {
         if (!SPUtils.getBoolean("isLogin", false)) {
             hasLogin.value = false
@@ -55,4 +58,12 @@ class PersonalViewModel @Inject constructor() : BaseViewModel() {
         model.avatar = null
         profileModel.set(model)
     }
+
+    /**
+     * 我的回复
+     */
+    fun getMyReplies(){
+
+    }
+
 }
