@@ -6,8 +6,6 @@
 
 		<import type="android.view.View"/>
 
-
-
 		<variable
 			name="item"
 			type="com.ukyoo.v2client.entity.TopicModel"/>

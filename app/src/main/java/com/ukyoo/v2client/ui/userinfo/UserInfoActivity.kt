@@ -34,17 +34,16 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
 
-//        setSupportActionBar(mBinding.toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        mBinding.toolbar.setNavigationOnClickListener {
-//            finish()
+//        mBinding.recyclerview.run {
+//            layoutManager = LinearLayoutManager(mContext)
+//            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.createdTopics).apply {
+//                itemPresenter = this@UserInfoActivity
+//            }
 //        }
 
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
-            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.createdTopics).apply {
-                itemPresenter = this@UserInfoActivity
-            }
+            adapter = SingleTypeAdapter(mContext,R.layout.item_user_reply,viewModel.createdReplies)
         }
     }
 
@@ -54,12 +53,6 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            /**
-             * deal such scheme: [go](http://www.v2ex.com/member/njustyw)>
-             *
-             * AndroidMainfext.xml config:
-             * <data android:scheme="http" android:host="www.v2ex.com" android:pathPattern="/member/.*"></data>
-             */
             val intent = intent
             val data = intent.data
             val scheme = if (data != null) data.scheme else "" // "http"

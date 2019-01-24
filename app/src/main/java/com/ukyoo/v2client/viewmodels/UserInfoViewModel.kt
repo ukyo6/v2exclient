@@ -6,6 +6,7 @@ import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.api.JsonService
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.entity.MemberModel1
+import com.ukyoo.v2client.entity.ReplyListModel
 import com.ukyoo.v2client.entity.TopicListModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.ErrorHanding
@@ -43,6 +44,8 @@ class UserInfoViewModel @Inject constructor(
                 memberModel.set(it)
 
                 getUserTopics(it)
+
+                getUserReplies(it)
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
@@ -71,15 +74,20 @@ class UserInfoViewModel @Inject constructor(
             })
     }
 
+    var createdReplies = ObservableArrayList<ReplyListModel.ReplyItemModel>()
+
     /**
      * 获取用户回复
      */
-    fun getUserReplies(memberModel:MemberModel1) {
+    private fun getUserReplies(memberModel: MemberModel1) {
         htmlService.getUserReplies(memberModel.username, 1)
             .async()
-            .subscribe({
+            .subscribe({ response ->
+                createdReplies.apply {
 
-            },{
+                    addAll(ReplyListModel().parse(response))
+                }
+            }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
     }

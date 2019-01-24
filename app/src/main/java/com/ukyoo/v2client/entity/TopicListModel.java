@@ -75,7 +75,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
         if (parseNode) node = new NodeModel();
         for (Element tdNode : tdNodes) {
             String content = tdNode.toString();
-            if (content.contains("class=\"avatar\"") ) {
+            if (content.contains("class=\"avatar\"") ) { //用户信息
                 Elements userIdNode = tdNode.getElementsByTag("a");
                 if (userIdNode != null) {
                     String idUrlString = userIdNode.attr("href");
@@ -90,7 +90,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
                     }
                     member.avatar = avatarString;
                 }
-            } else if (content.contains("class=\"item_title\"") ) {
+            } else if (content.contains("class=\"item_title\"") ) { //主题条目
                 Elements aNodes = tdNode.getElementsByTag("a");
                 for (Element aNode : aNodes) {
                     if (parseNode && aNode.attr("class").equals("node")) {
