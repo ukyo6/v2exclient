@@ -121,10 +121,12 @@ class LoginViewModel @Inject constructor(
                     .login(headers, params)
                     .async()
                     .subscribe({
-                        Logger.d(ErrorHanding.getProblemFromHtmlResponse(it))
+                        ErrorHanding.getProblemFromHtmlResponse(it).apply {
+                            ToastUtil.shortShow(this)
+                            Logger.d(this)
+                        }
                     }, {
                         if (it is HttpException && it.code() == 302) {
-
                             getUserProfiler()
                         } else {
                             ToastUtil.shortShow(ErrorHanding.handleError(it))

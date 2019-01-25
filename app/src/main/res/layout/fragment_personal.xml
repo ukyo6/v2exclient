@@ -142,6 +142,7 @@
 		</LinearLayout>
 
 		<com.ukyoo.v2client.widget.SettingView
+			android:onClick="@{() -> vm.gotoUserTopicsPage()}"
 			android:layout_marginTop="30dp"
 			android:layout_width="match_parent"
 			android:layout_height="50dp"
@@ -149,16 +150,17 @@
 			app:tv_desc="创建的主题"/>
 
 		<View
-			android:id="@+id/v_line_olshop"
-			android:visibility="gone"
-			style="@style/divider_line"
-			android:layout_marginLeft="18dp"/>
+			style="@style/divider_line"/>
 
 		<com.ukyoo.v2client.widget.SettingView
+			android:onClick="@{() -> vm.gotoUserRepliesPage()}"
 			android:layout_width="match_parent"
 			android:layout_height="50dp"
 			app:img_left="@drawable/user"
 			app:tv_desc="我的回复"/>
+
+		<View
+			style="@style/divider_line"/>
 
 		<androidx.appcompat.widget.AppCompatButton
 			android:background="@drawable/shape_coener30_black"

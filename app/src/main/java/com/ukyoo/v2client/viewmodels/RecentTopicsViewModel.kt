@@ -1,10 +1,8 @@
 package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableArrayList
-import com.ukyoo.v2client.R.string.username
 import com.ukyoo.v2client.api.HtmlService
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.entity.MemberModel1
 import com.ukyoo.v2client.entity.TopicListModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.ErrorHanding
@@ -39,6 +37,4 @@ class RecentTopicsViewModel @Inject constructor(
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
     }
-
-
 }

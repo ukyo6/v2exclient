@@ -62,8 +62,14 @@ class PersonalViewModel @Inject constructor() : BaseViewModel() {
     /**
      * 我的回复
      */
-    fun getMyReplies(){
+    fun gotoUserRepliesPage(){
 
     }
 
+    /**
+     * 我发表的主题
+     */
+    fun gotoUserTopicsPage(){
+
+    }
 }

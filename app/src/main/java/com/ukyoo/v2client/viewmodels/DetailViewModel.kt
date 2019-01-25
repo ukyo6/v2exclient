@@ -14,6 +14,7 @@ import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.util.apply
 import io.reactivex.Single
 import retrofit2.HttpException
 import java.util.regex.Pattern
@@ -128,8 +129,11 @@ class DetailViewModel @Inject constructor(
         replyContents?.let {
             htmlService2.reply(url, topicId, replyContents, once)
                 .async()
-                .subscribe({
-                    Logger.d("onSuccess")
+                .subscribe({ response ->
+                    ErrorHanding.getProblemFromHtmlResponse(response).apply {
+                        ToastUtil.shortShow(this)
+                        Logger.d(this)
+                    }
                 }, { throwable ->
                     if (throwable is HttpException && throwable.code() == 302) {
                         Logger.d("回复成功了")
