@@ -3,6 +3,8 @@ package com.ukyoo.v2client.di.component
 import com.ukyoo.v2client.di.module.FragmentModule
 import com.ukyoo.v2client.di.scope.FragmentScope
 import com.ukyoo.v2client.ui.main.*
+import com.ukyoo.v2client.ui.userinfo.RecentRepliesFragment
+import com.ukyoo.v2client.ui.userinfo.RecentTopicsFragment
 import dagger.Subcomponent
 
 /**
@@ -19,7 +21,8 @@ interface FragmentComponent {
     fun inject(fragment: NodesFragment)
     fun inject(fragment: PersonalFragment)
     fun inject(fragment: TopicsFragment)
-
+    fun inject(fragment: RecentRepliesFragment)
+    fun inject(fragment: RecentTopicsFragment)
 
     @Subcomponent.Builder
     interface Builder {

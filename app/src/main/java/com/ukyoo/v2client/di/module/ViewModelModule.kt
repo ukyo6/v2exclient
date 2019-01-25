@@ -48,5 +48,15 @@ abstract class ViewModelModule {
     abstract fun providePersonViewModel(viewModel: PersonalViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @ViewModelKey(RecentRepliesViewModel::class)
+    abstract fun provideRecentRepliesViewModel(viewModel: RecentRepliesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecentTopicsViewModel::class)
+    abstract fun provideRcecentTopicsViewModel(viewModel: RecentTopicsViewModel): ViewModel
+
+    @Binds
     abstract fun bindViewModelFactory(factory: APPViewModelFactory): ViewModelProvider.Factory
 }

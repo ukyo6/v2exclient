@@ -83,8 +83,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             })
         }
-
-//        startActivity(Intent(activity,UserInfoActivity::class.java))
     }
 
     override fun getLayoutId(): Int {

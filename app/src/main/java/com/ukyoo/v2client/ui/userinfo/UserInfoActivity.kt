@@ -4,7 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
@@ -12,9 +13,11 @@ import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
 import com.ukyoo.v2client.entity.MemberModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
+import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
-import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
+import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
 import com.ukyoo.v2client.viewmodels.UserInfoViewModel
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * 用户信息
@@ -33,18 +36,6 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
     override fun initView() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
-
-//        mBinding.recyclerview.run {
-//            layoutManager = LinearLayoutManager(mContext)
-//            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.createdTopics).apply {
-//                itemPresenter = this@UserInfoActivity
-//            }
-//        }
-
-        mBinding.recyclerview.run {
-            layoutManager = LinearLayoutManager(mContext)
-            adapter = SingleTypeAdapter(mContext,R.layout.item_user_reply,viewModel.createdReplies)
-        }
     }
 
     override fun getLayoutId(): Int {
@@ -76,6 +67,42 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
             }
         } else {
             mUsername = savedInstanceState.getString("username") ?: ""
+        }
+
+        val tabTitles = arrayOf("创建的主题", "最近的回复")
+        mBinding.viewpager.apply {
+            adapter = object : AbstractPagerAdapter(supportFragmentManager, tabTitles) {
+                override fun getItem(pos: Int): Fragment? {
+                    return when (pos) {
+                        0 -> RecentTopicsFragment.newInstance(mUsername)
+                        1 -> RecentRepliesFragment.newInstance(mUsername)
+                        else -> null
+                    }
+                }
+            }
+            offscreenPageLimit = (adapter as AbstractPagerAdapter).count - 1
+        }
+
+        mBinding.tabLayout.apply {
+            setupWithViewPager(mBinding.viewpager)
+
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(p0: TabLayout.Tab?) {
+                    //refresh topicFragment
+                    val abstractPagerAdapter = viewpager.adapter as AbstractPagerAdapter
+                    abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
+                        if (it is ToTopOrRefreshContract) {
+                            it.toTopOrRefresh()
+                        }
+                    }
+                }
+
+                override fun onTabUnselected(p0: TabLayout.Tab?) {
+                }
+
+                override fun onTabSelected(p0: TabLayout.Tab?) {
+                }
+            })
         }
 
         viewModel.getUserInfo(mUsername, isRefresh = true)

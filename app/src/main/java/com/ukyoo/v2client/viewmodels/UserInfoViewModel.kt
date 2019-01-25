@@ -43,50 +43,6 @@ class UserInfoViewModel @Inject constructor(
             }.subscribe({
                 memberModel.set(it)
 
-                getUserTopics(it)
-
-                getUserReplies(it)
-            }, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
-    }
-
-    var createdTopics = ObservableArrayList<TopicModel>()  //创建的主题
-
-    /**
-     * 获取创建的主题
-     */
-    private fun getUserTopics(memberModel: MemberModel1) {
-        htmlService.getUserTopics(memberModel.username, 1)
-            .async()
-            .subscribe({ response ->
-                val topics = TopicListModel().parse(response)
-                createdTopics.apply {
-                    clear()
-
-                    for (topic in topics) {
-                        topic.member.avatar = memberModel.avatar_large
-                    }
-                    addAll(topics)
-                }
-            }, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
-    }
-
-    var createdReplies = ObservableArrayList<ReplyListModel.ReplyItemModel>()
-
-    /**
-     * 获取用户回复
-     */
-    private fun getUserReplies(memberModel: MemberModel1) {
-        htmlService.getUserReplies(memberModel.username, 1)
-            .async()
-            .subscribe({ response ->
-                createdReplies.apply {
-
-                    addAll(ReplyListModel().parse(response))
-                }
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
