@@ -1,15 +1,14 @@
-package com.ukyoo.v2client.viewmodels
+package com.ukyoo.v2client.ui.detail
 
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.JsonService
-import com.ukyoo.v2client.api.NetManager
-import com.ukyoo.v2client.entity.ReplyModel
-import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.entity.TopicWithReplyListModel
+import com.ukyoo.v2client.data.api.HtmlService
+import com.ukyoo.v2client.data.api.JsonService
+import com.ukyoo.v2client.data.entity.ReplyModel
+import com.ukyoo.v2client.data.entity.TopicModel
+import com.ukyoo.v2client.data.entity.TopicWithReplyListModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
@@ -68,10 +67,11 @@ class DetailViewModel @Inject constructor(
      * 获取主题和回复
      */
     fun getTopicAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) {
+
         htmlService2.getTopicAndRepliesByTopicId(topicId, page)
             .async()
             .map { response ->
-                return@map TopicWithReplyListModel().parse(response, page == 1, topicId)
+                return@map TopicWithReplyListModel().parse(response, true, topicId)
             }
             .doOnSubscribe {
                 startLoad()
@@ -82,13 +82,11 @@ class DetailViewModel @Inject constructor(
                 if (isRefresh) {
                     replyList.clear()
                     multiDataList.clear()
+                    multiDataList.add(it.topic) //主题内容
                 }
 
                 replyList.addAll(it.replies)
-                multiDataList.apply {
-                    add(it.topic) //主题内容
-                    addAll(replyList) //回复列表
-                }
+                multiDataList.addAll(replyList) //回复列表
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
@@ -108,7 +106,7 @@ class DetailViewModel @Inject constructor(
                     //回复
                     reply(once, topicId)
                 } else {
-                    ToastUtil.shortShow("找不到once")
+                    ToastUtil.shortShow("请登录")
                 }
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
@@ -143,5 +141,4 @@ class DetailViewModel @Inject constructor(
                 })
         }
     }
-
 }

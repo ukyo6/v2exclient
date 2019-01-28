@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.api
+package com.ukyoo.v2client.data.api
 
 import io.reactivex.Single
 import retrofit2.Response

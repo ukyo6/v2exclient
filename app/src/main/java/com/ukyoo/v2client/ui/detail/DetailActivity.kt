@@ -7,23 +7,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
+import com.ukyoo.v2client.data.entity.ReplyModel
+import com.ukyoo.v2client.data.entity.TopicModel
+import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
-import com.ukyoo.v2client.entity.ReplyModel
-import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.entity.V2EXModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
-import com.ukyoo.v2client.viewmodels.DetailViewModel
 import com.ukyoo.v2client.widget.EnterLayout
 
 /**
  * 主题详情页
  */
-class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<ReplyModel> {
+class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<Any> {
     private var mTopicId: Int = 0
     private lateinit var mTopic: TopicModel
     private var page = 1
@@ -116,16 +115,13 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
-            adapter = SingleTypeAdapter(mContext, R.layout.item_reply, viewModel.replyList).apply {
-                itemPresenter = this@DetailActivity
-            }
-
             adapter = MultiTypeAdapter(mContext, viewModel.multiDataList, object : MultiTypeAdapter.MultiViewTyper {
                 override fun getViewType(item: Any): Int {
                     return if (item is TopicModel) ITEM_TOPIC else ITEM_REPLY
                 }
 
             }).apply {
+                itemPresenter = this@DetailActivity
                 addViewTypeToLayoutMap(ITEM_TOPIC, R.layout.item_topic_header)
                 addViewTypeToLayoutMap(ITEM_REPLY, R.layout.item_reply)
             }
@@ -152,9 +148,11 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         return R.layout.activity_detail
     }
 
-    override fun onItemClick(v: View?, item: ReplyModel) {
-        //回复
-        prepareAddComment(item, true)
+    override fun onItemClick(v: View?, item: Any) {
+        if(item is ReplyModel) {
+            //回复
+            prepareAddComment(item, true)
+        }
     }
 
     private fun prepareAddComment(data: V2EXModel, popKeyboard: Boolean) {

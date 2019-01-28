@@ -10,13 +10,12 @@ import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
-import com.ukyoo.v2client.entity.MemberModel
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.data.entity.MemberModel
+import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
-import com.ukyoo.v2client.viewmodels.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> {
 
-    private lateinit var mMember: MemberModel
     private var mUsername: String = ""
 
     //get viewModel by di
@@ -56,14 +54,8 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
                 mUsername = params[1]
                 updateTitle(mUsername)
             } else {
-                if (intent.hasExtra("model")) {
-                    mMember = intent.getParcelableExtra<MemberModel>("model")
-                    mUsername = mMember.username
-                    updateTitle(mUsername)
-                } else {
-                    mUsername = intent.getStringExtra("username")
-                    updateTitle(mUsername)
-                }
+                mUsername = intent.getStringExtra("username")
+                updateTitle(mUsername)
             }
         } else {
             mUsername = savedInstanceState.getString("username") ?: ""

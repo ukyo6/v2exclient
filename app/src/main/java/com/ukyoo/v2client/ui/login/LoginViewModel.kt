@@ -1,17 +1,15 @@
-package com.ukyoo.v2client.viewmodels
+package com.ukyoo.v2client.ui.login
 
 import androidx.databinding.ObservableField
-import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.NetManager
+import com.ukyoo.v2client.data.api.HtmlService
+import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.db.AppDataBase
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.db.AppDataBase
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import retrofit2.HttpException
-import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
 

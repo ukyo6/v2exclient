@@ -7,7 +7,6 @@ import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentTopicsBinding
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.viewmodels.RecentTopicsViewModel
-import com.ukyoo.v2client.viewmodels.UserInfoViewModel
 
 class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
 

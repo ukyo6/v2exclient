@@ -3,5 +3,7 @@
 
     <item android:drawable="@color/white_pressed" android:state_pressed="true" />
 
+    <item android:drawable="@color/white_pressed" android:state_focused="true"/>
+
     <item android:drawable="@color/white" />
 </selector>

@@ -1,12 +1,12 @@
-package com.ukyoo.v2client.db
+package com.ukyoo.v2client.data.db
 
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ukyoo.v2client.App
-import com.ukyoo.v2client.entity.NodeModel
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.NodeModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import androidx.room.migration.Migration
 
 

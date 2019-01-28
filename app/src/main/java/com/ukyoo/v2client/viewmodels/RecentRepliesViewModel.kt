@@ -1,13 +1,9 @@
 package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableArrayList
-import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.JsonService
+import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.entity.MemberModel1
-import com.ukyoo.v2client.entity.ReplyListModel
-import com.ukyoo.v2client.entity.TopicListModel
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.data.entity.ReplyListModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async

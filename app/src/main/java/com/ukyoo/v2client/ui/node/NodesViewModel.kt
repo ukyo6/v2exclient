@@ -1,12 +1,10 @@
-package com.ukyoo.v2client.viewmodels
+package com.ukyoo.v2client.ui.node
 
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
-import androidx.lifecycle.MutableLiveData
-import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.api.JsonService
-import com.ukyoo.v2client.db.NodeModelDao
-import com.ukyoo.v2client.entity.NodeModel
+import com.ukyoo.v2client.data.api.JsonService
+import com.ukyoo.v2client.data.db.NodeModelDao
+import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async

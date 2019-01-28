@@ -1,6 +1,6 @@
-package com.ukyoo.v2client.entity;
+package com.ukyoo.v2client.data.entity;
 
-import com.ukyoo.v2client.api.NetManager;
+import com.ukyoo.v2client.data.api.NetManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

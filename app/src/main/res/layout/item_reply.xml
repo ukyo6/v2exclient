@@ -6,10 +6,9 @@
 	<data>
 
 
-
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.entity.ReplyModel"/>
+			type="com.ukyoo.v2client.data.entity.ReplyModel"/>
 
 		<variable
 			name="index"
@@ -22,6 +21,7 @@
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
+		android:onClick="@{(v) -> presenter.onItemClick(v,item)}"
 		android:layout_marginTop="8dp"
 		android:paddingLeft="16dp"
 		android:paddingRight="16dp"

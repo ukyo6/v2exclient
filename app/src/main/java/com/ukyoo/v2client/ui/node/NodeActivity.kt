@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityNodeBinding
-import com.ukyoo.v2client.entity.NodeModel
+import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.ui.main.TopicsFragment
 
 class NodeActivity : BaseActivity<ActivityNodeBinding>() {

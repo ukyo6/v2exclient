@@ -1,12 +1,11 @@
 package com.ukyoo.v2client.di.module
 
 import android.app.Application
-import androidx.room.RoomDatabase
-import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.JsonService
-import com.ukyoo.v2client.api.NetManager
-import com.ukyoo.v2client.db.AppDataBase
-import com.ukyoo.v2client.db.NodeModelDao
+import com.ukyoo.v2client.data.api.HtmlService
+import com.ukyoo.v2client.data.api.JsonService
+import com.ukyoo.v2client.data.api.NetManager
+import com.ukyoo.v2client.data.db.AppDataBase
+import com.ukyoo.v2client.data.db.NodeModelDao
 import com.ukyoo.v2client.util.CONSTANT
 import dagger.Module
 import dagger.Provides

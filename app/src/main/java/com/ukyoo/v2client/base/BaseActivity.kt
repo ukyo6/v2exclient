@@ -137,7 +137,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
 
         val bar = supportActionBar
         if (bar != null) {
-            bar.title = null
             bar.setDisplayHomeAsUpEnabled(true)
             bar.setDisplayShowHomeEnabled(true)
             bar.setDisplayShowTitleEnabled(true)

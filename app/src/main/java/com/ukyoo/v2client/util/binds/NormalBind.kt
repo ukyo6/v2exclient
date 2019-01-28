@@ -27,30 +27,25 @@ import com.ukyoo.v2client.widget.RichTextView
  * Created by hewei
  */
 
-@BindingAdapter(value = ["url", "avatar"], requireAll = false)
+@BindingAdapter(value = ["app:url", "app:avatar"], requireAll = false)
 fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
     ImageUtil.load(url, imageView, isAvatar = isAvatar ?: false)
 }
 
 
 //加载验证码
-@BindingAdapter(value = ["verifyUrl"])
+@BindingAdapter(value = ["app:verifyUrl"])
 fun bindVerifyUrl(imageView: ImageView, url: String?) {
     ImageUtil.loadVerifyCode(url, imageView)
 }
 
-@BindingAdapter(value = ["richTexts"])
+@BindingAdapter(value = ["app:richTexts"])
 fun bindRichText(textView: RichTextView, text: String?) {
     textView.setRichText(text ?: "")
 }
 
 
-@BindingAdapter(value = ["visible"])
-fun bindVisibility(v: View, visible: Boolean) {
-    v.visibility = if (visible) View.VISIBLE else View.GONE
-}
-
-@BindingAdapter(value = ["loadMore", "loadMorePresenter"])
+@BindingAdapter(value = ["app:loadMore", "app:loadMorePresenter"])
 fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
     v.layoutManager = LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -71,12 +66,12 @@ fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
     })
 }
 
-@BindingAdapter(value = ["onRefresh"])
+@BindingAdapter(value = ["app:onRefresh"])
 fun bindOnRefresh(v: SwipeRefreshLayout, presenter: Presenter) {
     v.setOnRefreshListener { presenter.loadData(true, null) }
 }
 
-@BindingAdapter(value = ["vertical"], requireAll = false)
+@BindingAdapter(value = ["app:vertical"], requireAll = false)
 fun bindSlider(v: RecyclerView, vertical: Boolean = true) {
 
     if (vertical) {
@@ -90,7 +85,7 @@ fun bindSlider(v: RecyclerView, vertical: Boolean = true) {
 }
 
 //渐变式阴影
-@BindingAdapter(value = ["shadow_color", "num_step", "gravity"], requireAll = false)
+@BindingAdapter(value = ["app:shadow_color", "app:num_step", "app:gravity"], requireAll = false)
 fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
     var color = mColor
     var numSteps = mNumSteps
@@ -111,7 +106,7 @@ fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
 }
 
 
-@BindingAdapter(value = ["blurBg"])
+@BindingAdapter(value = ["app:blurBg"])
 fun bindBlurBg(imageView: ImageView, url: String?) {
     GlideApp.with(App.instance()).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {

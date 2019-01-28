@@ -1,7 +1,7 @@
-package com.ukyoo.v2client.db
+package com.ukyoo.v2client.data.db
 
 import androidx.room.*
-import com.ukyoo.v2client.entity.NodeModel
+import com.ukyoo.v2client.data.entity.NodeModel
 import io.reactivex.Flowable
 
 @Dao

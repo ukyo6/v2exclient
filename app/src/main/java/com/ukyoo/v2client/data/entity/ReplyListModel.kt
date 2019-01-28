@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.entity
+package com.ukyoo.v2client.data.entity
 
 import com.ukyoo.v2client.util.ContentUtils
 import org.jsoup.Jsoup

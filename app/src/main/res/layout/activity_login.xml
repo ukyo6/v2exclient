@@ -11,7 +11,7 @@
 
 		<variable
 			name="vm"
-			type="com.ukyoo.v2client.viewmodels.LoginViewModel"/>
+			type="com.ukyoo.v2client.ui.login.LoginViewModel"/>
 
 	</data>
 

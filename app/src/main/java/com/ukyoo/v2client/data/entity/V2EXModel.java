@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.entity;
+package com.ukyoo.v2client.data.entity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

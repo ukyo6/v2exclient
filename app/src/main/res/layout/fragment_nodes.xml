@@ -8,7 +8,7 @@
 
 		<variable
 			name="vm"
-			type="com.ukyoo.v2client.viewmodels.NodesViewModel"/>
+			type="com.ukyoo.v2client.ui.node.NodesViewModel"/>
 
 		<variable
 			name="presenter"

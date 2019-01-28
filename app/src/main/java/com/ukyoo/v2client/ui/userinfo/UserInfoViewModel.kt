@@ -1,14 +1,10 @@
-package com.ukyoo.v2client.viewmodels
+package com.ukyoo.v2client.ui.userinfo
 
-import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.JsonService
+import com.ukyoo.v2client.data.api.HtmlService
+import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
-import com.ukyoo.v2client.entity.MemberModel1
-import com.ukyoo.v2client.entity.ReplyListModel
-import com.ukyoo.v2client.entity.TopicListModel
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.data.entity.MemberModel1
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.TimeUtils
 import com.ukyoo.v2client.util.ToastUtil

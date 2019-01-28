@@ -3,10 +3,10 @@ package com.ukyoo.v2client.viewmodels
 import androidx.databinding.ObservableField
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
-import com.ukyoo.v2client.api.NetManager
+import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.db.AppDataBase
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.db.AppDataBase
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.util.SPUtils
 import com.ukyoo.v2client.util.SingleLiveEvent
 import com.ukyoo.v2client.util.async

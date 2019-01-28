@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.entity;
+package com.ukyoo.v2client.data.entity;
 
 import android.text.TextUtils;
 import android.util.Log;

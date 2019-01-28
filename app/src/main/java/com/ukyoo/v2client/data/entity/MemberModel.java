@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.entity;
+package com.ukyoo.v2client.data.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

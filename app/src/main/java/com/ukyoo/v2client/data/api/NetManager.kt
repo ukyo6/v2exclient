@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.api
+package com.ukyoo.v2client.data.api
 
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
