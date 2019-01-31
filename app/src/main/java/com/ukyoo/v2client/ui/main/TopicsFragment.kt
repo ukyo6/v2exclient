@@ -32,7 +32,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
     companion object {
         const val NODE_ID: String = "NODE_ID"    //节点列表通过topicId
         const val NODE_NAME: String = "NODE_NAME"    //节点列表通过topicName
-        const val TAB_ID: String = "TAB_ID"        //首页ViewPager通过tab
+        const val TAB_ID: String = "TAB_ID"        //首页ViewPager通过tabId
         private const val SOURCE: String = "SOURCE"
 
         fun newInstance(bundle: Bundle, source: String): TopicsFragment {
@@ -64,10 +64,10 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
 
         if (nodeName != null) {
             viewModel.name = nodeName
-            viewModel.loadDataByName(isRefresh = true)
+            viewModel.loadDataByName(isRefresh)
         } else if (tab != null) {
             viewModel.tab = tab
-            viewModel.loadDataByTab(isRefresh = true)
+            viewModel.loadDataByTab(isRefresh)
         }
     }
 

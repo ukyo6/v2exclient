@@ -67,8 +67,7 @@ class DetailViewModel @Inject constructor(
      * 获取主题和回复
      */
     fun getTopicAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) {
-
-        htmlService2.getTopicAndRepliesByTopicId(topicId, page)
+        htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
             .async()
             .map { response ->
                 return@map TopicWithReplyListModel().parse(response, true, topicId)
@@ -79,18 +78,23 @@ class DetailViewModel @Inject constructor(
                 stopLoad()
             }.subscribe({
                 //更新主题和回复列表
+                loadMore.set(it.currentPage < it.totalPage)
+
                 if (isRefresh) {
+                    empty.set(replyList.isEmpty())
                     replyList.clear()
                     multiDataList.clear()
                     multiDataList.add(it.topic) //主题内容
                 }
 
                 replyList.addAll(it.replies)
-                multiDataList.addAll(replyList) //回复列表
+                multiDataList.addAll(it.replies) //回复列表
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })
     }
+
+    private fun getPage(isRefresh: Boolean) = if (isRefresh) 1 else (replyList.size / 100) + 1
 
     /**
      * 获取回复需要的ONCE

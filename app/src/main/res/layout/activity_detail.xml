@@ -50,6 +50,8 @@
 				android:layout_height="match_parent">
 
 				<androidx.recyclerview.widget.RecyclerView
+					app:loadMore="@{vm}"
+					app:loadMorePresenter="@{presenter}"
 					android:id="@+id/recyclerview"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"/>

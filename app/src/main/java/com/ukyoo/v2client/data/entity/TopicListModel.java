@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  * 话题列表类,网页解析得到
- * Created by yw on 2015/5/19.
+ * created by hewei
  */
 public class TopicListModel extends ArrayList<TopicModel> {
 
@@ -22,7 +22,7 @@ public class TopicListModel extends ArrayList<TopicModel> {
     public int mCurrentPage = 1;
     public int mTotalPage = 1;
 
-    public ArrayList<TopicModel> parse(String responseBody) throws Exception {
+    public TopicListModel parse(String responseBody) throws Exception {
         Document doc = Jsoup.parse(responseBody);
         Element body = doc.body();
         Elements elements = body.getElementsByAttributeValue("class", "cell item");

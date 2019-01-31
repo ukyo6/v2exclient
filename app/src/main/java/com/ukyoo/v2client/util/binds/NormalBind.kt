@@ -47,7 +47,6 @@ fun bindRichText(textView: RichTextView, text: String?) {
 
 @BindingAdapter(value = ["app:loadMore", "app:loadMorePresenter"])
 fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
-    v.layoutManager = LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)

@@ -25,7 +25,6 @@ import com.ukyoo.v2client.widget.EnterLayout
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<Any> {
     private var mTopicId: Int = 0
     private lateinit var mTopic: TopicModel
-    private var page = 1
 
     //get viewModel by di
     private val viewModel by lazy {
@@ -51,7 +50,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             if (isJsonApi) {
                 getTopicByTopicId()
             } else {
-                getTopicAndRepliesByTopicId()
+                getTopicAndRepliesByTopicId(isRefresh)
             }
         } else if (intent.hasExtra("model")) {
             mTopic = intent.getParcelableExtra("model")
@@ -61,7 +60,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             if (isJsonApi) {
                 getRepliesByTopicId()
             } else {
-                getTopicAndRepliesByTopicId()
+                getTopicAndRepliesByTopicId(isRefresh)
             }
         }
     }
@@ -101,9 +100,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     /**
      * 查看主题和回复
      */
-    private fun getTopicAndRepliesByTopicId() {
-        viewModel.page = page
-        viewModel.getTopicAndRepliesByTopicId(mTopicId, true)
+    private fun getTopicAndRepliesByTopicId(isRefresh: Boolean) {
+        viewModel.getTopicAndRepliesByTopicId(mTopicId, isRefresh)
     }
 
     private lateinit var mEnterLayout: EnterLayout
