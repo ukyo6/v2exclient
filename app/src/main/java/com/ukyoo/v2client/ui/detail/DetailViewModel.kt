@@ -3,17 +3,15 @@ package com.ukyoo.v2client.ui.detail
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.data.entity.TopicWithReplyListModel
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.ToastUtil
-import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
-import com.ukyoo.v2client.util.apply
+import com.ukyoo.v2client.util.*
 import io.reactivex.Single
 import retrofit2.HttpException
 import java.util.regex.Pattern
@@ -22,11 +20,8 @@ import javax.inject.Named
 
 class DetailViewModel @Inject constructor(
     private var jsonApi: JsonService,
-    @Named("non_cached") private var htmlService: HtmlService,
-    @Named("cached") private var htmlService2: HtmlService
+    @Named("cached") private var htmlService: HtmlService
 ) : PagedViewModel() {
-
-    var page: Int = 0
 
     var multiDataList = ObservableArrayList<Any>()
     var replyList = ObservableArrayList<ReplyModel>() //回复
@@ -67,7 +62,7 @@ class DetailViewModel @Inject constructor(
      * 获取主题和回复
      */
     fun getTopicAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) {
-        htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
+        htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
             .async()
             .map { response ->
                 return@map TopicWithReplyListModel().parse(response, true, topicId)
@@ -76,12 +71,14 @@ class DetailViewModel @Inject constructor(
                 startLoad()
             }.doAfterTerminate {
                 stopLoad()
-            }.subscribe({
+            }
+            .bindLifecycle(this)
+            .subscribe({
                 //更新主题和回复列表
                 loadMore.set(it.currentPage < it.totalPage)
 
                 if (isRefresh) {
-                    empty.set(replyList.isEmpty())
+                    empty.set(it.replies.isEmpty())
                     replyList.clear()
                     multiDataList.clear()
                     multiDataList.add(it.topic) //主题内容
@@ -100,8 +97,9 @@ class DetailViewModel @Inject constructor(
      * 获取回复需要的ONCE
      */
     fun getReplyOnce(topicId: Int) {
-        htmlService2.getReplyOnce(topicId)
+        htmlService.getReplyOnce(topicId)
             .async()
+            .bindLifecycle(this)
             .subscribe({ content ->
                 val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
                 val matcher = pattern.matcher(content)
@@ -129,8 +127,9 @@ class DetailViewModel @Inject constructor(
 
         val url = "https://www.v2ex.com/t/$topicId"
         replyContents?.let {
-            htmlService2.reply(url, topicId, replyContents, once)
+            htmlService.reply(url, topicId, replyContents, once)
                 .async()
+                .bindLifeCycle(this.lifecycleOwner!!)
                 .subscribe({ response ->
                     ErrorHanding.getProblemFromHtmlResponse(response).apply {
                         ToastUtil.shortShow(this)

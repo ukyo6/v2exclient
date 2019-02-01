@@ -56,7 +56,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             mTopic = intent.getParcelableExtra("model")
             mTopicId = mTopic.id
 
-            initHeaderView()
             if (isJsonApi) {
                 getRepliesByTopicId()
             } else {
@@ -65,8 +64,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         }
     }
 
-    private fun initHeaderView() {
-    }
 
     /**
      * 查看话题内容
@@ -78,7 +75,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
                 mTopic = it[0]
                 mTopicId = mTopic.id
 
-                initHeaderView()
                 getRepliesByTopicId()
             }, {
                 toastFailure(it)
@@ -109,6 +105,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     override fun initView() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
+
+        lifecycle.addObserver(viewModel)
 
         //回复列表
         mBinding.recyclerview.run {

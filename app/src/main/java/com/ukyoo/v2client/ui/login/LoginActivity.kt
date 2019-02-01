@@ -21,7 +21,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        viewModel.apply {
+        viewModel.run {
             //登录成功的回调
             loginSuccessEvent.observe(this@LoginActivity, Observer {
                 loginSuccess(it)
