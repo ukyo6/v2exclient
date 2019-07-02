@@ -8,7 +8,7 @@
 
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.entity.NodeModel"/>
+			type="com.ukyoo.v2client.data.entity.NodeModel"/>
 
 		<variable
 			name="presenter"

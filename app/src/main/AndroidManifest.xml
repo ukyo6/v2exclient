@@ -27,10 +27,10 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".ui.detail.DetailActivity"/>
+		<activity android:name="com.ukyoo.v2client.ui.detail.DetailActivity"/>
 		<activity android:name=".ui.node.NodeActivity"/>
-		<activity android:name=".ui.login.LoginActivity"/>
-		<activity android:name=".ui.detail.PhotoBrowseActivity"/>
+		<activity android:name="com.ukyoo.v2client.ui.login.LoginActivity"/>
+		<activity android:name="com.ukyoo.v2client.ui.detail.PhotoBrowseActivity"/>
 
 		<activity
 			android:name=".ui.userinfo.UserInfoActivity" >

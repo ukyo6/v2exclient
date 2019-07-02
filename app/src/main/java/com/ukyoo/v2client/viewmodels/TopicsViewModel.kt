@@ -1,17 +1,15 @@
 package com.ukyoo.v2client.viewmodels
 
 import androidx.databinding.ObservableArrayList
-import com.ukyoo.v2client.api.HtmlService
-import com.ukyoo.v2client.api.JsonService
-import com.ukyoo.v2client.entity.TopicListModel
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.data.api.HtmlService
+import com.ukyoo.v2client.data.api.JsonService
+import com.ukyoo.v2client.data.entity.TopicListModel
+import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.entity.TopicModelNew
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
-import io.reactivex.Single
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 

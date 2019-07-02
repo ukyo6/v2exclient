@@ -4,7 +4,7 @@
 	  tools:context="com.ukyoo.v2client.ui.detail.ScrollingActivity">
 	<item
 		android:id="@+id/action_settings"
-		android:title="@string/action_settings"
+		android:title="@string/please_login"
 		android:orderInCategory="100"
 		app:showAsAction="never"/>
 </menu>

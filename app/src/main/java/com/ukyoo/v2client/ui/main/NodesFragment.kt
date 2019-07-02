@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentNodesBinding
-import com.ukyoo.v2client.entity.NodeModel
+import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.node.NodeActivity
-import com.ukyoo.v2client.viewmodels.NodesViewModel
+import com.ukyoo.v2client.ui.node.NodesViewModel
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 
 /**

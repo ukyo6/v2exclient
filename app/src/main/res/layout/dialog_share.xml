@@ -69,7 +69,7 @@
     <TextView
         android:id="@+id/tv_share_cancel"
         android:clickable="true"
-        android:background="@drawable/selector_button"
+        android:background="@drawable/touch_bg"
         style="@style/text_15sp"
         android:layout_width="match_parent"
         android:layout_height="54dp"

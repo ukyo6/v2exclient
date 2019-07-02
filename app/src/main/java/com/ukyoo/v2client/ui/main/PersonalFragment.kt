@@ -2,19 +2,15 @@ package com.ukyoo.v2client.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentPersonalBinding
-import com.ukyoo.v2client.db.AppDataBase
 import com.ukyoo.v2client.event.LoginSuccessEvent
 import com.ukyoo.v2client.navigator.PersonalNavigator
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.util.RxBus
-import com.ukyoo.v2client.util.SPUtils
-import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.viewmodels.PersonalViewModel
 

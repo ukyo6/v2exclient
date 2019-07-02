@@ -5,6 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.ukyoo.v2client.viewmodels.*
 import com.ukyoo.v2client.base.viewmodel.APPViewModelFactory
 import com.ukyoo.v2client.base.viewmodel.ViewModelKey
+import com.ukyoo.v2client.ui.detail.DetailViewModel
+import com.ukyoo.v2client.ui.login.LoginViewModel
+import com.ukyoo.v2client.ui.node.NodesViewModel
+import com.ukyoo.v2client.ui.userinfo.UserInfoViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -46,6 +50,16 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PersonalViewModel::class)
     abstract fun providePersonViewModel(viewModel: PersonalViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecentRepliesViewModel::class)
+    abstract fun provideRecentRepliesViewModel(viewModel: RecentRepliesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecentTopicsViewModel::class)
+    abstract fun provideRcecentTopicsViewModel(viewModel: RecentTopicsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: APPViewModelFactory): ViewModelProvider.Factory
