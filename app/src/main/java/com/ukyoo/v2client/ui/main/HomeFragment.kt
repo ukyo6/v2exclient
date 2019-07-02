@@ -1,6 +1,5 @@
 package com.ukyoo.v2client.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -9,12 +8,14 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
-import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
-import com.ukyoo.v2client.viewmodels.HomeViewModel
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import com.ukyoo.v2client.viewmodels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
+/**
+ *  首页, 包含最新,最热节点
+ */
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun isLazyLoad(): Boolean {
         return true
@@ -39,8 +40,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         //inject
         getComponent().inject(this)
         //set viewpager and tablayout
-        val tabTitles = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_titles)
-        val tabPaths = mContext.resources.getStringArray(R.array.v2ex_favorite_tab_paths)
+        val tabTitles = resources.getStringArray(R.array.v2ex_favorite_tab_titles)
+        val tabPaths = resources.getStringArray(R.array.v2ex_favorite_tab_paths)
 
         mBinding.viewpager.apply {
             adapter = object : AbstractPagerAdapter(manager, tabTitles) {

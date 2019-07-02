@@ -21,6 +21,8 @@ object SPUtils {
         if (spf == null) {
             spf = context.getSharedPreferences(SP_NAME, Activity.MODE_PRIVATE)
             editor = spf!!.edit()
+
+
         }
     }
 

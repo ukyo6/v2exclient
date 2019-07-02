@@ -15,8 +15,11 @@ public class TopicModel extends V2EXModel implements Parcelable {
     public String content;
     public String contentRendered;
     public int replies;
+
     public MemberModel member;
     public NodeModel node;
+
+
     public String created;
     public long lastModified;
     public long lastTouched;

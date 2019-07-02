@@ -63,7 +63,9 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         return R.layout.fragment_nodes
     }
 
-    //item click
+    /**
+     * item click
+     */
     override fun onItemClick(v: View?, item: NodeModel) {
         val intent = Intent(mContext, NodeActivity::class.java)
         intent.putExtra("model", item as Parcelable)
@@ -81,7 +83,7 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView
         searchView.queryHint = "输入节点名字"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let { viewModel.queryByName(it) }
                 return true
@@ -94,6 +96,4 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
         super.onCreateOptionsMenu(menu, inflater)
     }
-
-
 }

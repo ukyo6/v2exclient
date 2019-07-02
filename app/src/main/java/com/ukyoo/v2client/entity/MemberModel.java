@@ -27,9 +27,7 @@ public class MemberModel extends V2EXModel implements Parcelable {
     public String twitter;
     public String location;
 
-    public String avatar_large;
 
-    public String avatars = "http" + avatar_large;
 
     public MemberModel() {
     }

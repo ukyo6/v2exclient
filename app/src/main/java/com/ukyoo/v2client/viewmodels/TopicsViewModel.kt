@@ -7,6 +7,7 @@ import com.ukyoo.v2client.entity.TopicListModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.entity.TopicModelNew
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import io.reactivex.Single
@@ -22,7 +23,7 @@ class TopicsViewModel @Inject constructor(@Named("non_cached") private var apiSe
     internal lateinit var name: String //topicName
     internal lateinit var tab: String  //tabId
 
-    var list = ObservableArrayList<TopicModel>()
+    var list = ObservableArrayList<TopicModelNew>()
 
     //loadData by tabId
     fun loadDataByTab(isRefresh: Boolean) {

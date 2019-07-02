@@ -15,6 +15,7 @@ import io.reactivex.Single
  */
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
     }
 

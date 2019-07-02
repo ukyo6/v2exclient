@@ -61,7 +61,7 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
         }
 
         //登录后返回
-        RxBus.getDefault()
+        RxBus.default
             .toFlowable(LoginSuccessEvent::class.java)
             .bindLifeCycle(this)
             .subscribe {

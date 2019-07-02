@@ -17,7 +17,7 @@ interface JsonService {
 
     //根据名字查找主题列表
     @GET("/api/topics/show.json")
-    fun queryTopicsByName(@Query("node_name") name: String): Single<ArrayList<TopicModel>>
+    fun queryTopicsByName(@Query("node_name") name: String): Single<ArrayList<TopicModelNew>>
 
     //所有节点
     @GET("/api/nodes/all.json")
@@ -29,7 +29,7 @@ interface JsonService {
 
     //用户主页
     @GET("/api/members/show.json")
-    fun getUserInfo(@Query("username") username: String): Single<MemberModel1>
+    fun getUserInfo(@Query("username") username: String): Single<MemberInfo>
 
     //查询帖子内容
     @GET("/api/topics/show.json")

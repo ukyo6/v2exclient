@@ -27,9 +27,9 @@ import com.ukyoo.v2client.widget.RichTextView
  * Created by hewei
  */
 
-@BindingAdapter(value = ["url", "avatar"], requireAll = false)
-fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
-    ImageUtil.load(url, imageView, isAvatar = isAvatar ?: false)
+@BindingAdapter(value = ["url"], requireAll = false)
+fun bindUrl(imageView: ImageView, url: String?) {
+    ImageUtil.load(url, imageView)
 }
 
 

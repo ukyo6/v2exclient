@@ -45,9 +45,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> mBinding.navigationView.selectedItemId = R.id.nav_home
-                    1 -> mBinding.navigationView.selectedItemId = R.id.nav_repos
-                    2 -> mBinding.navigationView.selectedItemId = R.id.nav_profile
+                    0 -> mBinding.navigationView.selectedItemId = R.id.nav_home  //主页
+                    1 -> mBinding.navigationView.selectedItemId = R.id.nav_repos //节点
+                    2 -> mBinding.navigationView.selectedItemId = R.id.nav_profile //个人
                 }
             }
         })

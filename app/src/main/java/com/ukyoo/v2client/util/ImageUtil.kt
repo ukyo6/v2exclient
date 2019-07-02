@@ -17,7 +17,7 @@ import com.ukyoo.v2client.R
 
 object ImageUtil {
 
-    fun load(uri: String?, imageView: ImageView, isAvatar: Boolean = false) {
+    fun load(uri: String?, imageView: ImageView) {
         GlideApp.with(App.instance())
             .load(uri)
             .error(R.drawable.user)

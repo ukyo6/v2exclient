@@ -4,13 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import com.orhanobut.logger.LogLevel
 import com.orhanobut.logger.Logger
-import com.squareup.leakcanary.LeakCanary
 import com.ukyoo.v2client.di.component.AppComponent
 import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
 import com.ukyoo.v2client.util.SPUtils
+import com.orhanobut.logger.AndroidLogAdapter
+
+
 
 class App: Application() {
 
@@ -36,16 +37,10 @@ class App: Application() {
         component.inject(this)
 
         //初始化log打印
-        Logger.init().hideThreadInfo().logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
+        Logger.addLogAdapter(AndroidLogAdapter())
 
         getScreenSize()
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
-//        LeakCanary.install(this)
 
         SPUtils.init(instance())
     }
