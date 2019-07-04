@@ -4,12 +4,11 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
-import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.event.LoginSuccessEvent
 import com.ukyoo.v2client.navigator.LoginNavigator
 import com.ukyoo.v2client.util.RxBus
-import com.ukyoo.v2client.viewmodels.LoginViewModel
 
 /**
  * 登录

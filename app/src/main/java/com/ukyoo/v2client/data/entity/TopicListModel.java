@@ -1,7 +1,10 @@
-package com.ukyoo.v2client.entity;
+package com.ukyoo.v2client.data.entity;
 
 import android.text.TextUtils;
 import com.orhanobut.logger.Logger;
+import com.ukyoo.v2client.data.entity.NodeModel;
+import com.ukyoo.v2client.entity.MemberModelNew;
+import com.ukyoo.v2client.entity.TopicModelNew;
 import com.ukyoo.v2client.util.ContentUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

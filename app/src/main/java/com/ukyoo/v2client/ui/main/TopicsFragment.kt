@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
+import com.ukyoo.v2client.data.entity.MemberModel
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
 import com.ukyoo.v2client.entity.TopicModelNew
 import com.ukyoo.v2client.inter.ItemClickPresenter
@@ -14,8 +15,6 @@ import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.viewmodels.TopicsViewModel
-import io.reactivex.Flowable
-import io.reactivex.functions.Function
 
 /**
  * 单个主题列表页  (技术/创意/好玩...)
@@ -105,6 +104,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         startActivity(intent)
     }
 }
+
 
 
 

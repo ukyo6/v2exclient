@@ -1,9 +1,10 @@
 package com.ukyoo.v2client.data.api
 
-import com.ukyoo.v2client.data.entity.MemberModel1
 import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.TopicModel
+import com.ukyoo.v2client.entity.MemberInfo
+import com.ukyoo.v2client.entity.TopicModelNew
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

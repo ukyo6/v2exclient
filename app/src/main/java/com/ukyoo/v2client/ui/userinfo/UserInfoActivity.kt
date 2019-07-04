@@ -9,13 +9,13 @@ import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
-import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
-import com.ukyoo.v2client.data.entity.MemberModel
 import com.ukyoo.v2client.data.entity.TopicModel
+import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import com.ukyoo.v2client.viewmodels.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
