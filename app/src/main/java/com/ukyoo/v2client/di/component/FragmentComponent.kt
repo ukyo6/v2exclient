@@ -20,7 +20,7 @@ interface FragmentComponent {
     fun inject(fragment: HomeFragment)
     fun inject(fragment: NodesFragment)
     fun inject(fragment: PersonalFragment)
-    fun inject(fragment: TopicsFragment)
+    fun inject(fragment: TopicListFragment)
     fun inject(fragment: RecentRepliesFragment)
     fun inject(fragment: RecentTopicsFragment)
 

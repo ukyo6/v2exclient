@@ -4,6 +4,7 @@ import androidx.room.*
 import com.ukyoo.v2client.data.entity.NodeModel
 import io.reactivex.Flowable
 
+
 @Dao
 interface NodeModelDao {
 

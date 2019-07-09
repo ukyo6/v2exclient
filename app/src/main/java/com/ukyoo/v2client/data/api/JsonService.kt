@@ -4,7 +4,6 @@ import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.entity.MemberInfo
-import com.ukyoo.v2client.entity.TopicModelNew
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,7 +20,7 @@ interface JsonService {
 
     //根据名字查找主题列表
     @GET("/api/topics/show.json")
-    fun queryTopicsByName(@Query("node_name") name: String): Single<ArrayList<TopicModelNew>>
+    fun queryTopicsByName(@Query("node_name") name: String): Single<ArrayList<com.ukyoo.v2client.entity.TopicModel>>
 
     //所有节点
     @GET("/api/nodes/all.json")

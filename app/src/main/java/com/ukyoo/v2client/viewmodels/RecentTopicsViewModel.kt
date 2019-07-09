@@ -3,9 +3,7 @@ package com.ukyoo.v2client.viewmodels
 import androidx.databinding.ObservableArrayList
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.data.entity.TopicListModel
-import com.ukyoo.v2client.data.entity.TopicModel
-import com.ukyoo.v2client.entity.TopicModelNew
+import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
@@ -16,7 +14,7 @@ class RecentTopicsViewModel @Inject constructor(
     @Named("non_cached") private var htmlService: HtmlService
 ) : BaseViewModel() {
 
-    var createdTopics = ObservableArrayList<TopicModelNew>()  //创建的主题
+    var createdTopics = ObservableArrayList<TopicModel>()  //创建的主题
 
     /**
      * 获取创建的主题
@@ -25,15 +23,15 @@ class RecentTopicsViewModel @Inject constructor(
         htmlService.getUserTopics(username, 1)
             .async()
             .subscribe({ response ->
-                val topics = TopicListModel().parse(response)
-                createdTopics.apply {
-                    clear()
-
-                    for (topic in topics) {
-                        topic.member.avatar = "1"
-                    }
-                    addAll(topics)
-                }
+//                val topics = TopicListModel().parse(response)
+//                createdTopics.apply {
+//                    clear()
+//
+//                    for (topic in topics) {
+//                        topic.member?.avatar = "1"
+//                    }
+//                    addAll(topics)
+//                }
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })

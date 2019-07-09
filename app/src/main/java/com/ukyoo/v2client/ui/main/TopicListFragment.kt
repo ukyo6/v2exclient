@@ -2,42 +2,39 @@ package com.ukyoo.v2client.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
-import com.ukyoo.v2client.data.entity.MemberModel
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
-import com.ukyoo.v2client.entity.TopicModelNew
+import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
-import com.ukyoo.v2client.viewmodels.TopicsViewModel
+import com.ukyoo.v2client.viewmodels.TopicListViewModel
 
 /**
  * 单个主题列表页  (技术/创意/好玩...)
  */
-class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModelNew> {
+class TopicListFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
 
 
     override fun isLazyLoad(): Boolean = "lazyOpen" == arguments?.get(SOURCE)
 
     //get viewModel by di
     private val viewModel by lazy {
-        getInjectViewModel<TopicsViewModel>()
+        getInjectViewModel<TopicListViewModel>()
     }
 
     //fragment instance
     companion object {
-        const val NODE_ID: String = "NODE_ID"    //节点列表通过topicId
         const val NODE_NAME: String = "NODE_NAME"    //节点列表通过topicName
         const val TAB_ID: String = "TAB_ID"        //首页ViewPager通过tab
         private const val SOURCE: String = "SOURCE"
 
-        fun newInstance(bundle: Bundle, source: String): TopicsFragment {
-            val fragment = TopicsFragment()
+        fun newInstance(bundle: Bundle, source: String): TopicListFragment {
+            val fragment = TopicListFragment()
             bundle.putString(SOURCE, source)
             fragment.arguments = bundle
             return fragment
@@ -51,7 +48,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         mBinding.recyclerView.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
-                itemPresenter = this@TopicsFragment
+                itemPresenter = this@TopicListFragment
             }
         }
     }
@@ -94,13 +91,12 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
     /**
      * ItemClick
      */
-    override fun onItemClick(v: View?, item: TopicModelNew) {
+    override fun onItemClick(v: View?, item: TopicModel) {
         val intent = Intent(mContext, DetailActivity::class.java)
 //        if (item.content == null || item.contentRendered == null)
 //            intent.putExtra("topic_id", item.id)
 //        else
-        intent.putExtra("model", item as Parcelable)
-
+        intent.putExtra("model", item)
         startActivity(intent)
     }
 }
