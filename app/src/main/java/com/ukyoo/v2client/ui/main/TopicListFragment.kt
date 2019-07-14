@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
-import com.ukyoo.v2client.entity.TopicModelNew
+import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
@@ -18,7 +18,7 @@ import com.ukyoo.v2client.viewmodel.TopicsViewModel
 /**
  * 单个主题列表页  (技术/创意/好玩...)
  */
-class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModelNew> {
+class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
 
 
     override fun isLazyLoad(): Boolean = "lazyOpen" == arguments?.get(SOURCE)
@@ -49,9 +49,9 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         mBinding.vm = viewModel
         mBinding.recyclerView.run {
             layoutManager = LinearLayoutManager(mContext)
-            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
-                itemPresenter = this@TopicsFragment
-            }
+//            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
+//                itemPresenter = this@TopicsFragment
+//            }
         }
     }
 
@@ -94,7 +94,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
     /**
      * ItemClick
      */
-    override fun onItemClick(v: View?, item: TopicModelNew) {
+    override fun onItemClick(v: View?, item: TopicModel) {
         val intent = Intent(mContext, DetailActivity::class.java)
 //        if (item.content == null || item.contentRendered == null)
 //            intent.putExtra("topic_id", item.id)

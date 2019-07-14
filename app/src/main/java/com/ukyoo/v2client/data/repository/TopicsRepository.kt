@@ -3,8 +3,7 @@ package com.ukyoo.v2client.data.repository
 import androidx.databinding.ObservableArrayList
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.data.entity.TopicListModel
-import com.ukyoo.v2client.entity.TopicModelNew
+import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
@@ -32,35 +31,35 @@ class TopicsRepository {
 
 
     //loadData by tabId
-    fun loadDataByTab(isRefresh: Boolean, tab: String): ObservableArrayList<TopicModelNew> {
-        val list = ObservableArrayList<TopicModelNew>()
+    fun loadDataByTab(isRefresh: Boolean, tab: String): ObservableArrayList<TopicModel> {
+        val list = ObservableArrayList<TopicModel>()
         apiService.queryTopicsByTab(tab)
             .async()
-            .map { response ->
-                if (isRefresh) {
-                    list.clear()
-                }
-                return@map TopicListModel().parse(response).apply {
-                    list.addAll(this)
-                }
-            }
+//            .map { response ->
+//                if (isRefresh) {
+//                    list.clear()
+//                }
+//                return@map TopicListModel().parse(response).apply {
+//                    list.addAll(this)
+//                }
+//            }
 //            .doOnSubscribe {
 //                startLoad()
 //            }.doAfterTerminate {
 //                stopLoad()
 //                empty.set(list.isEmpty())
 //            }
-            .subscribe({}, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
+//            .subscribe({}, {
+//                ToastUtil.shortShow(ErrorHanding.handleError(it))
+//            })
 
         return list
     }
 
 
     //loadData by topicName
-    fun loadDataByName(isRefresh: Boolean, name: String): ObservableArrayList<TopicModelNew> {
-        val list = ObservableArrayList<TopicModelNew>()
+    fun loadDataByName(isRefresh: Boolean, name: String): ObservableArrayList<TopicModel> {
+        val list = ObservableArrayList<TopicModel>()
         jsonService.queryTopicsByName(name)
             .async()
             .map { response ->
