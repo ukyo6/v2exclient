@@ -43,7 +43,7 @@ class AsyncImageGetter (var context:Context,var tv:TextView) : Html.ImageGetter 
             drawable.setBounds(0, 0, width, height)
             drawableWrapper.setBounds(0,0,width,height)
             drawableWrapper.drawable = drawable
-            tv.setText(tv.getText())
+            tv.text = tv.text
             tv.invalidate()
         }
     }

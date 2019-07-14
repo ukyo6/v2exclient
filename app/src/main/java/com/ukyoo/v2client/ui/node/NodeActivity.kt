@@ -5,7 +5,7 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityNodeBinding
 import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.ui.main.TopicsFragment
+import com.ukyoo.v2client.ui.main.TopicListFragment
 
 class NodeActivity : BaseActivity<ActivityNodeBinding>() {
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
@@ -19,8 +19,8 @@ class NodeActivity : BaseActivity<ActivityNodeBinding>() {
         val id = model.id
 
         val bundle = Bundle()
-        bundle.putString(TopicsFragment.NODE_NAME, name)
-        val topicFragment = TopicsFragment.newInstance(bundle, "directOpen")
+        bundle.putString(TopicListFragment.NODE_NAME, name)
+        val topicFragment = TopicListFragment.newInstance(bundle, "directOpen")
         supportFragmentManager.beginTransaction().add(R.id.framelayout, topicFragment).commit()
     }
 

@@ -4,8 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 @Entity(tableName = "nodemodel")
 public class NodeModel extends V2EXModel implements Parcelable {

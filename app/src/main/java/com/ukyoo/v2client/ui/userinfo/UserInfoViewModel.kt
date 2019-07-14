@@ -5,7 +5,6 @@ import androidx.databinding.ObservableField
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.data.entity.TopicListModel
 import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.entity.MemberInfo
 import com.ukyoo.v2client.util.ErrorHanding
@@ -58,15 +57,15 @@ class UserInfoViewModel @Inject constructor(
             htmlService.getUserTopics(it, 1)
                 .async()
                 .subscribe({ response ->
-                    val topics = TopicListModel().parse(response)
-                    createdTopics.apply {
-                        clear()
-
-                        for (topic in topics) {
-                            topic.member.avatar = memberModel.avatar_large.toString()
-                        }
-//                        addAll(topics)
-                    }
+//                    val topics = TopicListModel().parse(response)
+//                    createdTopics.apply {
+//                        clear()
+//
+//                        for (topic in topics) {
+//                            topic.member?.avatar = memberModel.avatar_large.toString()
+//                        }
+////                        addAll(topics)
+//                    }
                 }, {
                     ToastUtil.shortShow(ErrorHanding.handleError(it))
                 })

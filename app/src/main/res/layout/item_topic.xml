@@ -6,11 +6,9 @@
 
 		<import type="android.view.View"/>
 
-
-
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.entity.TopicModelNew"/>
+			type="com.ukyoo.v2client.entity.TopicModel"/>
 
 		<variable
 			name="presenter"
@@ -83,10 +81,9 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignParentEnd="true"
-				android:layout_alignParentRight="true"
 				android:layout_alignTop="@+id/name"
 				android:layout_gravity="center_vertical"
-				android:paddingRight="8dp"
+				android:paddingEnd="8dp"
 				tools:text="2010年1月1日"
 				android:textSize="12sp"/>
 
@@ -96,7 +93,7 @@
 			android:id="@+id/replies_layout"
 			android:layout_width="40dp"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
 			android:layout_centerVertical="true">
 
 			<com.ukyoo.v2client.widget.BadgeView
@@ -106,7 +103,6 @@
 				android:layout_width="wrap_content"
 				android:layout_height="20dp"
 				android:layout_alignParentEnd="true"
-				android:layout_alignParentRight="true"
 				android:layout_centerVertical="true"
 				tools:text="0"/>
 		</RelativeLayout>

@@ -20,11 +20,16 @@ import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.widget.EnterLayout
 
 /**
- * 主题详情页
+ *  详情页
  */
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<Any> {
     private var mTopicId: Int = 0
     private lateinit var mTopic: TopicModel
+
+    companion object {
+        const val ITEM_TOPIC = 1
+        const val ITEM_REPLY = 2
+    }
 
     //get viewModel by di
     private val viewModel by lazy {
@@ -163,18 +168,12 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
         if (popKeyboard) {
             InputUtils.popSoftkeyboard(mContext, content, true)
-            val replyToWho_ = replyToWho
             Handler().postDelayed({
-                content.setText(replyToWho_)
+                content.setText(replyToWho)
                 content.setSelection(content.text.length)
             }, 500)
         } else {
             InputUtils.popSoftkeyboard(mContext, content, false)
         }
-    }
-
-    companion object {
-        const val ITEM_TOPIC = 1
-        const val ITEM_REPLY = 2
     }
 }
