@@ -2,7 +2,7 @@ package com.ukyoo.v2client.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ukyoo.v2client.viewmodels.*
+import com.ukyoo.v2client.viewmodel.*
 import com.ukyoo.v2client.base.viewmodel.APPViewModelFactory
 import com.ukyoo.v2client.base.viewmodel.ViewModelKey
 import com.ukyoo.v2client.ui.detail.DetailViewModel

@@ -48,7 +48,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     lateinit var factory: ViewModelProvider.Factory
 
     private var fragmentComponent: FragmentComponent? = null
-    protected lateinit var fragmentComponentBuilder: FragmentComponent.Builder
+    private lateinit var fragmentComponentBuilder: FragmentComponent.Builder
     @NonNull
     fun getComponent(): FragmentComponent {
         if (fragmentComponent != null) {

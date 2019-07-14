@@ -53,8 +53,10 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
     implementation "androidx.legacy:legacy-support-v4:$rootProject.legacySupportVersion"
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "android.arch.lifecycle:common-java8:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
 
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
@@ -73,7 +75,7 @@ dependencies {
     testImplementation "junit:junit:$rootProject.junitVersion"
 
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
@@ -84,8 +86,8 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     //autodispose
-    implementation 'com.uber.autodispose:autodispose:0.8.0'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.8.0'
+    implementation 'com.uber.autodispose:autodispose:1.1.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:1.1.0'
 
     //di
     implementation "com.google.dagger:dagger:2.16"

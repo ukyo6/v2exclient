@@ -12,7 +12,7 @@ import com.ukyoo.v2client.navigator.PersonalNavigator
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.util.RxBus
 import com.ukyoo.v2client.util.bindLifeCycle
-import com.ukyoo.v2client.viewmodels.PersonalViewModel
+import com.ukyoo.v2client.viewmodel.PersonalViewModel
 
 /**
  * 个人中心

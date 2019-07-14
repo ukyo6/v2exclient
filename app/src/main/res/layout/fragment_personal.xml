@@ -10,7 +10,7 @@
 
 		<variable
 			name="vm"
-			type="com.ukyoo.v2client.viewmodels.PersonalViewModel"/>
+			type="com.ukyoo.v2client.viewmodel.PersonalViewModel"/>
 
 	</data>
 

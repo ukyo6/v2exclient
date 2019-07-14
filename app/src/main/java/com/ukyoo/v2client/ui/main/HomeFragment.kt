@@ -9,7 +9,7 @@ import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
-import com.ukyoo.v2client.viewmodels.HomeViewModel
+import com.ukyoo.v2client.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 

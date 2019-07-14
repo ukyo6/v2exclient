@@ -6,7 +6,7 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentRepliesBinding
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
-import com.ukyoo.v2client.viewmodels.RecentRepliesViewModel
+import com.ukyoo.v2client.viewmodel.RecentRepliesViewModel
 
 class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
     companion object {

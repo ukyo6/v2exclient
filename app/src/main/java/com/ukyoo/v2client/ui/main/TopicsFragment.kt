@@ -7,14 +7,13 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
-import com.ukyoo.v2client.data.entity.MemberModel
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
 import com.ukyoo.v2client.entity.TopicModelNew
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
-import com.ukyoo.v2client.viewmodels.TopicsViewModel
+import com.ukyoo.v2client.viewmodel.TopicsViewModel
 
 /**
  * 单个主题列表页  (技术/创意/好玩...)
@@ -57,18 +56,19 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
     }
 
     /**
-     * get data from remote
+     * get data
      */
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         val nodeName = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
 
-        if (nodeName != null) {
-            viewModel.name = nodeName
-            viewModel.loadDataByName(isRefresh = true)
-        } else if (tab != null) {
-            viewModel.tab = tab
-            viewModel.loadDataByTab(isRefresh = true)
+
+        with(viewModel) {
+            if (nodeName != null) {
+                viewModel.name = nodeName
+            } else if (tab != null) {
+                viewModel.tab = tab
+            }
         }
     }
 
