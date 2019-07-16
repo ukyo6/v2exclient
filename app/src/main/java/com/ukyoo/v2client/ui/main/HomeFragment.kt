@@ -50,8 +50,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 //                    0 -> list[0] = TopicListFragment.newInstance("latest")  //最新
 //                    1 -> list[1] = TopicListFragment.newInstance("hot")   //最热
                         pos -> {
-                            val fragment = TopicListFragment.newInstance(
-                                bundle = Bundle().apply { putString(TopicListFragment.TAB_ID, tabPaths[pos]) },
+                            val fragment = TopicsFragment.newInstance(
+                                bundle = Bundle().apply { putString(TopicsFragment.TAB_ID, tabPaths[pos]) },
                                 source = "lazyOpen"
                             )
                             list[pos] = fragment

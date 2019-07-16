@@ -18,6 +18,7 @@ import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.widget.EnterLayout
+import io.reactivex.subjects.BehaviorSubject
 
 /**
  *  详情页
@@ -49,29 +50,25 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     var isJsonApi: Boolean = false
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        //根据topicId访问
         if (intent.hasExtra("topic_id")) {
             mTopicId = intent.getIntExtra("topic_id", -1)
 
-            if (isJsonApi) {
-                getTopicByTopicId()
-            } else {
-                getTopicAndRepliesByTopicId(isRefresh)
-            }
-        } else if (intent.hasExtra("model")) {
-            mTopic = intent.getParcelableExtra("model")
-            mTopicId = mTopic.id
+            viewModel.topicId = intent.getIntExtra("topic_id", -1)
 
-            if (isJsonApi) {
-                getRepliesByTopicId()
-            } else {
-                getTopicAndRepliesByTopicId(isRefresh)
+            viewModel.let {
+                if (isJsonApi) {
+                    getTopicByTopicId()
+                } else {
+                    getTopicAndRepliesByTopicId(isRefresh)
+                }
             }
         }
     }
 
 
     /**
-     * 查看话题内容
+     * 查看主题信息
      */
     private fun getTopicByTopicId() {
         viewModel.getTopicsByTopicId(mTopicId, true)
@@ -92,8 +89,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     private fun getRepliesByTopicId() {
         viewModel.getRepliesByTopicId(mTopicId, true)
             .bindLifeCycle(this)
-            .subscribe({
-            }, {
+            .subscribe({}, {
                 toastFailure(it)
             })
     }
@@ -150,7 +146,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     }
 
     override fun onItemClick(v: View?, item: Any) {
-        if(item is ReplyModel) {
+        if (item is ReplyModel) {
             //回复
             prepareAddComment(item, true)
         }

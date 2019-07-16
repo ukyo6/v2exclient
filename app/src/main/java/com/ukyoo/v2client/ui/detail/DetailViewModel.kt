@@ -29,6 +29,12 @@ class DetailViewModel @Inject constructor(
 
     var replyContent = ObservableField<String>()  //回复内容
 
+
+    var topicId: Int = 0 //topicId
+
+    /**
+     * 查询回复
+     */
     fun getRepliesByTopicId(topicId: Int, isRefresh: Boolean): Single<ArrayList<ReplyModel>> {
         return jsonApi.getRepliesByTopicId(topicId)
             .async()
@@ -47,6 +53,10 @@ class DetailViewModel @Inject constructor(
             }
     }
 
+
+    /**
+     * 查看主题信息
+     */
     fun getTopicsByTopicId(topicId: Int, isRefresh: Boolean): Single<ArrayList<TopicModel>> {
         return jsonApi.getTopicByTopicId(topicId)
             .async()
@@ -118,7 +128,7 @@ class DetailViewModel @Inject constructor(
     /**
      * 回复
      */
-    fun reply(once: String, topicId: Int) {
+    private fun reply(once: String, topicId: Int) {
         val replyContents = replyContent.get()
         if (TextUtils.isEmpty(replyContents)) {
             ToastUtil.shortShow("回复内容不得为空")

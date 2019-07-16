@@ -34,7 +34,9 @@ interface JsonService {
     @GET("/api/members/show.json")
     fun getUserInfo(@Query("username") username: String): Single<MemberInfo>
 
-    //查询帖子内容
+
+
+    //查询主题信息
     @GET("/api/topics/show.json")
     fun getTopicByTopicId(@Query("id") name: Int): Single<ArrayList<TopicModel>>
 
