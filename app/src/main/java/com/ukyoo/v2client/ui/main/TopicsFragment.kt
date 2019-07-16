@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
@@ -12,7 +15,6 @@ import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
-import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
 
 /**
@@ -62,14 +64,19 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         val nodeName = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
 
+        if(nodeName!=null){
+            viewModel.name = nodeName
+            viewModel.getDataByName()
 
-        with(viewModel) {
-            if (nodeName != null) {
-                viewModel.name = nodeName
-            } else if (tab != null) {
-                viewModel.tab = tab
-            }
+        }else if(tab!=null){
+            viewModel.tab = tab
+            viewModel.getDataByTab()
         }
+
+        MutableLiveData<Int>().observe(this@TopicsFragment, Observer<Int>{
+
+
+        })
     }
 
     override fun getLayoutId(): Int {
@@ -104,9 +111,3 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         startActivity(intent)
     }
 }
-
-
-
-
-
-

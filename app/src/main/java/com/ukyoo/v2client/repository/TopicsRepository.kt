@@ -1,26 +1,98 @@
 package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
+import androidx.databinding.ObservableArrayList
 import com.orhanobut.logger.Logger
+import com.ukyoo.v2client.data.api.HtmlService
+import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.util.ContentUtils
+import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.util.*
+import java.util.ArrayList
+import javax.inject.Inject
+import javax.inject.Named
 
-class TopicListRepository {
+/**
+ *  获取主题列表数据源
+ */
+class TopicsRepository {
+
+    @Inject
+    @Named("non_cached")
+    lateinit var apiService: HtmlService  //需要解析html的请求
+    @Inject
+    lateinit var jsonService: JsonService //返回json的请求
 
     companion object {
-
-        // For Singleton instantiation
+        //单例
         @Volatile
-        private var instance: TopicListRepository? = null
+        private var instance: TopicsRepository? = null
 
         fun getInstance() =
             instance ?: synchronized(this) {
-                instance ?: TopicListRepository().also { instance = it }
+                instance
+                    ?: TopicsRepository().also { instance = it }
             }
     }
+
+    val list = ObservableArrayList<TopicModel>()
+
+    /**
+     * 根据tabId请求列表
+     */
+    fun loadDataByTab(isRefresh: Boolean, tab: String): ObservableArrayList<TopicModel> {
+        apiService.queryTopicsByTab(tab)
+            .async()
+            .map { response ->
+                if (isRefresh) {
+                    list.clear()
+                }
+                return@map parse(response).apply {
+                    list.addAll(this)
+                }
+            }
+//            .doOnSubscribe {
+//                startLoad()
+//            }.doAfterTerminate {
+//                stopLoad()
+//                empty.set(list.isEmpty())
+//            }
+            .subscribe({}, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
+
+        return list
+    }
+
+
+    /**
+     * 根据topcName请求列表
+     */
+    fun loadDataByName(isRefresh: Boolean, name: String): ObservableArrayList<TopicModel> {
+        jsonService.queryTopicsByName(name)
+            .async()
+            .map { response ->
+                if (isRefresh) {
+                    list.clear()
+                }
+                return@map response.apply {
+                    list.addAll(this)
+                }
+            }
+//            .doOnSubscribe {
+//                startLoad()
+//            }.doAfterTerminate {
+//                stopLoad()
+//                empty.set(list.isEmpty())
+//            }
+            .subscribe({}, {
+                ToastUtil.shortShow(ErrorHanding.handleError(it))
+            })
+
+        return list
+    }
+
 
 
     private var mCurrentPage = 1
@@ -48,7 +120,6 @@ class TopicListRepository {
 
         return topics
     }
-
 
     private fun parseTopicModel(el: Element, parseNode: Boolean): TopicModel {
         val tdNodes = el.getElementsByTag("td")

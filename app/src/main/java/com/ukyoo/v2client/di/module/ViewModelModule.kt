@@ -22,8 +22,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(TopicListViewModel::class)
-    abstract fun provideTopicsViewModel(viewModel: TopicListViewModel): ViewModel
+    @ViewModelKey(TopicsViewModel::class)
+    abstract fun provideTopicsViewModel(viewModel: TopicsViewModel): ViewModel
 
     @Binds
     @IntoMap
