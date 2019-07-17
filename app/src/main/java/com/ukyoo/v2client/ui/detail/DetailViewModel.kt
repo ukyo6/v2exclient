@@ -3,16 +3,17 @@ package com.ukyoo.v2client.ui.detail
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.orhanobut.logger.Logger
+import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.TopicModel
-import com.ukyoo.v2client.data.entity.TopicWithReplyListModel
-import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.repository.DetailRepository
 import com.ukyoo.v2client.util.*
-import io.reactivex.Single
 import retrofit2.HttpException
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -24,84 +25,32 @@ class DetailViewModel @Inject constructor(
 ) : PagedViewModel() {
 
     var multiDataList = ObservableArrayList<Any>()
-    var replyList = ObservableArrayList<ReplyModel>() //回复
+
     var topic = ObservableField<TopicModel>() //主题
 
     var replyContent = ObservableField<String>()  //回复内容
 
+    //topicId
+    private val _topicId: MutableLiveData<Int> = MutableLiveData()
 
-    var topicId: Int = 0 //topicId
-
-    /**
-     * 查询回复
-     */
-    fun getRepliesByTopicId(topicId: Int, isRefresh: Boolean): Single<ArrayList<ReplyModel>> {
-        return jsonApi.getRepliesByTopicId(topicId)
-            .async()
-            .map {
-                if (isRefresh) {
-                    replyList.clear()
-                }
-                replyList.addAll(it)
-                return@map it
-            }
-            .doOnSubscribe {
-                startLoad()
-            }
-            .doAfterTerminate {
-                stopLoad()
-            }
+    fun setTopicId(topicId: Int) {
+        if(_topicId.value == topicId) {
+            return
+        }
+        _topicId.value = topicId
     }
 
 
-    /**
-     * 查看主题信息
-     */
-    fun getTopicsByTopicId(topicId: Int, isRefresh: Boolean): Single<ArrayList<TopicModel>> {
-        return jsonApi.getTopicByTopicId(topicId)
-            .async()
-            .doOnSubscribe {
-                startLoad()
-            }
-            .doAfterTerminate {
-                stopLoad()
-            }
+    //回复列表
+    val replyList: LiveData<List<ReplyModel>> = Transformations.switchMap(_topicId) { topicId ->
+        if(topicId == null){
+             AbsentLiveData.create()
+        } else {
+            DetailRepository.getInstance().getTopicInfo(topicId)
+
+            DetailRepository.getInstance().getRepliesByTopicId(topicId, true)
+        }
     }
-
-    /**
-     * 获取主题和回复
-     */
-    fun getTopicAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) {
-        htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
-            .async()
-            .map { response ->
-                return@map TopicWithReplyListModel().parse(response, true, topicId)
-            }
-            .doOnSubscribe {
-                startLoad()
-            }.doAfterTerminate {
-                stopLoad()
-            }
-            .bindLifecycle(this)
-            .subscribe({
-                //更新主题和回复列表
-                loadMore.set(it.currentPage < it.totalPage)
-
-                if (isRefresh) {
-                    empty.set(it.replies.isEmpty())
-                    replyList.clear()
-                    multiDataList.clear()
-                    multiDataList.add(it.topic) //主题内容
-                }
-
-                replyList.addAll(it.replies)
-                multiDataList.addAll(it.replies) //回复列表
-            }, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
-    }
-
-    private fun getPage(isRefresh: Boolean) = if (isRefresh) 1 else (replyList.size / 100) + 1
 
     /**
      * 获取回复需要的ONCE

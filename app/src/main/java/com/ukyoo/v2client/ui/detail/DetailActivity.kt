@@ -3,6 +3,7 @@ package com.ukyoo.v2client.ui.detail
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
@@ -50,56 +51,13 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     var isJsonApi: Boolean = false
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        //根据topicId访问
         if (intent.hasExtra("topic_id")) {
             mTopicId = intent.getIntExtra("topic_id", -1)
-
-            viewModel.topicId = intent.getIntExtra("topic_id", -1)
-
-            viewModel.let {
-                if (isJsonApi) {
-                    getTopicByTopicId()
-                } else {
-                    getTopicAndRepliesByTopicId(isRefresh)
-                }
-            }
+            //设置topicId
+            viewModel.setTopicId(mTopicId)
         }
     }
 
-
-    /**
-     * 查看主题信息
-     */
-    private fun getTopicByTopicId() {
-        viewModel.getTopicsByTopicId(mTopicId, true)
-            .bindLifeCycle(this)
-            .subscribe({
-                mTopic = it[0]
-                mTopicId = mTopic.id
-
-                getRepliesByTopicId()
-            }, {
-                toastFailure(it)
-            })
-    }
-
-    /**
-     * 查询主题下的回复
-     */
-    private fun getRepliesByTopicId() {
-        viewModel.getRepliesByTopicId(mTopicId, true)
-            .bindLifeCycle(this)
-            .subscribe({}, {
-                toastFailure(it)
-            })
-    }
-
-    /**
-     * 查看主题和回复
-     */
-    private fun getTopicAndRepliesByTopicId(isRefresh: Boolean) {
-        viewModel.getTopicAndRepliesByTopicId(mTopicId, isRefresh)
-    }
 
     private lateinit var mEnterLayout: EnterLayout
 

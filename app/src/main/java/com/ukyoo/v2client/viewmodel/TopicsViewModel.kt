@@ -1,19 +1,18 @@
 package com.ukyoo.v2client.viewmodel
 
 import androidx.lifecycle.LifecycleOwner
-import com.orhanobut.logger.Logger
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
-import com.ukyoo.v2client.util.ContentUtils
-import org.jsoup.Jsoup
-import java.util.ArrayList
+import io.reactivex.Flowable
+import javax.inject.Inject
 
 /**
  * 列表主题页ViewModel
  */
-class TopicsViewModel : PagedViewModel() {
-
+class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : PagedViewModel() {
 
     lateinit var name: String //topicName
     lateinit var tab: String  //tabId
@@ -21,20 +20,20 @@ class TopicsViewModel : PagedViewModel() {
     var isRefresh: Boolean = false
 
 
+    val topics: LiveData<ArrayList<TopicModel>> = MutableLiveData()
 
-    override fun onCreate(owner: LifecycleOwner) {
-        super.onCreate(owner)
+    fun haha(){
+        val just = Flowable.just(1)
     }
+
 
     fun getDataByName() {
-        TopicsRepository.getInstance().loadDataByName(isRefresh, name)
+        repository.loadDataByName(isRefresh, name)
     }
 
-    fun getDataByTab(){
-        TopicsRepository.getInstance().loadDataByTab(isRefresh, tab)
+    fun getDataByTab() {
+        repository.loadDataByTab(isRefresh, tab)
     }
-
-
 
 
 }

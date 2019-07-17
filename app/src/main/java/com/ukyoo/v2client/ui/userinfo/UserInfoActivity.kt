@@ -15,7 +15,6 @@ import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
-import com.ukyoo.v2client.viewmodel.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**

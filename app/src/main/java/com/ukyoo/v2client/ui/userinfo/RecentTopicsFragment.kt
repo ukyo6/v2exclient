@@ -30,13 +30,13 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
 
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
-            adapter = SingleTypeAdapter(mContext, R.layout.item_user_topic, viewModel.createdTopics).apply {
-            }
+//            adapter = SingleTypeAdapter(mContext, R.layout.item_user_topic, viewModel.topic).apply {
+//            }
         }
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        viewModel.getUserTopics(arguments?.getString("userName") ?: "")
+//        viewModel.getUserTopics(arguments?.getString("userName") ?: "")
     }
 
     override fun getLayoutId(): Int {

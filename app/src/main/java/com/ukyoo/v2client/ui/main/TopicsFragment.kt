@@ -20,7 +20,9 @@ import com.ukyoo.v2client.viewmodel.TopicsViewModel
 /**
  * 单个主题列表页  (技术/创意/好玩...)
  */
-class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContract, ItemClickPresenter<TopicModel> {
+class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
+    ToTopOrRefreshContract,
+    ItemClickPresenter<TopicModel> {
 
 
     override fun isLazyLoad(): Boolean = "lazyOpen" == arguments?.get(SOURCE)
@@ -64,19 +66,14 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(), ToTopOrRefreshContr
         val nodeName = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
 
-        if(nodeName!=null){
+        if (nodeName != null) {
             viewModel.name = nodeName
             viewModel.getDataByName()
 
-        }else if(tab!=null){
+        } else if (tab != null) {
             viewModel.tab = tab
             viewModel.getDataByTab()
         }
-
-        MutableLiveData<Int>().observe(this@TopicsFragment, Observer<Int>{
-
-
-        })
     }
 
     override fun getLayoutId(): Int {

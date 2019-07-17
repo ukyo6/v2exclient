@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.viewmodel
+package com.ukyoo.v2client.ui.userinfo
 
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField

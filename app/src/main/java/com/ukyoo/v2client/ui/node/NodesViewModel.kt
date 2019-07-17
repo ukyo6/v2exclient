@@ -12,7 +12,7 @@ import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class NodesViewModel @Inject constructor(var apiService: JsonService) : PagedViewModel() {
+class NodesViewModel @Inject constructor(private var apiService: JsonService) : PagedViewModel() {
 
     @Inject
     lateinit var nodeModelDao: NodeModelDao

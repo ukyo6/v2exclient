@@ -2,7 +2,6 @@ package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
-import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.TopicModel
@@ -10,31 +9,19 @@ import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import java.util.ArrayList
+import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  *  获取主题列表数据源
  */
-class TopicsRepository {
-
-    @Inject
-    @Named("non_cached")
-    lateinit var apiService: HtmlService  //需要解析html的请求
-    @Inject
-    lateinit var jsonService: JsonService //返回json的请求
-
-    companion object {
-        //单例
-        @Volatile
-        private var instance: TopicsRepository? = null
-
-        fun getInstance() =
-            instance ?: synchronized(this) {
-                instance
-                    ?: TopicsRepository().also { instance = it }
-            }
-    }
+@Singleton
+class TopicsRepository @Inject constructor
+    (@Named("non_cached") var apiService: HtmlService,
+    var jsonService: JsonService
+) {
 
     val list = ObservableArrayList<TopicModel>()
 
@@ -70,6 +57,8 @@ class TopicsRepository {
      * 根据topcName请求列表
      */
     fun loadDataByName(isRefresh: Boolean, name: String): ObservableArrayList<TopicModel> {
+
+
         jsonService.queryTopicsByName(name)
             .async()
             .map { response ->
@@ -92,7 +81,6 @@ class TopicsRepository {
 
         return list
     }
-
 
 
     private var mCurrentPage = 1
