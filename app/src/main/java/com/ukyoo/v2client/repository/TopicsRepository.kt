@@ -2,14 +2,18 @@ package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.LiveData
+import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.*
+import io.reactivex.Flowable
+import io.reactivex.Single
+import io.reactivex.functions.Function
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import java.util.ArrayList
-import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -19,67 +23,66 @@ import javax.inject.Singleton
  */
 @Singleton
 class TopicsRepository @Inject constructor
-    (@Named("non_cached") var apiService: HtmlService,
+    (
+    @Named("non_cached") var htmlService: HtmlService,
     var jsonService: JsonService
 ) {
 
-    val list = ObservableArrayList<TopicModel>()
 
     /**
      * 根据tabId请求列表
      */
-    fun loadDataByTab(isRefresh: Boolean, tab: String): ObservableArrayList<TopicModel> {
-        apiService.queryTopicsByTab(tab)
+    fun loadDataByTab(isRefresh: Boolean, tabId: String): Single<ArrayList<TopicModel>> {
+        return htmlService.queryTopicsByTab(tabId)
             .async()
-            .map { response ->
-                if (isRefresh) {
-                    list.clear()
-                }
-                return@map parse(response).apply {
-                    list.addAll(this)
-                }
+            .map { responseStr ->
+                parse(responseStr)
             }
+//            .async()
+//            .map { response ->
+//                if (isRefresh) {
+//                    list.clear()
+//                }
+//                return@map parse(response).apply {
+//                    list.addAll(this)
+//                }
+//            }
 //            .doOnSubscribe {
 //                startLoad()
 //            }.doAfterTerminate {
 //                stopLoad()
 //                empty.set(list.isEmpty())
 //            }
-            .subscribe({}, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
+//            .subscribe({}, {
+//                ToastUtil.shortShow(ErrorHanding.handleError(it))
+//            })
 
-        return list
     }
 
 
     /**
      * 根据topcName请求列表
      */
-    fun loadDataByName(isRefresh: Boolean, name: String): ObservableArrayList<TopicModel> {
-
-
-        jsonService.queryTopicsByName(name)
+    fun loadDataByName(isRefresh: Boolean, name: String): Single<ArrayList<TopicModel>> {
+        return jsonService.queryTopicsByName(name)
             .async()
-            .map { response ->
-                if (isRefresh) {
-                    list.clear()
-                }
-                return@map response.apply {
-                    list.addAll(this)
-                }
-            }
+//            .map { response ->
+//                if (isRefresh) {
+//                    list.clear()
+//                }
+//                return@map response.apply {
+//                    list.addAll(this)
+//                }
+//            }
 //            .doOnSubscribe {
 //                startLoad()
 //            }.doAfterTerminate {
 //                stopLoad()
 //                empty.set(list.isEmpty())
 //            }
-            .subscribe({}, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
-
-        return list
+//            .subscribe({}, {
+//                ToastUtil.shortShow(ErrorHanding.handleError(it))
+//            })
     }
 
 

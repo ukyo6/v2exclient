@@ -1,12 +1,10 @@
 package com.ukyoo.v2client.viewmodel
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
-import io.reactivex.Flowable
 import javax.inject.Inject
 
 /**
@@ -14,27 +12,31 @@ import javax.inject.Inject
  */
 class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : PagedViewModel() {
 
-    lateinit var name: String //topicName
-    lateinit var tab: String  //tabId
+    private val _name: MutableLiveData<String> = MutableLiveData()         //topicName
+    private val _tabId: MutableLiveData<String> = MutableLiveData()   //tabId
 
     var isRefresh: Boolean = false
 
 
     val topics: LiveData<ArrayList<TopicModel>> = MutableLiveData()
 
-    fun haha(){
-        val just = Flowable.just(1)
+
+    fun setTopicName(topicName: String) {
+        _name.value = topicName
     }
+
+    fun setTopicId(tabId: String){
+        _tabId.value = tabId
+    }
+
 
 
     fun getDataByName() {
-        repository.loadDataByName(isRefresh, name)
+        repository.loadDataByName(isRefresh, _name.value)
     }
 
     fun getDataByTab() {
-        repository.loadDataByTab(isRefresh, tab)
+        repository.loadDataByTab(isRefresh, _tabId.value)
     }
-
-
 }
 

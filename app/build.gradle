@@ -113,4 +113,7 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
 
+    implementation group: 'android.arch.lifecycle', name: 'reactivestreams', version: '1.1.1'
+
+
 }

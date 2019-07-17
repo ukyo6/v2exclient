@@ -2,11 +2,7 @@ package com.ukyoo.v2client.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
