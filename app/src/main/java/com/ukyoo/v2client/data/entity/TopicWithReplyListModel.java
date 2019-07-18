@@ -59,7 +59,7 @@ public class TopicWithReplyListModel extends V2EXModel {
         return this;
     }
 
-    ReplyModel parseReplyModel(Element element) {
+    private ReplyModel parseReplyModel(Element element) {
         ReplyModel reply = new ReplyModel();
         reply.member = new MemberModel();
 

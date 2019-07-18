@@ -16,7 +16,7 @@ interface HtmlService {
     //查看一个帖子的主题和回复
     @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
     @GET("t/{topicId}")
-    fun getTopicAndRepliesByTopicId(@Path("topicId") topicId: Int, @Query("p") page: Int): Single<String>
+    fun getTopicAndRepliesByTopicId(@Path("topicId") topicId: Int, @Query("p") page: Int): Flowable<String>
 
     //登录首页信息
 //    @Headers(

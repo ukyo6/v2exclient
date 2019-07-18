@@ -13,6 +13,7 @@ import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.repository.DetailRepository
+import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.*
 import retrofit2.HttpException
 import java.util.regex.Pattern
@@ -20,13 +21,12 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class DetailViewModel @Inject constructor(
-    private var jsonApi: JsonService,
-    @Named("cached") private var htmlService: HtmlService
+    var repository: DetailRepository,
+    @Named("non_cached")
+    var htmlService: HtmlService
 ) : PagedViewModel() {
 
     var multiDataList = ObservableArrayList<Any>()
-
-    var topic = ObservableField<TopicModel>() //主题
 
     var replyContent = ObservableField<String>()  //回复内容
 
@@ -34,21 +34,18 @@ class DetailViewModel @Inject constructor(
     private val _topicId: MutableLiveData<Int> = MutableLiveData()
 
     fun setTopicId(topicId: Int) {
-        if(_topicId.value == topicId) {
+        if (_topicId.value == topicId) {
             return
         }
         _topicId.value = topicId
     }
 
-
     //回复列表
     val replyList: LiveData<List<ReplyModel>> = Transformations.switchMap(_topicId) { topicId ->
-        if(topicId == null){
-             AbsentLiveData.create()
+        if (topicId == null) {
+            AbsentLiveData.create()
         } else {
-            DetailRepository.getInstance().getTopicInfo(topicId)
-
-            DetailRepository.getInstance().getRepliesByTopicId(topicId, true)
+            repository.getTopicInfoAndRepliesByTopicId()
         }
     }
 

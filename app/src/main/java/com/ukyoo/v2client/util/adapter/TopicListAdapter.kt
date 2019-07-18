@@ -10,6 +10,9 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.entity.TopicModel
 
+/**
+ *  主题列表页Adapter
+ */
 class TopicListAdapter(layoutResId: Int) :
     BaseQuickAdapter<TopicModel, TopicListAdapter.VHolder>(layoutResId) {
 

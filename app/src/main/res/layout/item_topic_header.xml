@@ -9,10 +9,9 @@
 	<data>
 
 
-
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.data.entity.TopicModel"/>
+			type="com.ukyoo.v2client.entity.TopicModel"/>
 
 	</data>
 
@@ -24,7 +23,6 @@
 
 
 		<RelativeLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/topic_row"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -116,7 +114,6 @@
 				android:layout_height="wrap_content"
 				android:layout_alignEnd="@+id/text_title"
 				android:layout_alignStart="@+id/iv_avatar"
-				android:layout_alignRight="@+id/text_title"
 				android:layout_below="@+id/divide_line"
 				android:layout_marginTop="8dp"
 				android:lineSpacingExtra="1.25dp"

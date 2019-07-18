@@ -51,9 +51,9 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     var isJsonApi: Boolean = false
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        //设置topicId
         if (intent.hasExtra("topic_id")) {
             mTopicId = intent.getIntExtra("topic_id", -1)
-            //设置topicId
             viewModel.setTopicId(mTopicId)
         }
     }
