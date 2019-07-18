@@ -3,6 +3,7 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
@@ -11,6 +12,7 @@ import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
+import com.ukyoo.v2client.util.adapter.TopicListAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
 
 /**
@@ -20,6 +22,8 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
     ToTopOrRefreshContract,
     ItemClickPresenter<TopicModel> {
 
+
+    lateinit var topicsAdapter:TopicListAdapter
 
     override fun isLazyLoad(): Boolean = "lazyOpen" == arguments?.get(SOURCE)
 
@@ -45,13 +49,12 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
 
     override fun initView() {
         getComponent().inject(this)
-
         mBinding.vm = viewModel
+
+        topicsAdapter = TopicListAdapter(R.layout.item_topic)
         mBinding.recyclerView.run {
             layoutManager = LinearLayoutManager(mContext)
-//            adapter = SingleTypeAdapter(mContext, R.layout.item_topic, viewModel.list).apply {
-//                itemPresenter = this@TopicsFragment
-//            }
+            adapter = topicsAdapter
         }
     }
 
@@ -63,13 +66,14 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         val tab = arguments?.getString(TAB_ID)
 
         if (nodeName != null) {
-            viewModel.name = nodeName
-            viewModel.getDataByName()
-
+            viewModel.setTopicName(nodeName)
         } else if (tab != null) {
-            viewModel.tab = tab
-            viewModel.getDataByTab()
+            viewModel.setNodeId(tab)
         }
+
+        viewModel.topics.observe(this@TopicsFragment, Observer { list ->
+            topicsAdapter.setNewData(list)
+        })
     }
 
     override fun getLayoutId(): Int {
@@ -92,7 +96,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
     }
 
     /**
-     * ItemClick
+     * 点击条目跳转详情页
      */
     override fun onItemClick(v: View?, item: TopicModel) {
         val intent = Intent(mContext, DetailActivity::class.java)

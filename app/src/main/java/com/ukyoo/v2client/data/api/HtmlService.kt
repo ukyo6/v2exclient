@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.data.api
 
+import io.reactivex.Flowable
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.*
@@ -10,7 +11,7 @@ interface HtmlService {
     //主题  (技术,创意,好玩...)
     @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
     @GET("/")
-    fun queryTopicsByTab(@Query("tab") nodesId: String): Single<String>
+    fun queryTopicsByTab(@Query("tab") nodesId: String): Flowable<String>
 
     //查看一个帖子的主题和回复
     @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")

@@ -32,12 +32,14 @@ class TopicsRepository @Inject constructor
     /**
      * 根据tabId请求列表
      */
-    fun loadDataByTab(isRefresh: Boolean, tabId: String): Single<ArrayList<TopicModel>> {
+    fun loadDataByTab(isRefresh: Boolean, tabId: String): Flowable<ArrayList<TopicModel>> {
         return htmlService.queryTopicsByTab(tabId)
-            .async()
             .map { responseStr ->
                 parse(responseStr)
             }
+            .async()
+
+
 //            .async()
 //            .map { response ->
 //                if (isRefresh) {
@@ -63,7 +65,7 @@ class TopicsRepository @Inject constructor
     /**
      * 根据topcName请求列表
      */
-    fun loadDataByName(isRefresh: Boolean, name: String): Single<ArrayList<TopicModel>> {
+    fun loadDataByName(isRefresh: Boolean, name: String): Flowable<ArrayList<TopicModel>> {
         return jsonService.queryTopicsByName(name)
             .async()
 //            .map { response ->

@@ -1,10 +1,14 @@
 package com.ukyoo.v2client.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
+import com.ukyoo.v2client.util.AbsentLiveData
+import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 
 /**
@@ -12,31 +16,33 @@ import javax.inject.Inject
  */
 class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : PagedViewModel() {
 
-    private val _name: MutableLiveData<String> = MutableLiveData()         //topicName
-    private val _tabId: MutableLiveData<String> = MutableLiveData()   //tabId
+    private val param: MutableLiveData<Param> = MutableLiveData()
 
-    var isRefresh: Boolean = false
-
-
-    val topics: LiveData<ArrayList<TopicModel>> = MutableLiveData()
-
-
-    fun setTopicName(topicName: String) {
-        _name.value = topicName
+    fun setTopicName(name: String) {
+        param.value = Param("", name)
     }
 
-    fun setTopicId(tabId: String){
-        _tabId.value = tabId
+    fun setNodeId(nodeId: String) {
+        param.value = Param(nodeId, "")
     }
 
 
-
-    fun getDataByName() {
-        repository.loadDataByName(isRefresh, _name.value)
+    //主题列表
+    var topics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
+        when {
+            value.nodeName.isNotEmpty() -> LiveDataReactiveStreams.fromPublisher(
+                repository.loadDataByName(true, value.nodeName)
+                    .async()
+            )
+            value.nodeId.isNotEmpty() -> LiveDataReactiveStreams.fromPublisher(
+                repository.loadDataByTab(true, value.nodeId)
+                    .async()
+            )
+            else -> AbsentLiveData.create()
+        }
     }
 
-    fun getDataByTab() {
-        repository.loadDataByTab(isRefresh, _tabId.value)
-    }
+
+    data class Param(var nodeId: String, var nodeName: String)
 }
 
