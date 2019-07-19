@@ -2,7 +2,7 @@ package com.ukyoo.v2client.data.api
 
 import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.data.entity.ReplyModel
-import com.ukyoo.v2client.entity.MemberInfo
+import com.ukyoo.v2client.entity.MemberModel
 import com.ukyoo.v2client.entity.TopicModel
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -31,10 +31,9 @@ interface JsonService {
     @GET("nodes/show.json")
     fun getNodesInfo(): Single<Any>
 
-    //用户主页
+    //用户主页 -
     @GET("/api/members/show.json")
-    fun getUserInfo(@Query("username") username: String): Single<MemberInfo>
-
+    fun getUserInfo(@Query("username") username: String): Flowable<MemberModel>
 
 
     //查询主题信息

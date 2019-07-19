@@ -18,7 +18,7 @@ import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
- * 用户信息
+ *  用户信息界面
  */
 class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> {
 

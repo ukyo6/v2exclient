@@ -10,12 +10,8 @@ import androidx.lifecycle.Transformations
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.data.api.HtmlService
-import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.data.entity.ReplyModel
-import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.repository.DetailRepository
-import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.*
 import retrofit2.HttpException
 import java.util.regex.Pattern
