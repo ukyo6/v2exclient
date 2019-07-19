@@ -4,6 +4,7 @@ import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orhanobut.logger.Logger
@@ -12,6 +13,7 @@ import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.TopicModel
+import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.repository.DetailRepository
 import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.*
@@ -40,12 +42,14 @@ class DetailViewModel @Inject constructor(
         _topicId.value = topicId
     }
 
-    //回复列表
-    val replyList: LiveData<List<ReplyModel>> = Transformations.switchMap(_topicId) { topicId ->
+    //主题信息和回复列表
+    val topicAndReplies: LiveData<DetailModel> = Transformations.switchMap(_topicId) { topicId ->
         if (topicId == null) {
             AbsentLiveData.create()
         } else {
-            repository.getTopicInfoAndRepliesByTopicId()
+            LiveDataReactiveStreams.fromPublisher(
+                repository.getTopicInfoAndRepliesByTopicId(topicId, true)
+            )
         }
     }
 

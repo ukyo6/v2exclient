@@ -15,7 +15,8 @@ data class TopicModel(
     var id: Int = 0,         //帖子id
     var title: String = "",  //标题
     var replies: Int = 0,    //回复数量
-    var created: String = "" //创建时间
+    var created: String = "", //创建时间
+    var contentRendered: String = ""
 ) : Parcelable {
     /**
      * 用户信息
@@ -31,8 +32,8 @@ data class TopicModel(
      */
     @Parcelize
     data class NodeInfo(
-        var name:String ="",
-        var title:String =""
+        var name: String = "",
+        var title: String = ""
     ) : Parcelable
 }
 

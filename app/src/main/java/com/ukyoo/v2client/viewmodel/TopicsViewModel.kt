@@ -29,16 +29,19 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
 
     //主题列表
     var topics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
-        when {
-            value.nodeName.isNotEmpty() -> LiveDataReactiveStreams.fromPublisher(
-                repository.loadDataByName(true, value.nodeName)
-                    .async()
-            )
-            value.nodeId.isNotEmpty() -> LiveDataReactiveStreams.fromPublisher(
+
+        if (value == null || (value.nodeId.isBlank() && value.nodeName.isBlank())) {
+            AbsentLiveData.create()
+        } else if (value.nodeId.isNotBlank()) {
+            LiveDataReactiveStreams.fromPublisher(
                 repository.loadDataByTab(true, value.nodeId)
                     .async()
             )
-            else -> AbsentLiveData.create()
+        } else {
+            LiveDataReactiveStreams.fromPublisher(
+                repository.loadDataByTab(true, value.nodeName)
+                    .async()
+            )
         }
     }
 

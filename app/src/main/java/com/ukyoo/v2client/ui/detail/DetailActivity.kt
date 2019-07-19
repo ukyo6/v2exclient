@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
@@ -15,18 +17,20 @@ import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
+import com.ukyoo.v2client.util.adapter.DetailAdapter
 import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.widget.EnterLayout
 import io.reactivex.subjects.BehaviorSubject
+import java.util.ArrayList
 
 /**
  *  详情页
  */
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<Any> {
     private var mTopicId: Int = 0
-    private lateinit var mTopic: TopicModel
+
 
     companion object {
         const val ITEM_TOPIC = 1
@@ -56,6 +60,24 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             mTopicId = intent.getIntExtra("topic_id", -1)
             viewModel.setTopicId(mTopicId)
         }
+
+        val mDetailAdapter = DetailAdapter(emptyList())
+        viewModel.topicAndReplies.observe(this@DetailActivity, Observer { data ->//观察者
+
+            val topicInfo = data.topicInfo
+            val replies = data.replies
+
+            val list = ArrayList<MultiItemEntity>()
+            list.add(topicInfo as MultiItemEntity)
+            list.addAll(replies as List<MultiItemEntity>)
+            mDetailAdapter.setNewData(list)
+        })
+
+        //回复列表
+        mBinding.recyclerview.run {
+            layoutManager = LinearLayoutManager(mContext)
+            adapter = mDetailAdapter
+        }
     }
 
 
@@ -64,23 +86,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     override fun initView() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
-
-        lifecycle.addObserver(viewModel)
-
-        //回复列表
-        mBinding.recyclerview.run {
-            layoutManager = LinearLayoutManager(mContext)
-            adapter = MultiTypeAdapter(mContext, viewModel.multiDataList, object : MultiTypeAdapter.MultiViewTyper {
-                override fun getViewType(item: Any): Int {
-                    return if (item is TopicModel) ITEM_TOPIC else ITEM_REPLY
-                }
-
-            }).apply {
-                itemPresenter = this@DetailActivity
-                addViewTypeToLayoutMap(ITEM_TOPIC, R.layout.item_topic_header)
-                addViewTypeToLayoutMap(ITEM_REPLY, R.layout.item_reply)
-            }
-        }
 
         mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
         mEnterLayout.setDefaultHint("评论主题")

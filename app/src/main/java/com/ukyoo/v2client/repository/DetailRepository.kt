@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.entity.*
+import com.ukyoo.v2client.entity.*
 import com.ukyoo.v2client.util.ContentUtils
 import com.ukyoo.v2client.util.async
+import io.reactivex.Flowable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -79,14 +81,14 @@ class DetailRepository @Inject constructor(
     /**
      *  查看主题信息和回复
      */
-    fun getTopicInfoAndRepliesByTopicId(topicId: Int, isRefresh: Boolean) :  {
-        htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
-            .async()
+    fun getTopicInfoAndRepliesByTopicId(topicId: Int, isRefresh: Boolean): Flowable<DetailModel> {
+        return htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
             .map { response ->
                 return@map parse(response, true, topicId)
             }
+            .async()
 //            .subscribe({
-                //更新主题和回复列表
+        //更新主题和回复列表
 //                loadMore.set(it.currentPage < it.totalPage)
 //
 //                if (isRefresh) {
@@ -106,48 +108,44 @@ class DetailRepository @Inject constructor(
 
     private fun getPage(isRefresh: Boolean) = if (isRefresh) 1 else (replyList.size / 100) + 1
 
+//    private lateinit var topic: TopicInfo
 
-    lateinit var topic: TopicModel
-    lateinit var replies: ArrayList<ReplyModel>
-    var totalPage: Int = 0
-    var currentPage: Int = 0
-
-
-    fun parse(responseBody: String, parseTopic: Boolean, id: Int){
+    /**
+     * 解析html
+     */
+    fun parse(responseBody: String, parseTopic: Boolean, topicId: Int): DetailModel {
         val doc = Jsoup.parse(responseBody)
         val body = doc.body()
 
-        topic = TopicModel()
-        topic.id = id
+        //解析主题信息
+//        if (parseTopic) {
+            val topic = parseTopicModel(doc, body)
+            topic.id = topicId
+//        }
 
-        if (parseTopic) {
-            try {
-                parseTopicModel(doc, body)
-            } catch (e: Exception) {
-                android.util.Log.w("parse_topic", e.toString())
-            }
-
-        }
-
-        replies = ArrayList<ReplyModel>()
+        //解析回复信息
+        val replyList = ArrayList<ReplyItem>()
         val elements = body.getElementsByAttributeValueMatching("id", Pattern.compile("r_(.*)"))
         for (el in elements) {
-            try {
-                val reply = parseReplyModel(el)
-                replies.add(reply)
-            } catch (e: Exception) {
-//                android.util.Log.w("parse_reply", e.toString())
-            }
+            val reply = parseReplyModel(el)
+            replyList.add(reply)
         }
 
+        //解析页码
         val pages = ContentUtils.parsePage(body)
-        currentPage = pages[0]
-        totalPage = pages[1]
+
+        return DetailModel()
+            .apply {
+                replies = replyList
+                topicInfo = topic
+                currentPage = pages[0]
+                totalPage = pages[1]
+            }
     }
 
-    private fun parseReplyModel(element: Element): ReplyModel {
-        val reply = ReplyModel()
-        reply.member = MemberModel()
+    private fun parseReplyModel(element: Element): ReplyItem {
+        val reply = ReplyItem()
+        val memberInfo = ReplyItem.MemberInfo()
 
         val tdNodes = element.getElementsByTag("td")
         for (tdNode in tdNodes) {
@@ -157,9 +155,9 @@ class DetailRepository @Inject constructor(
                 if (avatarNode != null) {
                     var avatarString = avatarNode.attr("src")
                     if (avatarString.startsWith("//")) {
-                        avatarString = "http:$avatarString"
+                        avatarString = "https:$avatarString"
                     }
-                    reply.member.avatar = avatarString
+                    memberInfo.avatar = avatarString
                 }
             }
 
@@ -177,16 +175,21 @@ class DetailRepository @Inject constructor(
             val aNodes = tdNode.getElementsByTag("a")
             for (aNode in aNodes) {
                 if (aNode.toString().contains("/member/")) {
-                    reply.member.username = aNode.attr("href").replace("/member/", "")
+                    memberInfo.username = aNode.attr("href").replace("/member/", "")
                     break
                 }
             }
         }
+
+        reply.member = memberInfo
         return reply
     }
 
-    @Throws(Exception::class)
-    internal fun parseTopicModel(doc: Document, body: Element) {
+    private fun parseTopicModel(doc: Document, body: Element): TopicInfo {
+        val topic = TopicInfo()
+        val userInfo = TopicInfo.UserInfo()
+        val nodeInfo = TopicInfo.NodeInfo()
+
         var title = doc.title()
         if (title.endsWith("- V2EX"))
             title = title.substring(0, title.length - 6).trim { it <= ' ' }
@@ -195,27 +198,25 @@ class DetailRepository @Inject constructor(
         val header = body.getElementsByClass("header")
         if (header.size == 0) throw Exception("fail to parse topic")
 
-        topic.member = MemberModel()
-        topic.node = NodeModel()
         val aNodes = header[0].getElementsByTag("a")
         for (aNode in aNodes) {
             val content = aNode.toString()
             if (content.contains("/member/")) {
                 var member = aNode.attr("href")
                 member = member.replace("/member/", "")
-                topic.member.username = member
+                userInfo.username = member
 
                 val avatarNode = aNode.getElementsByTag("img")
-                if (avatarNode != null && (topic.member.avatar == null || topic.member.avatar.isEmpty())) {
+                if (avatarNode != null && (userInfo.avatar.isEmpty())) {
                     var avatar = avatarNode.attr("src")
                     if (avatar.startsWith("//"))
-                        avatar = "http:$avatar"
-                    topic.member.avatar = avatar
+                        avatar = "https:$avatar"
+                    userInfo.avatar = avatar
                 }
             } else if (content.contains("/go/")) {
                 val node = aNode.attr("href")
-                topic.node.name = node.replace("/go/", "")
-                topic.node.title = aNode.text()
+                nodeInfo.name = node.replace("/go/", "")
+                nodeInfo.title = aNode.text()
             }
         }
 
@@ -263,6 +264,10 @@ class DetailRepository @Inject constructor(
                 }
             }
         }
+
+        topic.member = userInfo
+        topic.node = nodeInfo
+        return topic
     }
 }
 

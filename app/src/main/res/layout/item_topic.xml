@@ -16,9 +16,9 @@
 
 	</data>
 
+		<!--android:onClick="@{(v)->presenter.onItemClick(v,item)}"-->
 
 	<RelativeLayout
-		android:onClick="@{(v)->presenter.onItemClick(v,item)}"
 		android:id="@+id/card_container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

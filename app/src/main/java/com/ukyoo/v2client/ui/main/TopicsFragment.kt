@@ -56,6 +56,14 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
             layoutManager = LinearLayoutManager(mContext)
             adapter = topicsAdapter
         }
+
+        topicsAdapter.setOnItemClickListener { adapter, view, position ->
+
+            val item: TopicModel = topicsAdapter.data[position]
+            val intent = Intent(mContext, DetailActivity::class.java)
+            intent.putExtra("topic_id", item.id)  //topicId
+            startActivity(intent)
+        }
     }
 
     /**
