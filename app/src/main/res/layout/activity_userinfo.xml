@@ -42,8 +42,8 @@
 					android:layout_height="match_parent">
 
 
-					<ImageView
-						app:blurBg="@{vm.memberModel.avatar_large}"
+					<androidx.appcompat.widget.AppCompatImageView
+						app:blurBg="@{vm.userInfo.avatar_large}"
 						android:id="@+id/iv_blur_bg"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
@@ -55,7 +55,7 @@
 						app:layout_constraintTop_toTopOf="parent"
 						android:layout_marginStart="30dp"
 						android:layout_marginTop="30dp"
-						app:url="@{vm.memberModel.avatar_large}"
+						app:url="@{vm.userInfo.avatar_large}"
 						android:id="@+id/iv_avatar"
 						android:layout_width="80dp"
 						android:layout_height="80dp"
@@ -63,7 +63,7 @@
 						tools:src="@drawable/user"/>
 
 					<TextView
-						android:text="@{vm.memberModel.username}"
+						android:text="@{vm.userInfo.username}"
 						android:layout_marginStart="20dp"
 						app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
 						app:layout_constraintTop_toTopOf="@+id/iv_avatar"
@@ -75,7 +75,7 @@
 						android:id="@+id/tv_username"/>
 
 					<TextView
-						android:text="@{vm.registerTimeAndNum}"
+						android:text="@{vm.userInfo.registerTimeAndNum}"
 						android:textColor="@color/colorBlack"
 						android:layout_marginEnd="30dp"
 						android:maxLines="2"
@@ -93,7 +93,7 @@
 					<TextView
 						android:maxLines="1"
 						android:ellipsize="end"
-						android:text="@{vm.memberModel.github}"
+						android:text="@{vm.userInfo.github}"
 						android:drawablePadding="5dp"
 						android:textSize="15sp"
 						android:gravity="center_vertical"
@@ -108,7 +108,7 @@
 					<TextView
 						android:maxLines="1"
 						android:ellipsize="end"
-						android:text="@{vm.memberModel.website}"
+						android:text="@{vm.userInfo.website}"
 						android:layout_marginStart="10dp"
 						android:drawablePadding="5dp"
 						android:textSize="15sp"
@@ -124,7 +124,7 @@
 					<TextView
 						android:maxLines="1"
 						android:ellipsize="end"
-						android:text="@{vm.memberModel.twitter}"
+						android:text="@{vm.userInfo.twitter}"
 						android:layout_marginTop="5dp"
 						android:drawablePadding="5dp"
 						android:textSize="15sp"
@@ -140,7 +140,7 @@
 					<TextView
 						android:maxLines="1"
 						android:ellipsize="end"
-						android:text="@{vm.memberModel.location}"
+						android:text="@{vm.userInfo.location}"
 						android:layout_marginStart="10dp"
 						android:layout_marginTop="5dp"
 						android:drawablePadding="5dp"

@@ -1,5 +1,7 @@
 package com.ukyoo.v2client.entity
 
+import com.ukyoo.v2client.util.TimeUtils
+
 /**
  * 用户个人信息(详细)
  */
@@ -23,7 +25,8 @@ data class MemberModel(
 ) {
 
     init{
-        avatar_large = "https:$avatar_large"
+        avatar_large = "https:$avatar_large"  //头像链接
 
+        var registerTimeAndNum = TimeUtils.milliseconds2String(this.created * 1000.toLong()) //注册时间和会员号码
     }
 }
