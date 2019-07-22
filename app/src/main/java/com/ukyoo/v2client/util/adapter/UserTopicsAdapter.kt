@@ -11,7 +11,7 @@ import com.ukyoo.v2client.entity.TopicModel
 
 
 /**
- *  主题列表页Adapter
+ *  用户主题列表
  */
 class UserTopicsAdapter(layoutResId: Int) :
     BaseQuickAdapter<TopicModel, UserTopicsAdapter.VHolder>(layoutResId) {

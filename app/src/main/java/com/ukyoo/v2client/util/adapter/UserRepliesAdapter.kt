@@ -11,10 +11,10 @@ import com.ukyoo.v2client.entity.UserReplyModel
 
 
 /**
- *  主题列表页Adapter
+ *  用户回复列表
  */
-class RepliesAdapter(layoutResId: Int) :
-    BaseQuickAdapter<UserReplyModel, RepliesAdapter.VHolder>(layoutResId) {
+class UserRepliesAdapter(layoutResId: Int) :
+    BaseQuickAdapter<UserReplyModel, UserRepliesAdapter.VHolder>(layoutResId) {
 
     init {
 //        var itemPresenter: ItemClickPresenter = null

@@ -28,7 +28,7 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
 
 
     //主题列表
-    var topics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
+    val topics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
 
         if (value == null || (value.nodeId.isBlank() && value.nodeName.isBlank())) {
             AbsentLiveData.create()
@@ -42,6 +42,17 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
                 repository.loadDataByTab(true, value.nodeName)
                     .async()
             )
+        }
+    }
+
+    /**
+     * 重试
+     */
+    fun retry(){
+        val nodeId = param.value?.nodeId
+        val nodeName = param.value?.nodeName
+        if (nodeId != null && nodeName != null) {
+            param.value = Param(nodeId, nodeName)
         }
     }
 

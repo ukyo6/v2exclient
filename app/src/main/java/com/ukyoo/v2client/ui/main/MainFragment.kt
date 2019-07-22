@@ -7,7 +7,7 @@ import androidx.viewpager.widget.ViewPager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentMainBinding
-import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import com.ukyoo.v2client.util.adapter.BaseViewPagerAdapter
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<FragmentMainBinding>() {
@@ -23,7 +23,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         getComponent().inject(this)
         //初始化viewpager
         mBinding.viewpager.run {
-            adapter = object : AbstractPagerAdapter(manager, arrayOf("1", "2", "3")) {
+            adapter = object : BaseViewPagerAdapter(manager, arrayOf("1", "2", "3")) {
                 override fun getItem(pos: Int): Fragment? {
                     when (pos) {
                         0 -> list[0] = HomeFragment.newInstance(Bundle())
@@ -33,7 +33,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     return list[pos]
                 }
             }
-            offscreenPageLimit = (adapter as AbstractPagerAdapter).count - 1
+            offscreenPageLimit = (adapter as BaseViewPagerAdapter).count - 1
         }
 
         mBinding.viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

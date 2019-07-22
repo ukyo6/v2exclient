@@ -14,6 +14,7 @@
 	<string name="topic">主题</string>
 
 	<string name="please_login">请登录</string>
+	<string name="retry">重试</string>
 
 	<string-array name="v2ex_favorite_tab_titles">
 		<item>技术</item>

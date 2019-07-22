@@ -8,7 +8,7 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
-import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import com.ukyoo.v2client.util.adapter.BaseViewPagerAdapter
 import com.ukyoo.v2client.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -44,7 +44,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         val tabPaths = resources.getStringArray(R.array.v2ex_favorite_tab_paths)
 
         mBinding.viewpager.apply {
-            adapter = object : AbstractPagerAdapter(manager, tabTitles) {
+            adapter = object : BaseViewPagerAdapter(manager, tabTitles) {
                 override fun getItem(pos: Int): Fragment? {
                     when (pos) {
 //                    0 -> list[0] = TopicListFragment.newInstance("latest")  //最新
@@ -60,7 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     return list[pos]
                 }
             }
-            offscreenPageLimit = (adapter as AbstractPagerAdapter).count - 1
+            offscreenPageLimit = (adapter as BaseViewPagerAdapter).count - 1
         }
 
         mBinding.tabLayout.apply {
@@ -69,7 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(p0: TabLayout.Tab?) {
                     //refresh topicFragment
-                    val abstractPagerAdapter = viewpager.adapter as AbstractPagerAdapter
+                    val abstractPagerAdapter = viewpager.adapter as BaseViewPagerAdapter
                     abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
                         if (it is ToTopOrRefreshContract) {
                             it.toTopOrRefresh()

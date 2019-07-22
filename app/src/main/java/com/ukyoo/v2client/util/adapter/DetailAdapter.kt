@@ -14,9 +14,9 @@ import com.ukyoo.v2client.ui.detail.DetailActivity
 /**
  * 详情页Adapter 头部和评论列表
  */
-class DetailAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
+class DetailAdapter(data: List<MultiItemEntity>) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {
 
-    constructor(data: List<MultiItemEntity>) : super(data) {
+    init {
         addItemType(DetailActivity.ITEM_TOPIC, R.layout.item_topic_header)
         addItemType(DetailActivity.ITEM_REPLY, R.layout.item_reply)
     }

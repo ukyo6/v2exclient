@@ -2,7 +2,6 @@ package com.ukyoo.v2client.ui.userinfo
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
@@ -14,7 +13,7 @@ import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
-import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import com.ukyoo.v2client.util.adapter.BaseViewPagerAdapter
 import com.ukyoo.v2client.viewmodel.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -63,7 +62,7 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
 
         val tabTitles = arrayOf("创建的主题", "最近的回复")
         mBinding.viewpager.apply {
-            adapter = object : AbstractPagerAdapter(supportFragmentManager, tabTitles) {
+            adapter = object : BaseViewPagerAdapter(supportFragmentManager, tabTitles) {
                 override fun getItem(pos: Int): Fragment? {
                     return when (pos) {
                         0 -> RecentTopicsFragment.newInstance(mUsername)
@@ -72,7 +71,7 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
                     }
                 }
             }
-            offscreenPageLimit = (adapter as AbstractPagerAdapter).count - 1
+            offscreenPageLimit = (adapter as BaseViewPagerAdapter).count - 1
         }
 
         mBinding.tabLayout.apply {
@@ -81,7 +80,7 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(p0: TabLayout.Tab?) {
                     //refresh topicFragment
-                    val abstractPagerAdapter = viewpager.adapter as AbstractPagerAdapter
+                    val abstractPagerAdapter = viewpager.adapter as BaseViewPagerAdapter
                     abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
                         if (it is ToTopOrRefreshContract) {
                             it.toTopOrRefresh()

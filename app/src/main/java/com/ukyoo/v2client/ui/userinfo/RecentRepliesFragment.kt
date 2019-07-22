@@ -5,13 +5,11 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentRepliesBinding
 import com.ukyoo.v2client.util.SizeUtils
-import com.ukyoo.v2client.util.adapter.RepliesAdapter
-import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
+import com.ukyoo.v2client.util.adapter.UserRepliesAdapter
 import com.ukyoo.v2client.viewmodel.RecentRepliesViewModel
 import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
 
@@ -39,7 +37,7 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
     override fun initView() {
         getComponent().inject(this)
 
-        repliesAdapter = RepliesAdapter(R.layout.item_user_reply)
+        repliesAdapter = UserRepliesAdapter(R.layout.item_user_reply)
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = repliesAdapter
@@ -52,7 +50,7 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
         }
     }
 
-    lateinit var repliesAdapter: RepliesAdapter
+    lateinit var repliesAdapter: UserRepliesAdapter
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
 

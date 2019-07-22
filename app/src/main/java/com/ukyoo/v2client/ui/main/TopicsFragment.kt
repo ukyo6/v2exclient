@@ -12,6 +12,7 @@ import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
+import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
@@ -73,6 +74,13 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
                 val intent = Intent(mContext, UserInfoActivity::class.java)
                 intent.putExtra("username", item.member?.username)
                 startActivity(intent)
+            }
+        }
+
+        //重试的回调
+        mBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.retry()
             }
         }
     }
