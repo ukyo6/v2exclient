@@ -7,7 +7,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import com.ukyoo.v2client.data.entity.ReplyListModel
 import com.ukyoo.v2client.entity.TopicModel
 
 

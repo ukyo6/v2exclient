@@ -4,13 +4,10 @@ import android.text.TextUtils
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.data.entity.ReplyListModel
-import com.ukyoo.v2client.entity.MemberModel
-import com.ukyoo.v2client.entity.ReplyItem
+import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.UserReplyModel
 import com.ukyoo.v2client.util.ContentUtils
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
@@ -32,14 +29,12 @@ class UserInfoRepository @Inject constructor(
     private val jsonService: JsonService
 ) {
 
-
     /**
      * 获取用户详细信息
      */
-    fun getUserInfo(username: String): Flowable<MemberModel> {
+    fun getUserInfo(username: String): Flowable<UserInfoModel> {
         return jsonService.getUserInfo(username)
             .async()
-
     }
 
     /**
@@ -48,7 +43,7 @@ class UserInfoRepository @Inject constructor(
     fun getUserTopics(userName: String, page: Int): Flowable<ArrayList<TopicModel>> {
         return htmlService.getUserTopics(userName, page)
             .map { responseStr ->
-                parse(responseStr)
+                parseTopics(responseStr)
             }
             .async()
     }
@@ -56,10 +51,10 @@ class UserInfoRepository @Inject constructor(
     /**
      * 获取用户回复
      */
-    fun getUserReplies(userName: String, page: Int) {
-        htmlService.getUserTopics(userName, page)
+    fun getUserReplies(userName: String, page: Int) : Flowable<ArrayList<UserReplyModel>>{
+        return htmlService.getUserReplies(userName, page)
             .map { responseStr ->
-                ReplyListModel().parse(responseStr)
+                parseReplies(responseStr)
             }
             .async()
     }
@@ -67,7 +62,7 @@ class UserInfoRepository @Inject constructor(
     private var mCurrentPage = 1
     private var mTotalPage = 1
 
-    fun parse(responseBody: String): ArrayList<TopicModel> {
+    private fun parseTopics(responseBody: String): ArrayList<TopicModel> {
         val topics = ArrayList<TopicModel>()
 
         val doc = Jsoup.parse(responseBody)
@@ -169,5 +164,63 @@ class UserInfoRepository @Inject constructor(
         topic.member = member
         topic.node = node
         return topic
+    }
+
+
+    /**
+     * 解析评论列表
+     */
+    private fun parseReplies(responseBody: String): ArrayList<UserReplyModel>{
+
+        val replyItems: ArrayList<UserReplyModel> = ArrayList()
+
+        val doc = Jsoup.parse(responseBody)
+        val body = doc.body()
+
+        val titleElements = body.getElementsByAttributeValue("class", "dock_area")
+
+        val contentElements = body.getElementsByAttributeValue("class", "reply_content")
+
+        for (element in titleElements) {
+
+            val item = UserReplyModel()
+
+            val tdNodes = element.getElementsByTag("td")
+            for (tdNode in tdNodes) {
+                val spanNodes = tdNode.getElementsByTag("span")
+                for (spanNode in spanNodes) {
+                    if (spanNode.attr("class").equals("fade")) {
+                        item.replyTime = spanNode.text() //回复时间
+                    } else if (spanNode.attr("class").equals("gray")) {
+                        val aNodes = spanNode.getElementsByTag("a")
+                        for (aNode in aNodes) {
+                            val href = aNode.attr("href")
+                            when {
+                                href.contains("/member") -> item.replyTo = aNode.text()
+                                href.contains("/go") -> {
+                                    item.nodeName = aNode.text()
+                                    item.nodeId = href.replace("/go/", "")
+                                }
+                                href.contains("reply") -> {
+                                    item.topicTitle = aNode.text()
+
+                                    val topicIdString = aNode.attr("href")
+                                    val subArray = topicIdString.split("#".toRegex())
+
+                                    item.topicId = Integer.parseInt(subArray[0].replace("/t/", ""))
+                                    item.replies = Integer.parseInt(subArray[1].replace("reply", ""))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            val replyElement = contentElements[titleElements.indexOf(element)]
+            item.replyContent = ContentUtils.formatContent(replyElement.html())
+
+            replyItems.add(item)
+        }
+
+        return replyItems
     }
 }

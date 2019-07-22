@@ -8,99 +8,84 @@
 
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.data.entity.TopicModel"/>
+			type="com.ukyoo.v2client.entity.TopicModel"/>
 
-		<variable
-			name="presenter"
-			type="com.ukyoo.v2client.inter.ItemClickPresenter"/>
+		<!--<variable-->
+		<!--name="presenter"-->
+		<!--type="com.ukyoo.v2client.inter.ItemClickPresenter"/>-->
 
 	</data>
 
+	<!--android:onClick="@{(v)->presenter.onItemClick(v,item)}"-->
 
-	<RelativeLayout
-		android:onClick="@{(v)->presenter.onItemClick(v,item)}"
-		android:id="@+id/card_container"
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:padding="10dp"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:padding="10dp">
+		android:layout_height="wrap_content">
 
-
-		<RelativeLayout
-			android:id="@+id/relativeLayout"
-			android:layout_width="match_parent"
+		<TextView
+			tools:text="123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:text="@{item.title}"
+			android:id="@+id/title"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
+			android:textColor="@color/text_black"
+			android:textSize="14sp"/>
+
+		<TextView
+			android:textColor="@color/gray"
+			android:layout_marginTop="10dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/title"
+			android:text="@{item.created}"
+			android:id="@+id/tv_time"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			tools:text="2010年1月1日"
+			android:textSize="14sp"/>
+
+
+		<TextView
+			android:textColor="@color/gray"
+			android:paddingLeft="5dp"
+			android:paddingRight="5dp"
 			android:layout_marginStart="10dp"
-			android:layout_toStartOf="@+id/replies_layout">
-
-			<TextView
-				android:text="@{item.title}"
-				android:id="@+id/title"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="12dp"
-				tools:text="标题1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-				android:textColor="#de000000"
-				android:textSize="14sp"/>
-
-			<TextView
-				android:text="@{item.node.title}"
-				android:id="@+id/node_title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:layout_alignParentStart="true"
-				android:layout_below="@+id/title"
-				android:background="#e5e5e5"
-				tools:text="V2ex"
-				android:textSize="12sp"/>
-
-			<TextView
-				android:text="@{item.member.username}"
-				android:id="@+id/name"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignTop="@+id/node_title"
-				android:layout_marginLeft="16dp"
-				android:layout_toRightOf="@+id/node_title"
-				tools:text="author"
-				android:textSize="12sp"/>
-
-			<TextView
-				android:text="@{item.created}"
-				android:id="@+id/time"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentEnd="true"
-				android:layout_alignParentRight="true"
-				android:layout_alignTop="@+id/name"
-				android:layout_gravity="center_vertical"
-				android:paddingRight="8dp"
-				tools:text="2010年1月1日"
-				android:textSize="12sp"/>
-
-		</RelativeLayout>
-
-		<RelativeLayout
-			android:id="@+id/replies_layout"
-			android:layout_width="40dp"
+			app:layout_constraintTop_toTopOf="@+id/tv_time"
+			app:layout_constraintStart_toEndOf="@+id/tv_time"
+			android:text="@{item.node.title}"
+			android:id="@+id/node_title"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_centerVertical="true">
+			android:layout_below="@+id/title"
+			android:background="#e5e5e5"
+			tools:text="V2ex"
+			android:textSize="14sp"/>
 
-			<com.ukyoo.v2client.widget.BadgeView
-				android:visibility="@{item.replies!=0 ?View.VISIBLE:View.GONE}"
-				android:text="@{String.valueOf(item.replies)}"
-				android:id="@+id/txt_replies"
-				android:layout_width="wrap_content"
-				android:layout_height="20dp"
-				android:layout_alignParentEnd="true"
-				android:layout_alignParentRight="true"
-				android:layout_centerVertical="true"
-				tools:text="0"/>
-		</RelativeLayout>
+		<ImageView
+			android:src="@drawable/comments_icon"
+			android:layout_marginEnd="5dp"
+			app:layout_constraintTop_toTopOf="@+id/tv_comments_num"
+			app:layout_constraintEnd_toStartOf="@+id/tv_comments_num"
+			app:layout_constraintBottom_toBottomOf="@+id/tv_comments_num"
+			android:layout_width="wrap_content"
+			android:layout_height="14dp"/>
 
-	</RelativeLayout>
+		<TextView
+			android:id="@+id/tv_comments_num"
+			tools:text="100"
+			android:text="@{String.valueOf(item.replies)}"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:textSize="14sp"
+			android:textColor="@color/gray"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

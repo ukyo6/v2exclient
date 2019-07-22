@@ -27,13 +27,13 @@ class RecentTopicsViewModel @Inject constructor(val repository: UserInfoReposito
     var userTopics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
 
         value.ifExists { userName, page ->
-            LiveDataReactiveStreams.fromPublisher {
-                repository.getUserTopics(userName,page)
-            }
+
+
+            LiveDataReactiveStreams.fromPublisher(
+                repository.getUserTopics(userName, page)
+            )
         }
     }
-
-
 
 
     private data class RecentTopicsParam(val userName: String, val page: Int = 1) {

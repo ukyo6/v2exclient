@@ -11,10 +11,21 @@
     <color name="white">#ffffff</color>
     <color name="white_pressed">#ECECEC</color>
 
-    <color name="bg_gray">#f7f7f7</color>
+    <color name="bg_gray">#EEEBEB</color>
 
 
-    <color name="text_black">#3b4452</color>
-    <color name="text_gray">#969fb1</color>
+    <color name="text_black">#000000</color>
     <color name="text_yellow">#ffc500</color>
+    <color name="text_blue">#228AE3</color>
+
+
+
+    <color name="gray">#808080</color>
+    <color name="drak_gray">#A9A9A9</color>
+    <color name="light_gray">#D3D3D3</color>
+
+    <color name="divider_color">#cccccc</color>
+
+
+
 </resources>

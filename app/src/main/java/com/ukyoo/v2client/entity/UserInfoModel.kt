@@ -5,7 +5,7 @@ import com.ukyoo.v2client.util.TimeUtils
 /**
  * 用户个人信息(详细)
  */
-data class MemberModel(
+data class UserInfoModel(
     var avatar_large: String,
     val avatar_mini: String,
     val avatar_normal: String,
@@ -24,9 +24,12 @@ data class MemberModel(
     val website: String
 ) {
 
-    init{
-        avatar_large = "https:$avatar_large"  //头像链接
-
-        var registerTimeAndNum = TimeUtils.milliseconds2String(this.created * 1000.toLong()) //注册时间和会员号码
+    fun getAvatar() : String{
+        return "https:$avatar_large"  //头像链接
     }
+
+    fun getRegisterTimeAndNum() :String{
+        return TimeUtils.milliseconds2String(this.created * 1000.toLong()) //注册时间和会员号码
+    }
+
 }

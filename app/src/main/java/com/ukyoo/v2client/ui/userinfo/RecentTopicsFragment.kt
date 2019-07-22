@@ -1,13 +1,17 @@
 package com.ukyoo.v2client.ui.userinfo
 
 import android.os.Bundle
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentTopicsBinding
+import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.adapter.UserTopicsAdapter
 import com.ukyoo.v2client.viewmodel.RecentTopicsViewModel
+import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
 
 /**
  * 用户信息
@@ -37,6 +41,12 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = repliesAdapter
+            addItemDecoration(
+                LinearLayoutDecoration(
+                    mContext, LinearLayout.VERTICAL,
+                    SizeUtils.dp2px(mContext, 1f), ContextCompat.getColor(mContext, R.color.divider_color)
+                )
+            )
         }
     }
 

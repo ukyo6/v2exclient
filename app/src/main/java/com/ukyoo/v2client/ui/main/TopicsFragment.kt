@@ -3,8 +3,10 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Switch
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
@@ -12,6 +14,7 @@ import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
+import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
 import com.ukyoo.v2client.util.adapter.TopicListAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
 
@@ -23,7 +26,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
     ItemClickPresenter<TopicModel> {
 
 
-    lateinit var topicsAdapter:TopicListAdapter
+    lateinit var topicsAdapter: TopicListAdapter
 
     override fun isLazyLoad(): Boolean = "lazyOpen" == arguments?.get(SOURCE)
 
@@ -57,12 +60,20 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
             adapter = topicsAdapter
         }
 
-        topicsAdapter.setOnItemClickListener { adapter, view, position ->
-
+        topicsAdapter.setOnItemClickListener { _, _, position ->
             val item: TopicModel = topicsAdapter.data[position]
             val intent = Intent(mContext, DetailActivity::class.java)
             intent.putExtra("topic_id", item.id)  //topicId
             startActivity(intent)
+        }
+
+        topicsAdapter.setOnItemChildClickListener { _, view, position ->
+            if (view.id == R.id.iv_avatar) {
+                val item: TopicModel = topicsAdapter.data[position]
+                val intent = Intent(mContext, UserInfoActivity::class.java)
+                intent.putExtra("username", item.member?.username)
+                startActivity(intent)
+            }
         }
     }
 

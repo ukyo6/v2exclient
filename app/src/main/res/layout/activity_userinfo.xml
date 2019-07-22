@@ -55,7 +55,7 @@
 						app:layout_constraintTop_toTopOf="parent"
 						android:layout_marginStart="30dp"
 						android:layout_marginTop="30dp"
-						app:url="@{vm.userInfo.avatar_large}"
+						app:url="@{vm.userInfo.getAvatar()}"
 						android:id="@+id/iv_avatar"
 						android:layout_width="80dp"
 						android:layout_height="80dp"
@@ -75,7 +75,7 @@
 						android:id="@+id/tv_username"/>
 
 					<TextView
-						android:text="@{vm.userInfo.registerTimeAndNum}"
+						android:text="@{vm.userInfo.getRegisterTimeAndNum()}"
 						android:textColor="@color/colorBlack"
 						android:layout_marginEnd="30dp"
 						android:maxLines="2"

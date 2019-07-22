@@ -5,12 +5,9 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.data.entity.ReplyListModel
+import com.ukyoo.v2client.entity.UserReplyModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.ToastUtil
-import java.util.Collections.addAll
 import javax.inject.Inject
 
 /**
@@ -31,12 +28,12 @@ class RecentRepliesViewModel @Inject constructor(val repository: UserInfoReposit
     }
 
     //用户的回复列表
-    var userReplies : LiveData<ArrayList<ReplyListModel.ReplyItemModel>> = Transformations.switchMap(param) { value ->
+    var userReplies: LiveData<ArrayList<UserReplyModel>> = Transformations.switchMap(param) { value ->
 
         value.ifExists { userName, page ->
-            LiveDataReactiveStreams.fromPublisher {
-                repository.getUserReplies(userName,page)
-            }
+            LiveDataReactiveStreams.fromPublisher(
+                repository.getUserReplies(userName, page)
+            )
         }
     }
 

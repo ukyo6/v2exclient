@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
-import com.ukyoo.v2client.entity.MemberModel
+import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class UserInfoViewModel @Inject constructor(
     }
 
     //用户信息
-    var userInfo: LiveData<MemberModel> = Transformations.switchMap(_userName) { userName ->
+    var userInfo: LiveData<UserInfoModel> = Transformations.switchMap(_userName) { userName ->
         if(userName == null){
              AbsentLiveData.create()
         } else {
