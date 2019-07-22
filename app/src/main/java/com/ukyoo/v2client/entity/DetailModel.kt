@@ -3,6 +3,9 @@ package com.ukyoo.v2client.entity
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.ukyoo.v2client.ui.detail.DetailActivity
 
+/**
+ * 详情页数据类
+ */
 data class DetailModel(
 
     var topicInfo: TopicInfo? = null,
@@ -11,7 +14,7 @@ data class DetailModel(
 
     var currentPage: Int = 0,
 
-    var totalPage :Int = 0
+    var totalPage: Int = 0
 )
 
 /**

@@ -22,10 +22,10 @@ import javax.inject.Singleton
  *  获取主题列表数据源
  */
 @Singleton
-class TopicsRepository @Inject constructor
-    (
-    @Named("non_cached") var htmlService: HtmlService,
-    var jsonService: JsonService
+class TopicsRepository @Inject constructor(
+    @Named("non_cached")
+    private val htmlService: HtmlService,
+    private val jsonService: JsonService
 ) {
 
 

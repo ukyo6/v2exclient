@@ -3,7 +3,6 @@ package com.ukyoo.v2client.ui.detail
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -11,18 +10,13 @@ import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.entity.ReplyModel
-import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
-import com.ukyoo.v2client.util.adapter.MultiTypeAdapter
-import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
-import com.ukyoo.v2client.util.bindLifeCycle
 import com.ukyoo.v2client.widget.EnterLayout
-import io.reactivex.subjects.BehaviorSubject
 import java.util.ArrayList
 
 /**

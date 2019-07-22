@@ -1,34 +1,53 @@
 package com.ukyoo.v2client.viewmodel
 
-import androidx.databinding.ObservableArrayList
-import com.ukyoo.v2client.data.api.HtmlService
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import com.ukyoo.v2client.data.entity.ReplyListModel
+import com.ukyoo.v2client.repository.UserInfoRepository
+import com.ukyoo.v2client.util.AbsentLiveData
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
-import com.ukyoo.v2client.util.async
+import java.util.Collections.addAll
 import javax.inject.Inject
-import javax.inject.Named
 
-class RecentRepliesViewModel @Inject constructor(
-    @Named("non_cached") private var htmlService: HtmlService
-) : BaseViewModel() {
+/**
+ * 用户信息
+ * 最近的回复列表 ViewModel
+ */
+class RecentRepliesViewModel @Inject constructor(val repository: UserInfoRepository) : BaseViewModel() {
 
-    var createdReplies = ObservableArrayList<ReplyListModel.ReplyItemModel>()
+    //参数 用户名.页码
+    private val param: MutableLiveData<RecentRepliesParam> = MutableLiveData()
 
-    /**
-     * 获取用户回复
-     */
-    fun getUserReplies(username: String) {
-        htmlService.getUserReplies(username, 1)
-            .async()
-            .subscribe({ response ->
-                createdReplies.apply {
+    fun setUserNameAndPage(userName: String, page: Int) {
+        val update = RecentRepliesParam(userName, page)
+        if (param.value == update) {
+            return
+        }
+        param.value = update
+    }
 
-                    addAll(ReplyListModel().parse(response))
-                }
-            }, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
+    //用户的回复列表
+    var userReplies : LiveData<ArrayList<ReplyListModel.ReplyItemModel>> = Transformations.switchMap(param) { value ->
+
+        value.ifExists { userName, page ->
+            LiveDataReactiveStreams.fromPublisher {
+                repository.getUserReplies(userName,page)
+            }
+        }
+    }
+
+
+    private data class RecentRepliesParam(val userName: String, val page: Int = 1) {
+        fun <T> ifExists(f: (String, Int) -> LiveData<T>): LiveData<T> {
+            return if (userName.isBlank() || page < 0) {
+                AbsentLiveData.create()
+            } else {
+                f(userName, page)
+            }
+        }
     }
 }

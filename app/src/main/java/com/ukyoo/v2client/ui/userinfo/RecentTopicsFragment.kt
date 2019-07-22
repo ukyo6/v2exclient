@@ -1,13 +1,18 @@
 package com.ukyoo.v2client.ui.userinfo
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentTopicsBinding
-import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
+import com.ukyoo.v2client.util.adapter.UserTopicsAdapter
 import com.ukyoo.v2client.viewmodel.RecentTopicsViewModel
 
+/**
+ * 用户信息
+ * 最近的主题列表
+ */
 class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
 
     //get viewModel by di
@@ -28,15 +33,22 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
     override fun initView() {
         getComponent().inject(this)
 
+        repliesAdapter = UserTopicsAdapter(R.layout.item_user_topic)
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
-//            adapter = SingleTypeAdapter(mContext, R.layout.item_user_topic, viewModel.topic).apply {
-//            }
+            adapter = repliesAdapter
         }
     }
 
+    lateinit var repliesAdapter: UserTopicsAdapter
+
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-//        viewModel.getUserTopics(arguments?.getString("userName") ?: "")
+        //设置参数
+        viewModel.setUserNameAndPage((arguments?.getString("userName") ?: ""),1)
+        //观察者
+        viewModel.userTopics.observe(this@RecentTopicsFragment, Observer { list ->
+            repliesAdapter.setNewData(list)
+        })
     }
 
     override fun getLayoutId(): Int {

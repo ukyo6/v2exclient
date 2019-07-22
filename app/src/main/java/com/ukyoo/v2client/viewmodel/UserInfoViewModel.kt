@@ -1,19 +1,14 @@
-package com.ukyoo.v2client.ui.userinfo
+package com.ukyoo.v2client.viewmodel
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
-import com.ukyoo.v2client.data.api.HtmlService
-import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.MemberModel
-import com.ukyoo.v2client.entity.ReplyItem
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * UserInfo ViewModel

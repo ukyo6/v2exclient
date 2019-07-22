@@ -66,9 +66,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         }
     }
 
-    /**
-     * get data
-     */
+
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         val nodeName = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
@@ -79,6 +77,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
             viewModel.setNodeId(tab)
         }
 
+        //观察者
         viewModel.topics.observe(this@TopicsFragment, Observer { list ->
             topicsAdapter.setNewData(list)
         })

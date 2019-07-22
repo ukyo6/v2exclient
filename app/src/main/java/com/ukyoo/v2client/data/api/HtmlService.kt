@@ -30,14 +30,14 @@ interface HtmlService {
     @POST("/signin")
     fun login(@HeaderMap headers: Map<String, String>, @QueryMap params: Map<String, String>): Single<String>
 
-    //获取用户创建的主题
+    //获取用户创建的主题 -
     @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
     @GET("member/{username}/topics")
-    fun getUserTopics(@Path("username") userName: String, @Query("p") page: Int): Single<String>
+    fun getUserTopics(@Path("username") userName: String, @Query("p") page: Int): Flowable<String>
 
-    //获取用户创建的回复
+    //获取用户创建的回复 -
     @GET("member/{username}/replies")
-    fun getUserReplies(@Path("username")userName: String, @Query("p") page: Int): Single<String>
+    fun getUserReplies(@Path("username")userName: String, @Query("p") page: Int): Flowable<String>
 
     //获取用户信息
     @GET("/")

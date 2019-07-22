@@ -1,40 +1,48 @@
 package com.ukyoo.v2client.viewmodel
 
-import android.text.method.TextKeyListener.clear
-import androidx.databinding.ObservableArrayList
-import com.ukyoo.v2client.data.api.HtmlService
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.ToastUtil
-import com.ukyoo.v2client.util.async
-import java.util.Collections.addAll
+import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.repository.UserInfoRepository
+import com.ukyoo.v2client.util.AbsentLiveData
 import javax.inject.Inject
-import javax.inject.Named
 
-class RecentTopicsViewModel @Inject constructor(
-    @Named("non_cached") private var htmlService: HtmlService
-) : BaseViewModel() {
+class RecentTopicsViewModel @Inject constructor(val repository: UserInfoRepository) : BaseViewModel() {
 
-//    var createdTopics = ObservableArrayList<TopicModelNew>()  //创建的主题
+    //参数 用户名.页码
+    private val param: MutableLiveData<RecentTopicsParam> = MutableLiveData()
 
-    /**
-     * 获取创建的主题
-     */
-//    fun getUserTopics(username: String) {
-//        htmlService.getUserTopics(username, 1)
-//            .async()
-//            .subscribe({ response ->
-//                val topics = TopicListModel().parse(response)
-//                createdTopics.apply {
-//                    clear()
-//
-//                    for (topic in topics) {
-//                        topic.member.avatar = "1"
-//                    }
-//                    addAll(topics)
-//                }
-//            }, {
-//                ToastUtil.shortShow(ErrorHanding.handleError(it))
-//            })
-//    }
+    fun setUserNameAndPage(userName: String, page: Int) {
+        val update = RecentTopicsParam(userName, page)
+        if (param.value == update) {
+            return
+        }
+        param.value = update
+    }
+
+    //用户的主题列表
+    var userTopics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
+
+        value.ifExists { userName, page ->
+            LiveDataReactiveStreams.fromPublisher {
+                repository.getUserTopics(userName,page)
+            }
+        }
+    }
+
+
+
+
+    private data class RecentTopicsParam(val userName: String, val page: Int = 1) {
+        fun <T> ifExists(f: (String, Int) -> LiveData<T>): LiveData<T> {
+            return if (userName.isBlank() || page < 0) {
+                AbsentLiveData.create()
+            } else {
+                f(userName, page)
+            }
+        }
+    }
 }

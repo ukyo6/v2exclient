@@ -9,12 +9,13 @@ import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
-import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
+import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.AbstractPagerAdapter
+import com.ukyoo.v2client.viewmodel.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -96,7 +97,8 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
             })
         }
 
-        viewModel.getUserInfo(mUsername, isRefresh = true)
+        //根据userName查询信息
+        viewModel.setUserName(mUsername)
     }
 
     private fun updateTitle(username: String) {
@@ -105,11 +107,7 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
 
     override fun onItemClick(v: View?, item: TopicModel) {
         val intent = Intent(mContext, DetailActivity::class.java)
-        if (item.content == null || item.contentRendered == null)
-            intent.putExtra("topic_id", item.id)
-        else
-            intent.putExtra("model", item as Parcelable)
-
+        intent.putExtra("topicId", item.id)  //topicId
         startActivity(intent)
     }
 }
