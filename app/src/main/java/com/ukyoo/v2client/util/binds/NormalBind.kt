@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.request.target.SimpleTarget
@@ -15,10 +14,10 @@ import com.bumptech.glide.request.transition.Transition
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.Presenter
-import com.ukyoo.v2client.util.ImageUtil
-import com.ukyoo.v2client.util.ScrimUtil
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.util.GlideApp
+import com.ukyoo.v2client.util.ImageUtil
+import com.ukyoo.v2client.util.ScrimUtil
 import com.ukyoo.v2client.widget.RichTextView
 
 /**
@@ -44,11 +43,6 @@ fun bindRichText(textView: RichTextView, text: String?) {
     textView.setRichText(text ?: "")
 }
 
-
-@BindingAdapter(value = ["visible"])
-fun bindVisibility(v: View, visible: Boolean) {
-    v.visibility = if (visible) View.VISIBLE else View.GONE
-}
 
 @BindingAdapter(value = ["loadMore", "loadMorePresenter"])
 fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
@@ -76,18 +70,7 @@ fun bindOnRefresh(v: SwipeRefreshLayout, presenter: Presenter) {
     v.setOnRefreshListener { presenter.loadData(true, null) }
 }
 
-@BindingAdapter(value = ["vertical"], requireAll = false)
-fun bindSlider(v: RecyclerView, vertical: Boolean = true) {
 
-    if (vertical) {
-        v.layoutManager = LinearLayoutManager(v.context, RecyclerView.VERTICAL, false)
-    } else {
-        if (v.onFlingListener == null) {
-            PagerSnapHelper().attachToRecyclerView(v)
-        }
-        v.layoutManager = LinearLayoutManager(v.context, RecyclerView.HORIZONTAL, false)
-    }
-}
 
 //渐变式阴影
 @BindingAdapter(value = ["shadow_color", "num_step", "gravity"], requireAll = false)
@@ -110,7 +93,7 @@ fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
     )
 }
 
-
+//模糊背景图
 @BindingAdapter(value = ["blurBg"])
 fun bindBlurBg(imageView: ImageView, url: String?) {
     GlideApp.with(App.instance()).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
@@ -120,6 +103,7 @@ fun bindBlurBg(imageView: ImageView, url: String?) {
     })
 }
 
+//可见性
 @BindingAdapter("visibleGone")
 fun showHide(view: View, show: Boolean) {
     view.visibility = if (show) View.VISIBLE else View.GONE

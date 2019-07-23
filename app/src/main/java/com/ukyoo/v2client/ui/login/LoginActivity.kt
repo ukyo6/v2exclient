@@ -21,14 +21,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        viewModel.apply {
-            //登录成功的回调
-            loginSuccessEvent.observe(this@LoginActivity, Observer {
-                loginSuccess(it)
-            })
-        }
 
-        viewModel.getLoginData()
+        viewModel.refreshVerifyImg()  //刷新验证码
+
+        //登录成功 观察者
+        viewModel.loginSuccessEvent.observe(this@LoginActivity, Observer {
+            loginSuccess(it)
+        })
     }
 
     override fun initView() {

@@ -58,7 +58,7 @@ public class ProfileModel extends V2EXModel implements Parcelable {
                     if (avatarNode != null) {
                         String avatarString = avatarNode.attr("src");
                         if (avatarString.startsWith("//")) {
-                            avatarString = "http:" + avatarString;
+                            avatarString = "https:" + avatarString;
                         }
                         avatar = avatarString;
                         found[0] = 1;

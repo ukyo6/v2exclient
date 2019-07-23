@@ -171,7 +171,7 @@ object NetManager {
             .build()
     }
 
-    public fun clearCookie() {
+    fun clearCookie() {
         persistentCookieJar.clear()
     }
 

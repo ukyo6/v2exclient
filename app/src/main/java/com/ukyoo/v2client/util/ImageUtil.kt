@@ -38,11 +38,8 @@ object ImageUtil {
             builder.addHeader("cookie", it)
         }
 
-        val glideUrl = GlideUrl(
-            uri, builder.build()
-        )
+        val glideUrl = GlideUrl(uri, builder.build())
         GlideApp.with(App.instance()).load(glideUrl).into(imageView)
-
     }
 
 

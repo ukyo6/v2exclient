@@ -39,7 +39,7 @@ interface HtmlService {
     @GET("member/{username}/replies")
     fun getUserReplies(@Path("username")userName: String, @Query("p") page: Int): Flowable<String>
 
-    //获取用户信息
+    //登录后获取个人信息 -
     @GET("/")
     fun getProfiler(): Single<String>
 
