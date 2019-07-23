@@ -3,11 +3,13 @@ package com.ukyoo.v2client.repository
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.entity.*
 import com.ukyoo.v2client.entity.*
 import com.ukyoo.v2client.util.ContentUtils
+import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
@@ -33,7 +35,7 @@ class DetailRepository @Inject constructor(
     /**
      *  回复列表
      */
-    fun getRepliesByTopicId(topicId: Int, isRefresh: Boolean): LiveData<List<ReplyModel>> {
+    private fun getRepliesByTopicId(topicId: Int, isRefresh: Boolean): LiveData<List<ReplyModel>> {
         val list: LiveData<List<ReplyModel>> = MutableLiveData()
 
         jsonService.getRepliesByTopicId(topicId)
@@ -81,12 +83,29 @@ class DetailRepository @Inject constructor(
     /**
      *  查看主题信息和回复
      */
-    fun getTopicInfoAndRepliesByTopicId(topicId: Int, isRefresh: Boolean): Flowable<DetailModel> {
-        return htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
+    fun getTopicInfoAndRepliesByTopicId(topicId: Int, isRefresh: Boolean): LiveData<Resource<DetailModel>> {
+        val result = MutableLiveData<Resource<DetailModel>>()
+
+        htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
             .map { response ->
                 return@map parse(response, true, topicId)
             }
             .async()
+            .doOnSubscribe {
+                result.value = Resource.loading(null)
+            }
+            .subscribe({ data ->
+                if (data == null) {
+                    result.value = Resource.empty(null)
+                } else {
+                    result.value = Resource.success(data)
+                }
+            }, {
+                result.value = Resource.error(ErrorHanding.handleError(it), null)
+            })
+
+        return result
+
 //            .subscribe({
         //更新主题和回复列表
 //                loadMore.set(it.currentPage < it.totalPage)
@@ -119,8 +138,8 @@ class DetailRepository @Inject constructor(
 
         //解析主题信息
 //        if (parseTopic) {
-            val topic = parseTopicModel(doc, body)
-            topic.id = topicId
+        val topic = parseTopicModel(doc, body)
+        topic.id = topicId
 //        }
 
         //解析回复信息

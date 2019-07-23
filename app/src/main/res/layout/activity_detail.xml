@@ -7,6 +7,10 @@
 
 		<import type="android.view.View"/>
 
+		<import type="com.ukyoo.v2client.data.Status"/>
+
+		<import type="com.ukyoo.v2client.data.Resource"/>
+
 		<variable
 			name="vm"
 			type="com.ukyoo.v2client.ui.detail.DetailViewModel"/>
@@ -14,6 +18,10 @@
 		<variable
 			name="presenter"
 			type="com.ukyoo.v2client.base.Presenter"/>
+
+		<variable
+			name="retryCallback"
+			type="com.ukyoo.v2client.inter.RetryCallback"/>
 
 	</data>
 
@@ -25,6 +33,7 @@
 		<androidx.appcompat.widget.Toolbar
 			app:title="主题"
 			android:id="@+id/toolbar"
+			app:layout_constraintTop_toTopOf="parent"
 			android:layout_width="match_parent"
 			android:background="@color/colorPrimary"
 			android:layout_height="?attr/actionBarSize"
@@ -32,44 +41,57 @@
 			app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
 
-		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-			app:layout_constraintBottom_toTopOf="@+id/include_reply"
-			app:layout_constraintTop_toBottomOf="@+id/toolbar"
-			app:layout_behavior="@string/appbar_scrolling_view_behavior"
-			android:id="@+id/refresh_layout"
-			app:onRefresh="@{presenter}"
-			app:refreshing="@{vm.loading}"
-			android:layout_width="match_parent"
-			android:layout_height="0dp">
+		<!--<androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+			<!--app:layout_constraintBottom_toTopOf="@+id/include_reply"-->
+			<!--app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
+			<!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+			<!--android:id="@+id/refresh_layout"-->
+			<!--app:onRefresh="@{presenter}"-->
+			<!--app:refreshing="@{vm.loading}"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:layout_height="0dp">-->
 
-			<FrameLayout
-				android:focusableInTouchMode="true"
-				android:focusable="true"
-				android:id="@+id/container"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
+			<!--<FrameLayout-->
+				<!--android:focusableInTouchMode="true"-->
+				<!--android:focusable="true"-->
+				<!--android:id="@+id/container"-->
+				<!--android:layout_width="match_parent"-->
+				<!--android:layout_height="match_parent">-->
 
 				<androidx.recyclerview.widget.RecyclerView
+					app:layout_constraintTop_toBottomOf="@+id/toolbar"
+					app:layout_constraintBottom_toTopOf="@+id/include_reply"
 					app:loadMore="@{vm}"
 					app:loadMorePresenter="@{presenter}"
 					android:id="@+id/recyclerview"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"/>
+					android:layout_height="0dp"/>
 
-			</FrameLayout>
+			<!--</FrameLayout>-->
 
 
-		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+		<!--</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 
 		<include
 			app:replyContent="@={vm.replyContent}"
-			app:layout_constraintTop_toBottomOf="@+id/refresh_layout"
 			android:id="@+id/include_reply"
 			android:layout_width="match_parent"
 			android:layout_height="65dp"
 			app:layout_constraintBottom_toBottomOf="parent"
 			layout="@layout/common_enter_layout"/>
+
+
+		<include
+			layout="@layout/loading_state"
+			app:resource="@{(Resource) vm.topicAndReplies}"
+			app:callback="@{() -> retryCallback.retry()}"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
 
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

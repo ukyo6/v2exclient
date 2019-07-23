@@ -13,6 +13,7 @@ import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.inter.ItemClickPresenter
+import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
@@ -56,15 +57,18 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         }
 
         val mDetailAdapter = DetailAdapter(emptyList())
-        viewModel.topicAndReplies.observe(this@DetailActivity, Observer { data ->//观察者
+        viewModel.topicAndReplies.observe(this@DetailActivity, Observer { resource ->//观察者
 
-            val topicInfo = data.topicInfo
-            val replies = data.replies
-
-            val list = ArrayList<MultiItemEntity>()
-            list.add(topicInfo as MultiItemEntity)
-            list.addAll(replies as List<MultiItemEntity>)
-            mDetailAdapter.setNewData(list)
+            if(resource.data == null){
+                mDetailAdapter.setNewData(emptyList())
+            } else {
+                val topicInfo = resource.data.topicInfo
+                val replies = resource.data.replies
+                val list = ArrayList<MultiItemEntity>()
+                list.add(topicInfo as MultiItemEntity)
+                list.addAll(replies as List<MultiItemEntity>)
+                mDetailAdapter.setNewData(list)
+            }
         })
 
         //回复列表
@@ -84,6 +88,14 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
         mEnterLayout.setDefaultHint("评论主题")
 //        mEnterLayout.hide()
+
+
+        //重试的回调
+        mBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.retry()
+            }
+        }
     }
 
     private var onClickSend: View.OnClickListener = View.OnClickListener {

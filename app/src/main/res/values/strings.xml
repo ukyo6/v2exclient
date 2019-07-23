@@ -15,6 +15,7 @@
 
 	<string name="please_login">请登录</string>
 	<string name="retry">重试</string>
+	<string name="unknown_error">未知异常</string>
 
 	<string-array name="v2ex_favorite_tab_titles">
 		<item>技术</item>

@@ -1,24 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<data>
 
 
+		<import type="android.view.View"/>
+
+		<import type="com.ukyoo.v2client.data.Status"/>
+
+		<import type="com.ukyoo.v2client.data.Resource"/>
+
+		<import type="androidx.lifecycle.LiveData"/>
+
+
+		<import type="java.util.ArrayList"/>
+
+
+		<variable
+			name="vm"
+			type="com.ukyoo.v2client.viewmodel.RecentTopicsViewModel"/>
+
+		<variable
+			name="retryCallback"
+			type="com.ukyoo.v2client.inter.RetryCallback"/>
+
+
 	</data>
 
-	<LinearLayout
-		android:orientation="vertical"
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		>
+		android:layout_height="match_parent">
 
 		<androidx.recyclerview.widget.RecyclerView
 			android:id="@+id/recyclerview"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			/>
+			android:layout_height="match_parent"/>
 
-	</LinearLayout>
+
+		<include
+			layout="@layout/loading_state"
+			app:resource="@{(Resource) vm.userTopics}"
+			app:callback="@{() -> retryCallback.retry()}"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </layout>

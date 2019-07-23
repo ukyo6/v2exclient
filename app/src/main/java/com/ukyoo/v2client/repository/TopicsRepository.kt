@@ -1,19 +1,20 @@
 package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
-import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.util.*
+import com.ukyoo.v2client.util.ContentUtils
+import com.ukyoo.v2client.util.ErrorHanding
+import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.functions.Function
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -32,33 +33,29 @@ class TopicsRepository @Inject constructor(
     /**
      * 根据tabId请求列表
      */
-    fun loadDataByTab(isRefresh: Boolean, tabId: String): Flowable<ArrayList<TopicModel>> {
-        return htmlService.queryTopicsByTab(tabId)
+    fun loadDataByTab(isRefresh: Boolean, tabId: String): LiveData<Resource<ArrayList<TopicModel>>> {
+
+        val result = MutableLiveData<Resource<ArrayList<TopicModel>>>()
+
+        htmlService.queryTopicsByTab(tabId)
             .map { responseStr ->
                 parse(responseStr)
             }
             .async()
+            .doOnSubscribe {
+                result.value = Resource.loading(null)
+            }
+            .subscribe({ data ->
+                if (data == null) {
+                    result.value = Resource.empty(null)
+                } else {
+                    result.value = Resource.success(data)
+                }
+            }, {
+                result.value = Resource.error(ErrorHanding.handleError(it), null)
+            })
 
-
-//            .async()
-//            .map { response ->
-//                if (isRefresh) {
-//                    list.clear()
-//                }
-//                return@map parse(response).apply {
-//                    list.addAll(this)
-//                }
-//            }
-//            .doOnSubscribe {
-//                startLoad()
-//            }.doAfterTerminate {
-//                stopLoad()
-//                empty.set(list.isEmpty())
-//            }
-//            .subscribe({}, {
-//                ToastUtil.shortShow(ErrorHanding.handleError(it))
-//            })
-
+        return result
     }
 
 

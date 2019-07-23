@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
@@ -24,14 +25,21 @@ class RecentTopicsViewModel @Inject constructor(val repository: UserInfoReposito
     }
 
     //用户的主题列表
-    var userTopics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
+    var userTopics: LiveData<Resource<ArrayList<TopicModel>>> = Transformations.switchMap(param) { value ->
 
         value.ifExists { userName, page ->
+            repository.getUserTopics(userName, page)
+        }
+    }
 
-
-            LiveDataReactiveStreams.fromPublisher(
-                repository.getUserTopics(userName, page)
-            )
+    /**
+     * 重试
+     */
+    fun retry(){
+        val userName = param.value?.userName
+        val page = param.value?.page
+        if (userName != null && page != null) {
+            param.value = RecentTopicsParam(userName, page)
         }
     }
 

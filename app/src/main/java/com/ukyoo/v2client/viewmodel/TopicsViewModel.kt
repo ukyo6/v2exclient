@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.AbsentLiveData
@@ -26,29 +27,21 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
         param.value = Param(nodeId, "")
     }
 
-
     //主题列表
-    val topics: LiveData<ArrayList<TopicModel>> = Transformations.switchMap(param) { value ->
-
-        if (value == null || (value.nodeId.isBlank() && value.nodeName.isBlank())) {
-            AbsentLiveData.create()
-        } else if (value.nodeId.isNotBlank()) {
-            LiveDataReactiveStreams.fromPublisher(
+    val topics: LiveData<Resource<ArrayList<TopicModel>>> = Transformations.switchMap(param) { value ->
+        value.ifExists { nodeId, nodeName ->
+            if (nodeId.isNotBlank()) {
                 repository.loadDataByTab(true, value.nodeId)
-                    .async()
-            )
-        } else {
-            LiveDataReactiveStreams.fromPublisher(
+            } else {
                 repository.loadDataByTab(true, value.nodeName)
-                    .async()
-            )
+            }
         }
     }
 
     /**
      * 重试
      */
-    fun retry(){
+    fun retry() {
         val nodeId = param.value?.nodeId
         val nodeName = param.value?.nodeName
         if (nodeId != null && nodeName != null) {
@@ -57,6 +50,15 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
     }
 
 
-    data class Param(var nodeId: String, var nodeName: String)
+
+    data class Param(val nodeId: String, val nodeName: String) {
+        fun <T> ifExists(f: (String, String) -> LiveData<T>): LiveData<T> {
+            return if (nodeId.isBlank() && nodeName.isBlank()) {
+                AbsentLiveData.create()
+            } else {
+                f(nodeId, nodeName)
+            }
+        }
+    }
 }
 

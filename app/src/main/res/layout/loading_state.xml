@@ -19,9 +19,9 @@
 
     <data>
 
-        <import type="com.android.example.github.vo.Resource" />
+        <import type="com.ukyoo.v2client.data.Resource" />
 
-        <import type="com.android.example.github.vo.Status" />
+        <import type="com.ukyoo.v2client.data.Status" />
 
         <variable
             name="resource"

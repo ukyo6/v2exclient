@@ -6,7 +6,16 @@
 	<data>
 
 		<import type="android.view.View"/>
-		<import type="com.android.example.github.vo.Status"/>
+
+		<import type="com.ukyoo.v2client.data.Status"/>
+
+		<import type="com.ukyoo.v2client.data.Resource"/>
+
+		<import type="androidx.lifecycle.LiveData"/>
+
+		<import type="com.ukyoo.v2client.entity.TopicModel"/>
+
+		<import type="java.util.ArrayList"/>
 
 
 		<variable
@@ -18,12 +27,8 @@
 			type="com.ukyoo.v2client.base.Presenter"/>
 
 		<variable
-			name="contributorsStatus"
-			type="Status" />
-
-		<variable
 			name="retryCallback"
-			type="com.ukyoo.v2client.inter.RetryCallback" />
+			type="com.ukyoo.v2client.inter.RetryCallback"/>
 
 	</data>
 
@@ -50,8 +55,7 @@
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
-
+			app:layout_constraintTop_toTopOf="parent"/>
 
 
 	</androidx.constraintlayout.widget.ConstraintLayout>

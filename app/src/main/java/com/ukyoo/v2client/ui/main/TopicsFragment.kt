@@ -97,8 +97,12 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         }
 
         //观察者
-        viewModel.topics.observe(this@TopicsFragment, Observer { list ->
-            topicsAdapter.setNewData(list)
+        viewModel.topics.observe(this@TopicsFragment, Observer { resouce ->
+            if(resouce.data != null){
+                topicsAdapter.setNewData(resouce.data)
+            } else {
+                topicsAdapter.setNewData(emptyList())
+            }
         })
     }
 

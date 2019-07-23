@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentRepliesBinding
+import com.ukyoo.v2client.inter.RetryCallback
+import com.ukyoo.v2client.ui.main.TopicsFragment
 import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.adapter.UserRepliesAdapter
 import com.ukyoo.v2client.viewmodel.RecentRepliesViewModel
@@ -33,9 +35,10 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
         getInjectViewModel<RecentRepliesViewModel>()
     }
 
-
     override fun initView() {
         getComponent().inject(this)
+
+        mBinding.vm = viewModel
 
         repliesAdapter = UserRepliesAdapter(R.layout.item_user_reply)
         mBinding.recyclerview.run {
@@ -44,9 +47,16 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
             addItemDecoration(
                 LinearLayoutDecoration(
                     mContext, LinearLayout.VERTICAL,
-                    SizeUtils.dp2px(mContext, 1f), ContextCompat.getColor(mContext, R.color.divider_color)
+                    1, ContextCompat.getColor(mContext, R.color.divider_color)
                 )
             )
+        }
+
+        //重试的回调
+        mBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.retry()
+            }
         }
     }
 
@@ -57,8 +67,13 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
         //设置参数
         viewModel.setUserNameAndPage((arguments?.getString("userName") ?: ""), 1)
         //观察者
-        viewModel.userReplies.observe(this@RecentRepliesFragment, Observer { list ->
-            repliesAdapter.setNewData(list)
+        viewModel.userReplies.observe(this@RecentRepliesFragment, Observer { resource ->
+
+            if (resource?.data == null) {
+                repliesAdapter.setNewData(emptyList())
+            } else {
+                repliesAdapter.setNewData(resource.data)
+            }
         })
     }
 

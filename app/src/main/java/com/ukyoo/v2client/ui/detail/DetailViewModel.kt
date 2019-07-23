@@ -9,10 +9,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.repository.DetailRepository
 import com.ukyoo.v2client.util.*
+import com.ukyoo.v2client.viewmodel.TopicsViewModel
 import retrofit2.HttpException
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -24,7 +26,6 @@ class DetailViewModel @Inject constructor(
     var htmlService: HtmlService
 ) : PagedViewModel() {
 
-    var multiDataList = ObservableArrayList<Any>()
 
     var replyContent = ObservableField<String>()  //回复内容
 
@@ -39,15 +40,23 @@ class DetailViewModel @Inject constructor(
     }
 
     //主题信息和回复列表
-    val topicAndReplies: LiveData<DetailModel> = Transformations.switchMap(_topicId) { topicId ->
+    val topicAndReplies: LiveData<Resource<DetailModel>> = Transformations.switchMap(_topicId) { topicId ->
         if (topicId == null) {
             AbsentLiveData.create()
         } else {
-            LiveDataReactiveStreams.fromPublisher(
-                repository.getTopicInfoAndRepliesByTopicId(topicId, true)
-            )
+            repository.getTopicInfoAndRepliesByTopicId(topicId, true)
         }
     }
+
+    /**
+     * 重试
+     */
+    fun retry() {
+        _topicId.value?.let {
+            _topicId.value = it
+        }
+    }
+
 
     /**
      * 获取回复需要的ONCE

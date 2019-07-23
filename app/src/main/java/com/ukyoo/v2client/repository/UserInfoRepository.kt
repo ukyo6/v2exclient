@@ -1,13 +1,18 @@
 package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
+import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.entity.UserReplyModel
 import com.ukyoo.v2client.util.ContentUtils
+import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
@@ -40,23 +45,54 @@ class UserInfoRepository @Inject constructor(
     /**
      * 获取创建的主题
      */
-    fun getUserTopics(userName: String, page: Int): Flowable<ArrayList<TopicModel>> {
-        return htmlService.getUserTopics(userName, page)
+    fun getUserTopics(userName: String, page: Int): LiveData<Resource<ArrayList<TopicModel>>> {
+        val result = MutableLiveData<Resource<ArrayList<TopicModel>>>()
+
+        htmlService.getUserTopics(userName, page)
             .map { responseStr ->
                 parseTopics(responseStr)
             }
             .async()
+            .doOnSubscribe {
+                result.value = Resource.loading(null)
+            }
+            .subscribe({ data ->
+                if (data == null) {
+                    result.value = Resource.empty(null)
+                } else {
+                    result.value = Resource.success(data)
+                }
+            }, {
+                result.value = Resource.error(ErrorHanding.handleError(it), null)
+            })
+
+        return result
     }
 
     /**
      * 获取用户回复
      */
-    fun getUserReplies(userName: String, page: Int) : Flowable<ArrayList<UserReplyModel>>{
-        return htmlService.getUserReplies(userName, page)
+    fun getUserReplies(userName: String, page: Int): LiveData<Resource<ArrayList<UserReplyModel>>> {
+        val result = MutableLiveData<Resource<ArrayList<UserReplyModel>>>()
+
+        htmlService.getUserReplies(userName, page)
             .map { responseStr ->
                 parseReplies(responseStr)
             }
             .async()
+            .doOnSubscribe {
+                result.value = Resource.loading(null)
+            }
+            .subscribe({ data ->
+                if (data == null) {
+                    result.value = Resource.empty(null)
+                } else {
+                    result.value = Resource.success(data)
+                }
+            }, {
+                result.value = Resource.error(ErrorHanding.handleError(it), null)
+            })
+        return result
     }
 
     private var mCurrentPage = 1
@@ -170,7 +206,7 @@ class UserInfoRepository @Inject constructor(
     /**
      * 解析评论列表
      */
-    private fun parseReplies(responseBody: String): ArrayList<UserReplyModel>{
+    private fun parseReplies(responseBody: String): ArrayList<UserReplyModel> {
 
         val replyItems: ArrayList<UserReplyModel> = ArrayList()
 

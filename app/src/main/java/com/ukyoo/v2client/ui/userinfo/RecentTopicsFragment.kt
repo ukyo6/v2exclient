@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentRecentTopicsBinding
+import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.adapter.UserTopicsAdapter
 import com.ukyoo.v2client.viewmodel.RecentTopicsViewModel
@@ -36,6 +37,7 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
 
     override fun initView() {
         getComponent().inject(this)
+        mBinding.vm = viewModel
 
         repliesAdapter = UserTopicsAdapter(R.layout.item_user_topic)
         mBinding.recyclerview.run {
@@ -44,9 +46,16 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
             addItemDecoration(
                 LinearLayoutDecoration(
                     mContext, LinearLayout.VERTICAL,
-                    SizeUtils.dp2px(mContext, 1f), ContextCompat.getColor(mContext, R.color.divider_color)
+                    1, ContextCompat.getColor(mContext, R.color.divider_color)
                 )
             )
+        }
+
+        //重试的回调
+        mBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.retry()
+            }
         }
     }
 
@@ -56,8 +65,13 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
         //设置参数
         viewModel.setUserNameAndPage((arguments?.getString("userName") ?: ""),1)
         //观察者
-        viewModel.userTopics.observe(this@RecentTopicsFragment, Observer { list ->
-            repliesAdapter.setNewData(list)
+        viewModel.userTopics.observe(this@RecentTopicsFragment, Observer { resource ->
+
+            if(resource?.data == null){
+                repliesAdapter.setNewData(emptyList())
+            } else {
+                repliesAdapter.setNewData(resource.data)
+            }
         })
     }
 

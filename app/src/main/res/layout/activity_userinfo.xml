@@ -174,7 +174,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:tabIndicatorColor="@color/colorAccent"
-				app:tabMode="fixed"
+				app:tabMode="scrollable"
 				app:tabPaddingStart="16dp"
 				app:tabSelectedTextColor="@color/colorAccent"
 				app:tabTextColor="@color/colorAccentAlpha"/>
