@@ -31,9 +31,9 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
     val topics: LiveData<Resource<ArrayList<TopicModel>>> = Transformations.switchMap(param) { value ->
         value.ifExists { nodeId, nodeName ->
             if (nodeId.isNotBlank()) {
-                repository.loadDataByTab(true, value.nodeId)
+                repository.loadDataByTab(true, nodeId)
             } else {
-                repository.loadDataByTab(true, value.nodeName)
+                repository.loadDataByTab(true, nodeName)
             }
         }
     }
@@ -48,7 +48,6 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Pa
             param.value = Param(nodeId, nodeName)
         }
     }
-
 
 
     data class Param(val nodeId: String, val nodeName: String) {

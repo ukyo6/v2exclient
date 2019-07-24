@@ -96,7 +96,7 @@ object NetManager {
     }
 
     private val cookieInterceptor = Interceptor { chain ->
-        var request = chain.request()
+        val request = chain.request()
 
         val builder = request.newBuilder()
             .addHeader("Cache-Control", "max-age=0")
@@ -166,7 +166,7 @@ object NetManager {
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
-            .addInterceptor(cookieInterceptor)
+//            .addInterceptor(cookieInterceptor)
             .addInterceptor(okhttpLogInterceptor)
             .build()
     }

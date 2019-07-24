@@ -1,19 +1,15 @@
 package com.ukyoo.v2client.repository
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
-import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.data.db.AppDataBase
 import com.ukyoo.v2client.data.entity.ProfileModel
-import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import retrofit2.HttpException
-import java.util.ArrayList
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -28,28 +24,20 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     private var verifyCodeVal: String = ""
     private var once: String = ""
 
+
+
     /**
      * 从登录页面获取cookies
      */
-    fun getLoginData() : MutableLiveData<String> {
-        val verifyUrl : MutableLiveData<String> = MutableLiveData()
+    fun getLoginData(): LiveData<Resource<String>> {
+        val verifyUrl = MutableLiveData<Resource<String>>()
 
         //清除cookie
-        NetManager.clearCookie()
+//        NetManager.clearCookie()
 
         htmlService.signin()
             .async()
             .subscribe({ content ->
-                //从响应头里获取cookie信息
-                val headerCookies = content.headers().values("Set-Cookie")
-                val cookies = HashSet<String>()
-                if (headerCookies.isNotEmpty()) {
-                    headerCookies.forEach {
-                        cookies.add(it)
-                    }
-                }
-                SPUtils.setStringSet("cookie", cookies)  //存cookie
-
                 if (content?.body() == null) {
                     return@subscribe
                 }
@@ -65,14 +53,12 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                         if (nameVal.isEmpty() || passwordVal.isEmpty()) {
                             continue
                         }
-
                         verifyCodeVal = c.getElementsByAttributeValue("type", "text")[1].attr("name")
                         val verifyStr = c.getElementsByAttributeValueContaining("style", "background-image").toString()
                         val startIndex = verifyStr.indexOf("/_captcha?")
                         val endIndex = verifyStr.indexOf("\')")
 
-                        verifyUrl.value =  "https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex)
-
+                        verifyUrl.value = Resource.success("https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex))
                         break@loopOuter
                     }
                 }
@@ -127,8 +113,6 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     }
 
 
-
-
     /**
      * 获取用户基本信息
      */
@@ -144,7 +128,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
             }
             .async()
             .subscribe({
-//                loginSuccessEvent.value = it  //TODO:
+                //                loginSuccessEvent.value = it  //TODO:
             }, {
                 ToastUtil.shortShow(ErrorHanding.handleError(it))
             })

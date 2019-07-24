@@ -3,19 +3,14 @@ package com.ukyoo.v2client.ui.login
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.api.HtmlService
-import com.ukyoo.v2client.data.api.NetManager
+import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.BaseViewModel
-import com.ukyoo.v2client.data.db.AppDataBase
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.repository.LoginRepository
-import com.ukyoo.v2client.repository.UserInfoRepository
-import com.ukyoo.v2client.util.*
-import org.jsoup.Jsoup
-import retrofit2.HttpException
+import com.ukyoo.v2client.util.SingleLiveEvent
+import com.ukyoo.v2client.util.ToastUtil
 import javax.inject.Inject
-import javax.inject.Named
 
 class LoginViewModel @Inject constructor(
     private val repository: LoginRepository
@@ -26,8 +21,6 @@ class LoginViewModel @Inject constructor(
     val password = ObservableField<String>()
     val verifyCode = ObservableField<String>()
 
-    //验证码地址
-    lateinit var verifyImgUrl: MutableLiveData<String>
 
     //liveData
     val loginSuccessEvent = SingleLiveEvent<ProfileModel>()
@@ -53,10 +46,10 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    /**
-     * 刷新验证码
-     */
-    fun refreshVerifyImg() {
-        verifyImgUrl = repository.getLoginData()
+    //验证码地址
+    var verifyImgUrl: LiveData<Resource<String>> = refreshVerifyImg()
+
+    fun refreshVerifyImg() : LiveData<Resource<String>>{
+        return  repository.getLoginData()
     }
 }

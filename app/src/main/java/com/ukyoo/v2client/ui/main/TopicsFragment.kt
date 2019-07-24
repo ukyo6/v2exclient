@@ -16,6 +16,7 @@ import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
+import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.TopicListAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
 
@@ -97,14 +98,15 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         }
 
         //观察者
-        viewModel.topics.observe(this@TopicsFragment, Observer { resouce ->
-            if(resouce.data != null){
-                topicsAdapter.setNewData(resouce.data)
+        viewModel.topics.observe(this@TopicsFragment, Observer { resource ->
+            if (resource.data != null) {
+                topicsAdapter.setNewData(resource.data)
             } else {
                 topicsAdapter.setNewData(emptyList())
             }
         })
     }
+
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_topic

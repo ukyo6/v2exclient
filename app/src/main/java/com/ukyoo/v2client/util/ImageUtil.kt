@@ -8,8 +8,10 @@ import androidx.palette.graphics.Palette
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
+import okhttp3.Cookie
 
 /**
  * 加载图片
@@ -32,14 +34,28 @@ object ImageUtil {
     fun loadVerifyCode(uri: String?, imageView: ImageView) {
         if (uri == null) return
 
+        val cookies = SharedPrefsCookiePersistor(App.instance()).loadAll()
         val builder = LazyHeaders.Builder()
-        val stringSet = SPUtils.getStringSet("cookie")
-        stringSet?.forEach {
-            builder.addHeader("cookie", it)
-        }
+            .addHeader("Cookie", cookieHeader(cookies))
+            .build()
 
-        val glideUrl = GlideUrl(uri, builder.build())
+        val glideUrl = GlideUrl(uri, builder)
         GlideApp.with(App.instance()).load(glideUrl).into(imageView)
+    }
+
+    private fun cookieHeader(cookies: List<Cookie>): String {
+        val cookieHeader = StringBuilder()
+        var i = 0
+        val size = cookies.size
+        while (i < size) {
+            if (i > 0) {
+                cookieHeader.append("; ")
+            }
+            val cookie = cookies[i]
+            cookieHeader.append(cookie.name()).append('=').append(cookie.value())
+            i++
+        }
+        return cookieHeader.toString()
     }
 
 

@@ -8,6 +8,7 @@ import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
 import com.ukyoo.v2client.event.LoginSuccessEvent
 import com.ukyoo.v2client.navigator.LoginNavigator
+import com.ukyoo.v2client.util.ImageUtil
 import com.ukyoo.v2client.util.RxBus
 
 /**
@@ -21,8 +22,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-
-        viewModel.refreshVerifyImg()  //刷新验证码
+        //刷新验证码
+        viewModel.verifyImgUrl.observe(this@LoginActivity, Observer { resource->
+            if(resource.data != null){
+                ImageUtil.loadVerifyCode(resource.data, mBinding.ivVerifycode)
+            }
+        })
 
         //登录成功 观察者
         viewModel.loginSuccessEvent.observe(this@LoginActivity, Observer {
