@@ -3,10 +3,9 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Switch
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
@@ -16,7 +15,6 @@ import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
-import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.TopicListAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
 

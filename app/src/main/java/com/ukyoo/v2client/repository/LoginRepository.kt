@@ -25,7 +25,6 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     private var once: String = ""
 
 
-
     /**
      * 从登录页面获取cookies
      */
@@ -58,7 +57,8 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                         val startIndex = verifyStr.indexOf("/_captcha?")
                         val endIndex = verifyStr.indexOf("\')")
 
-                        verifyUrl.value = Resource.success("https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex))
+                        verifyUrl.value =
+                            Resource.success("https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex))
                         break@loopOuter
                     }
                 }
@@ -73,7 +73,9 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 登录
      */
-    fun login(username: String, password: String, verifyCode: String) {
+    fun login(username: String, password: String, verifyCode: String): LiveData<Resource<ProfileModel>> {
+        val result = MutableLiveData<Resource<ProfileModel>>()
+
         val params = HashMap<String, String>()
         params[nameVal] = username
         params["once"] = once
@@ -81,16 +83,6 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
         params[verifyCodeVal] = verifyCode
 
         val headers = HashMap<String, String>()
-        val stringSet = SPUtils.getStringSet("cookie")
-        val stringBuffer = StringBuffer()
-        stringSet?.forEach {
-            if (stringSet.indexOf(it) != stringSet.size - 1) {
-                stringBuffer.append(it).append("; ")
-            } else {
-                stringBuffer.append(it)
-            }
-        }
-
         headers["Origin"] = "https://www.v2ex.com"
         headers["Referer"] = "https://www.v2ex.com/signin"
         headers["Content-Type"] = "application/x-www-form-urlencoded"
@@ -98,39 +90,51 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
         htmlService
             .login(headers, params)
             .async()
+            .doOnSubscribe {
+                //loading status
+                result.value = Resource.loading(null)
+            }
             .subscribe({
                 ErrorHanding.getProblemFromHtmlResponse(it).apply {
-                    ToastUtil.shortShow(this)
+                    //error status
                     Logger.d(this)
+                    result.value = Resource.error(this, null)
                 }
             }, {
                 if (it is HttpException && it.code() == 302) {
-                    getUserProfiler()
+                    //success status
+                    getUserProfiler(result)
+
                 } else {
-                    ToastUtil.shortShow(ErrorHanding.handleError(it))
+                    //error status
+                    Logger.d(ErrorHanding.handleError(it))
+                    result.value = Resource.error(ErrorHanding.handleError(it), null)
                 }
             })
+
+        return result
     }
 
 
     /**
      * 获取用户基本信息
      */
-    private fun getUserProfiler() {
+    private fun getUserProfiler(result : MutableLiveData<Resource<ProfileModel>>)  {
+
         htmlService.getProfiler()
             .map {
                 val profileModel = ProfileModel().apply {
                     parse(it)
                 }
-                AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel) //存到db
-                SPUtils.setBoolean("isLogin", true)
+                //存到db  子线程
+                AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
                 return@map profileModel
             }
             .async()
             .subscribe({
-                //                loginSuccessEvent.value = it  //TODO:
+                result.value = Resource.success(it)
             }, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
+                result.value = Resource.error(ErrorHanding.handleError(it), null)
             })
     }
 }

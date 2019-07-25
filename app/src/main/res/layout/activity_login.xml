@@ -9,6 +9,10 @@
 
 	<data>
 
+		<import type="androidx.lifecycle.LiveData"/>
+
+		<import type="com.ukyoo.v2client.data.Resource"/>
+
 		<variable
 			name="vm"
 			type="com.ukyoo.v2client.ui.login.LoginViewModel"/>
@@ -103,6 +107,7 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<ImageView
+			app:verifyUrl="@{vm.verifyImgUrl.data}"
 			android:onClick="@{() -> vm.refreshVerifyImg()}"
 			android:layout_marginEnd="5dp"
 			app:layout_constraintLeft_toRightOf="@+id/text_input_verify"
@@ -118,7 +123,7 @@
 
 		<androidx.appcompat.widget.AppCompatButton
 			android:background="@drawable/shape_coener30_black"
-			android:onClick="@{() -> vm.login()}"
+			android:onClick="@{() -> vm.clickToLogin()}"
 			android:layout_marginTop="20dp"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintRight_toRightOf="parent"

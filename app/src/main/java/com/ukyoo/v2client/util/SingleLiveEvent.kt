@@ -34,6 +34,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * Note that only one observer is going to be notified of changes.
  */
+
+@Deprecated(" SingleLiveEvent的缺陷只能有一个观察者, 用Event Wrap来替代")
 class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     private val pending = AtomicBoolean(false)
