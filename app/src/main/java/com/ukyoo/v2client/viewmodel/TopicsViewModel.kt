@@ -1,21 +1,19 @@
 package com.ukyoo.v2client.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.AbsentLiveData
-import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 
 /**
  * 列表主题页ViewModel
  */
-class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : PagedViewModel() {
+class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : AutoDisposeViewModel() {
 
     private val param: MutableLiveData<Param> = MutableLiveData()
 

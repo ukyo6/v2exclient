@@ -6,6 +6,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.uber.autodispose.AutoDispose.autoDisposable
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
@@ -18,6 +21,7 @@ import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
 import com.ukyoo.v2client.widget.EnterLayout
+import io.reactivex.Flowable
 import java.util.ArrayList
 
 /**

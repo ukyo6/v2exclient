@@ -3,8 +3,8 @@ package com.ukyoo.v2client.viewmodel
 import androidx.databinding.ObservableField
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.api.NetManager
-import com.ukyoo.v2client.base.viewmodel.BaseViewModel
 import com.ukyoo.v2client.data.db.AppDataBase
 import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.util.SPUtils
@@ -12,7 +12,7 @@ import com.ukyoo.v2client.util.SingleLiveEvent
 import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 
-class PersonalViewModel @Inject constructor() : BaseViewModel() {
+class PersonalViewModel @Inject constructor() : AutoDisposeViewModel() {
 
     var profileModel = ObservableField<ProfileModel>()
 

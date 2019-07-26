@@ -1,20 +1,19 @@
 package com.ukyoo.v2client.ui.detail
 
 import android.text.TextUtils
-import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.uber.autodispose.autoDisposable
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.repository.DetailRepository
 import com.ukyoo.v2client.util.*
-import com.ukyoo.v2client.viewmodel.TopicsViewModel
+import io.reactivex.Flowable
 import retrofit2.HttpException
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -24,7 +23,7 @@ class DetailViewModel @Inject constructor(
     var repository: DetailRepository,
     @Named("non_cached")
     var htmlService: HtmlService
-) : PagedViewModel() {
+) : AutoDisposeViewModel() {
 
 
     var replyContent = ObservableField<String>()  //回复内容
@@ -62,9 +61,14 @@ class DetailViewModel @Inject constructor(
      * 获取回复需要的ONCE
      */
     fun getReplyOnce(topicId: Int) {
+
+        Flowable.just(1)
+
+
+
         htmlService.getReplyOnce(topicId)
             .async()
-            .bindLifecycle(this)
+            .autoDisposable(this)
             .subscribe({ content ->
                 val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
                 val matcher = pattern.matcher(content)
@@ -94,7 +98,7 @@ class DetailViewModel @Inject constructor(
         replyContents?.let {
             htmlService.reply(url, topicId, replyContents, once)
                 .async()
-                .bindLifeCycle(this.lifecycleOwner!!)
+                .autoDisposable(this)
                 .subscribe({ response ->
                     ErrorHanding.getProblemFromHtmlResponse(response).apply {
                         ToastUtil.shortShow(this)

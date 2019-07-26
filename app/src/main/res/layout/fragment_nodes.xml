@@ -34,26 +34,10 @@
 			/>
 
 
-		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-			app:onRefresh="@{presenter}"
-			app:refreshing="@{vm.loading}"
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerview"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
-
-			<FrameLayout
-				android:id="@+id/container"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
-
-				<androidx.recyclerview.widget.RecyclerView
-					android:id="@+id/recyclerview"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"/>
-
-			</FrameLayout>
-
-
-		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+			android:layout_height="match_parent"/>
 
 
 	</LinearLayout>

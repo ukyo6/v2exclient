@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,7 +15,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.Presenter
-import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import com.ukyoo.v2client.util.GlideApp
 import com.ukyoo.v2client.util.ImageUtil
 import com.ukyoo.v2client.util.ScrimUtil
@@ -45,7 +45,7 @@ fun bindRichText(textView: RichTextView, text: String?) {
 
 
 @BindingAdapter(value = ["loadMore", "loadMorePresenter"])
-fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
+fun bindLoadMore(v: RecyclerView, vm: ViewModel?, presenter: Presenter) {
     v.layoutManager = LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -54,11 +54,7 @@ fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
                 //表示是否能向上滚动，false表示已经滚动到底部
                 //防止多次拉取同样的数据
                 if (!recyclerView.canScrollVertically(1)) {
-                    vm?.let {
-                        if (vm.loadMore.get() && !vm.loading.get()) {
-                            presenter.loadData(false, null)
-                        }
-                    }
+
                 }
             }
         }

@@ -1,10 +1,9 @@
 package com.ukyoo.v2client.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ukyoo.v2client.base.viewmodel.BaseViewModel
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.entity.UserReplyModel
 import com.ukyoo.v2client.repository.UserInfoRepository
@@ -15,7 +14,7 @@ import javax.inject.Inject
  * 用户信息
  * 最近的回复列表 ViewModel
  */
-class RecentRepliesViewModel @Inject constructor(val repository: UserInfoRepository) : BaseViewModel() {
+class RecentRepliesViewModel @Inject constructor(val repository: UserInfoRepository) : AutoDisposeViewModel() {
 
     //参数 用户名.页码
     private val param: MutableLiveData<RecentRepliesParam> = MutableLiveData()

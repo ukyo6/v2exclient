@@ -1,17 +1,16 @@
 package com.ukyoo.v2client.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ukyoo.v2client.base.viewmodel.BaseViewModel
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
 import javax.inject.Inject
 
-class RecentTopicsViewModel @Inject constructor(val repository: UserInfoRepository) : BaseViewModel() {
+class RecentTopicsViewModel @Inject constructor(val repository: UserInfoRepository) : AutoDisposeViewModel() {
 
     //参数 用户名.页码
     private val param: MutableLiveData<RecentTopicsParam> = MutableLiveData()

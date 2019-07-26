@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ukyoo.v2client.base.viewmodel.PagedViewModel
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 class UserInfoViewModel @Inject constructor(
     private var repository: UserInfoRepository
-) : PagedViewModel() {
+) : AutoDisposeViewModel() {
 
 
     private val _userName: MutableLiveData<String> = MutableLiveData()

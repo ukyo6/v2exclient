@@ -2,17 +2,18 @@ package com.ukyoo.v2client.ui.node
 
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
+import com.uber.autodispose.autoDisposable
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.db.NodeModelDao
 import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
-import com.ukyoo.v2client.base.viewmodel.PagedViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class NodesViewModel @Inject constructor(private var apiService: JsonService) : PagedViewModel() {
+class NodesViewModel @Inject constructor(private var apiService: JsonService) : AutoDisposeViewModel() {
 
     @Inject
     lateinit var nodeModelDao: NodeModelDao
@@ -29,13 +30,8 @@ class NodesViewModel @Inject constructor(private var apiService: JsonService) : 
                 }
                 return@map it
             }
-            .doOnSubscribe {
-                startLoad()
-            }.doAfterTerminate {
-                stopLoad()
-                empty.set(nodesList.isEmpty())
-            }
             .async()
+            .autoDisposable(this)
             .subscribe({
                 nodesList.clear()
                 nodesList.addAll(it)
@@ -50,6 +46,7 @@ class NodesViewModel @Inject constructor(private var apiService: JsonService) : 
         if (TextUtils.isEmpty(name)) {
             nodeModelDao.getAll()
                 .async()
+                .autoDisposable(this)
                 .subscribe({
                     nodesList.clear()
                     nodesList.addAll(it)

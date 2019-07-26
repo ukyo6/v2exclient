@@ -4,14 +4,14 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.ukyoo.v2client.base.viewmodel.BaseViewModel
+import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.repository.LoginRepository
 import com.ukyoo.v2client.util.ToastUtil
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(private val repository: LoginRepository) : BaseViewModel() {
+class LoginViewModel @Inject constructor(private val repository: LoginRepository) : AutoDisposeViewModel() {
 
     val username = ObservableField<String>()
     val password = ObservableField<String>()

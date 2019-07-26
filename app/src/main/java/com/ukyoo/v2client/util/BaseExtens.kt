@@ -12,7 +12,6 @@ import com.uber.autodispose.SingleSubscribeProxy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.BuildConfig
-import com.ukyoo.v2client.base.viewmodel.LifecycleViewModel
 import com.ukyoo.v2client.util.annotations.ToastType
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -71,15 +70,4 @@ fun isNetworkConnected(): Boolean {
     return connectivityManager.activeNetworkInfo != null
 }
 
-fun <T> Single<T>.bindLifecycle(
-    lifecycleViewModel: LifecycleViewModel,
-    lifecycleEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
-): SingleSubscribeProxy<T> =
-    bindLifeCycle(
-        lifecycleViewModel.lifecycleOwner
-            ?: throw throwableWhenLifecycleOwnerIsNull(lifecycleViewModel)
 
-    )
-
-private fun throwableWhenLifecycleOwnerIsNull(viewModel: LifecycleViewModel): NullPointerException =
-    NullPointerException("$viewModel's lifecycleOwner is null.")
