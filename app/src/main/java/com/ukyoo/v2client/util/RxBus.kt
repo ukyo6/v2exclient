@@ -1,39 +1,42 @@
 package com.ukyoo.v2client.util
 
 
-import io.reactivex.Flowable
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
+import io.reactivex.Observable
 import io.reactivex.processors.FlowableProcessor
 import io.reactivex.processors.PublishProcessor
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 
 /**
  * rxjava2 rxbus
  */
-class RxBus// PublishSubject只会把在订阅发生的时间点之后来自原始Flowable的数据发射给观察者
-private constructor() {
-    // 主题
-    private val bus: FlowableProcessor<Any> = PublishProcessor.create<Any>().toSerialized()
-
-    private object RxBusHolder {
-        val sInstance = RxBus()
+object RxBus {
+    // 支持背压且线程安全的，保证线程安全需要调用 toSerialized() 方法
+    private val mBus: FlowableProcessor<Any>
+            by lazy { PublishProcessor.create<Any>().toSerialized() }
+    //发送事件
+    fun post(obj: Any) {
+        mBus.onNext(obj)
     }
+    //订阅事件
+    fun <T> toFlowable(tClass: Class<T>) = mBus.ofType(tClass)
+
+    fun toFlowable() = mBus
+
+    fun hasSubscribers() = mBus.hasSubscribers()
 
 
-    // 提供了一个新的事件
-    fun post(o: Any) {
-        bus.onNext(o)
+    //不支持背压且线程安全的，保证线程安全需要调用 toSerialized() 方法
+    private val mBusNB: Subject<Any>
+            by lazy { PublishSubject.create<Any>().toSerialized() }
+    //发送事件
+    fun postNB(obj: Any){
+        mBusNB.onNext(obj)
     }
+    //订阅事件
+    fun <T> toObservable(tClass: Class<T>): Observable<T> = mBusNB.ofType(tClass)
 
-    // 根据传递的 eventType 类型返回特定类型(eventType)的 被观察者
-    fun <T> toFlowable(eventType: Class<T>): Flowable<T> {
-        return bus.ofType(eventType)
-    }
+    fun toObservable(): Observable<Any> = mBusNB
 
-    companion object {
-
-        val default: RxBus
-            get() = RxBusHolder.sInstance
-    }
-
+    fun hasObservers() = mBusNB.hasObservers()
 }

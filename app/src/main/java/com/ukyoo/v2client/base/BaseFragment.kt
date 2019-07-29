@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -16,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.di.component.FragmentComponent
 import com.ukyoo.v2client.di.module.FragmentModule
-import com.ukyoo.v2client.util.annotations.ToastType
 import com.ukyoo.v2client.util.dispatchFailure
 import com.ukyoo.v2client.util.toast
 import javax.inject.Inject
@@ -147,18 +145,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     abstract fun getLayoutId(): Int
 
     abstract fun isLazyLoad(): Boolean
-
-    fun toast(msg: String) {
-        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    fun toastSuccess(msg: String?) {
-        msg?.let { activity?.toast(it, ToastType.SUCCESS) }
-    }
-
-    fun toastFailure(error: Throwable) {
-        activity?.dispatchFailure(error)
-    }
 
     protected fun <T> autoWired(key: String, default: T? = null): T? =
         arguments?.let { findWired(it, key, default) }

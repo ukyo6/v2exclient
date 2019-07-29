@@ -43,16 +43,12 @@ class TopicsRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading(null)
+                result.value = Resource.loading()
             }
             .subscribe({ data ->
-                if (data == null) {
-                    result.value = Resource.empty(null)
-                } else {
-                    result.value = Resource.success(data)
-                }
+                result.value = Resource.success(data)
             }, {
-                result.value = Resource.error(ErrorHanding.handleError(it), null)
+                result.value = Resource.error(ErrorHanding.handleError(it))
             })
 
         return result

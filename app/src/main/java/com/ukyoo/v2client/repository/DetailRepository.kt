@@ -27,7 +27,8 @@ import javax.inject.Singleton
 @Singleton
 class DetailRepository @Inject constructor(
     @Named("non_cached")
-    var htmlService: HtmlService, var jsonService: JsonService
+    var htmlService: HtmlService,
+    var jsonService: JsonService
 ) {
 
     var replyList = ObservableArrayList<ReplyModel>()
@@ -95,11 +96,7 @@ class DetailRepository @Inject constructor(
                 result.value = Resource.loading(null)
             }
             .subscribe({ data ->
-                if (data == null) {
-                    result.value = Resource.empty(null)
-                } else {
-                    result.value = Resource.success(data)
-                }
+                result.value = Resource.success(data)
             }, {
                 result.value = Resource.error(ErrorHanding.handleError(it), null)
             })

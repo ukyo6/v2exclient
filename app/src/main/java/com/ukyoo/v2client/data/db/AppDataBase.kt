@@ -6,8 +6,8 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.data.entity.ProfileModel
 import androidx.room.migration.Migration
+import com.ukyoo.v2client.entity.ProfileModel
 
 
 /**

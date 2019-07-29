@@ -59,7 +59,6 @@
 			android:layout_height="wrap_content">
 
 			<AutoCompleteTextView
-				android:text="@={vm.username}"
 				android:id="@+id/tv_username"
 				android:hint="@string/username"
 				android:maxLines="1"
@@ -79,7 +78,6 @@
 
 
 			<AutoCompleteTextView
-				android:text="@={vm.password}"
 				android:id="@+id/tv_pwd"
 				android:inputType="textPassword"
 				android:hint="@string/pwd"
@@ -97,7 +95,6 @@
 			android:layout_height="wrap_content">
 
 			<AutoCompleteTextView
-				android:text="@={vm.verifyCode}"
 				android:id="@+id/tv_verify"
 				android:hint="验证码"
 				android:maxLines="1"
@@ -107,7 +104,7 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<ImageView
-			app:verifyUrl="@{vm.verifyImgUrl.data}"
+			app:verifyUrl="@{vm.verifyImgUrlLiveData.data}"
 			android:onClick="@{() -> vm.refreshVerifyImg()}"
 			android:layout_marginEnd="5dp"
 			app:layout_constraintLeft_toRightOf="@+id/text_input_verify"
@@ -123,7 +120,6 @@
 
 		<androidx.appcompat.widget.AppCompatButton
 			android:background="@drawable/shape_coener30_black"
-			android:onClick="@{() -> vm.clickToLogin()}"
 			android:layout_marginTop="20dp"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintRight_toRightOf="parent"

@@ -3,7 +3,6 @@ package com.ukyoo.v2client.base
 import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -16,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.di.component.ActivityComponent
 import com.ukyoo.v2client.di.module.ActivityModule
-import com.ukyoo.v2client.util.annotations.ToastType
 import com.ukyoo.v2client.util.dispatchFailure
 import com.ukyoo.v2client.util.toast
 import javax.inject.Inject
@@ -142,14 +140,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
             bar.setDisplayShowTitleEnabled(true)
             bar.setHomeButtonEnabled(true)
         }
-    }
-
-    fun toastSuccess(msg: String?) {
-        msg?.let { toast(it, ToastType.SUCCESS) }
-    }
-
-    fun toastFailure(error: Throwable?) {
-        dispatchFailure(error)
     }
 
     protected fun <T> autoWired(key: String, default: T? = null): T? {

@@ -7,7 +7,7 @@ import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentPersonalBinding
-import com.ukyoo.v2client.event.LoginSuccessEvent
+import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.navigator.PersonalNavigator
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.util.RxBus
@@ -57,11 +57,10 @@ class PersonalFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
         }
 
         //登录后返回
-        RxBus.default
-            .toFlowable(LoginSuccessEvent::class.java)
+        RxBus.toFlowable(ProfileModel::class.java)
             .bindLifeCycle(this)
             .subscribe {
-                viewModel.setUserProfiler(it.model)
+//                viewModel.setUserProfiler(it.model)
             }
     }
 

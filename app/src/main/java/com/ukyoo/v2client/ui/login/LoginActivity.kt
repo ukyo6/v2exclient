@@ -1,22 +1,17 @@
 package com.ukyoo.v2client.ui.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.Status
-import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.databinding.ActivityLoginBinding
-import com.ukyoo.v2client.event.LoginSuccessEvent
-import com.ukyoo.v2client.navigator.LoginNavigator
-import com.ukyoo.v2client.util.RxBus
-import com.ukyoo.v2client.util.setUpToast
+import com.ukyoo.v2client.util.*
 
 /**
  * 登录
  */
-class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
+class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     //get viewModel by di
     private val viewModel by lazy {
@@ -25,15 +20,43 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         //刷新验证码
-        viewModel.refreshVerifyImg()
+        if (viewModel.verifyImgUrlLiveData.value == null) {
+            viewModel.refreshVerifyImg()
+        }
 
-        //Toast 观察者
-        setUpToast(this@LoginActivity, viewModel.toastEvent)
+        mBinding.btnLogin.setOnClickListener {
+            val userNameVal = mBinding.tvUsername.text.toString()
+            val pwdVal = mBinding.tvPwd.text.toString()
+            val verifyCodeVal = mBinding.tvVerify.text.toString()
 
-        //跳转个人信息页 观察者
-        viewModel.loginEvent.observe(this@LoginActivity, Observer {
-//            RxBus.default.post(it.data)
-            finish()
+            when {
+                userNameVal.isBlank() -> ToastUtil.shortShow("请输入用户名")
+                pwdVal.isBlank() -> ToastUtil.shortShow("请输入密码")
+                verifyCodeVal.isBlank() -> ToastUtil.shortShow("请输入验证码")
+                else -> {
+                    viewModel.setLogin(LoginViewModel.LoginParam(userNameVal, pwdVal, verifyCodeVal))
+                }
+            }
+        }
+
+
+        subscribeUi()
+    }
+
+    private fun subscribeUi() {
+        //跳转个人信息页
+        viewModel.loginResultLiveData.observe(this@LoginActivity, Observer {
+            when (it.status) {
+                Status.LOADING -> println(1)
+                Status.ERROR -> ToastUtil.shortShow(it.message)
+                Status.EMPTY ->{}
+                Status.SUCCESS -> {
+                    it.data?.let { it1 ->
+                        RxBus.post(it1)
+                        finish()
+                    }
+                }
+            }
         })
     }
 
@@ -44,14 +67,5 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
 
     override fun getLayoutId(): Int {
         return R.layout.activity_login
-    }
-
-    //-----------------------------------------------------------------------------------------------
-
-
-    //登录成功
-    override fun loginSuccess(model: ProfileModel) {
-        RxBus.default.post(LoginSuccessEvent(model))
-        finish()
     }
 }

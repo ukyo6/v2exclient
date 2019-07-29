@@ -57,11 +57,7 @@ class UserInfoRepository @Inject constructor(
                 result.value = Resource.loading(null)
             }
             .subscribe({ data ->
-                if (data == null) {
-                    result.value = Resource.empty(null)
-                } else {
-                    result.value = Resource.success(data)
-                }
+                result.value = Resource.success(data)
             }, {
                 result.value = Resource.error(ErrorHanding.handleError(it), null)
             })
@@ -84,11 +80,7 @@ class UserInfoRepository @Inject constructor(
                 result.value = Resource.loading(null)
             }
             .subscribe({ data ->
-                if (data == null) {
-                    result.value = Resource.empty(null)
-                } else {
-                    result.value = Resource.success(data)
-                }
+                result.value = Resource.success(data)
             }, {
                 result.value = Resource.error(ErrorHanding.handleError(it), null)
             })

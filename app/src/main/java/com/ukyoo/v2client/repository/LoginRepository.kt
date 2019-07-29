@@ -6,10 +6,12 @@ import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.db.AppDataBase
-import com.ukyoo.v2client.data.entity.ProfileModel
+import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.ui.login.LoginViewModel
 import com.ukyoo.v2client.util.*
 import org.jsoup.Jsoup
 import retrofit2.HttpException
+import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -73,14 +75,14 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 登录
      */
-    fun login(username: String, password: String, verifyCode: String): MutableLiveData<Resource<ProfileModel>> {
+    fun login(param: LoginViewModel.LoginParam): LiveData<Resource<ProfileModel>> {
         val result = MutableLiveData<Resource<ProfileModel>>()
 
         val params = HashMap<String, String>()
-        params[nameVal] = username
+        params[nameVal] = param.userName
         params["once"] = once
-        params[passwordVal] = password
-        params[verifyCodeVal] = verifyCode
+        params[passwordVal] = param.pwd
+        params[verifyCodeVal] = param.verifyCode
 
         val headers = HashMap<String, String>()
         headers["Origin"] = "https://www.v2ex.com"
@@ -92,13 +94,13 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
             .async()
             .doOnSubscribe {
                 //loading status
-                result.value = Resource.loading(null)
+                result.value = Resource.loading()
             }
             .subscribe({
                 ErrorHanding.getProblemFromHtmlResponse(it).apply {
                     //error status
                     Logger.d(this)
-                    result.value = Resource.error(this, null)
+                    result.value = Resource.error(this)
                 }
             }, {
                 if (it is HttpException && it.code() == 302) {
@@ -108,7 +110,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                 } else {
                     //error status
                     Logger.d(ErrorHanding.handleError(it))
-                    result.value = Resource.error(ErrorHanding.handleError(it), null)
+                    result.value = Resource.error(ErrorHanding.handleError(it))
                 }
             })
 
@@ -119,13 +121,11 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 获取用户基本信息
      */
-    private fun getUserProfiler(result : MutableLiveData<Resource<ProfileModel>>)  {
+    private fun getUserProfiler(result: MutableLiveData<Resource<ProfileModel>>) {
 
         htmlService.getProfiler()
             .map {
-                val profileModel = ProfileModel().apply {
-                    parse(it)
-                }
+                val profileModel = parseProfilerModel(it)
                 //存到db  子线程
                 AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
                 return@map profileModel
@@ -134,7 +134,80 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
             .subscribe({
                 result.value = Resource.success(it)
             }, {
-                result.value = Resource.error(ErrorHanding.handleError(it), null)
+                result.value = Resource.error(ErrorHanding.handleError(it))
             })
+    }
+
+
+    private fun parseProfilerModel(responseBody: String) : ProfileModel{
+        val model = ProfileModel()
+
+
+        val doc = Jsoup.parse(responseBody)
+        val body = doc.body()
+        val elements = body.getElementsByAttributeValue("id", "Rightbar")
+        val found = intArrayOf(0, 0, 0, 0)
+        for (el in elements) {
+            if (found[0] == 1 && found[1] == 1 && found[2] == 1 && found[3] == 1)
+                break
+            val tdNodes = el.getElementsByTag("td")
+            for (tdNode in tdNodes) {
+                val content = tdNode.toString()
+                if (found[0] == 0 && content.contains("a href=\"/member/")) {
+                    val aNode = tdNode.getElementsByTag("a")
+                    model.username = aNode.attr("href").replace("/member/", "")
+                    val avatarNode = tdNode.getElementsByTag("img")
+                    if (avatarNode != null) {
+                        var avatarString = avatarNode.attr("src")
+                        if (avatarString.startsWith("//")) {
+                            avatarString = "https:$avatarString"
+                        }
+                        model.avatar = avatarString
+                        found[0] = 1
+                    }
+                } else if (found[1] == 0 && content.contains("a href=\"/my/nodes\"")) {
+                    //text = 20 节点收藏
+                    var text = tdNode.text()
+                    text = text.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+                    try {
+                        model.nodes = Integer.parseInt(text)
+                        found[1] = 1
+                    } catch (e: Exception) {
+                        model.nodes = 0
+                    }
+
+                } else if (found[2] == 0 && content.contains("a href=\"/my/topics\"")) {
+                    //text = 20 主题收藏
+                    var text = tdNode.text()
+                    text = text.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+                    try {
+                        model.topics = Integer.parseInt(text)
+                        found[2] = 1
+                    } catch (e: Exception) {
+                        model.topics = 0
+                    }
+
+                } else if (found[3] == 0 && content.contains("a href=\"/my/following\"")) {
+                    //text = 20 特别关注
+                    var text = tdNode.text()
+                    text = text.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+                    try {
+                        model.followings = Integer.parseInt(text)
+                        found[3] = 1
+                    } catch (e: Exception) {
+                        model.followings = 0
+                    }
+
+                }
+            }
+        }
+
+        val pattern = Pattern.compile("<a href=\"/notifications\"([^>]*)>([0-9]+) 条未读提醒</a>")
+        val matcher = pattern.matcher(responseBody)
+        if (matcher.find()) {
+            model.notifications = Integer.parseInt(matcher.group(2))
+        }
+
+        return model
     }
 }

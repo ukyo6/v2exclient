@@ -6,7 +6,7 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.data.db.AppDataBase
-import com.ukyoo.v2client.data.entity.ProfileModel
+import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.util.SPUtils
 import com.ukyoo.v2client.util.SingleLiveEvent
 import com.ukyoo.v2client.util.async
@@ -27,13 +27,13 @@ class PersonalViewModel @Inject constructor() : AutoDisposeViewModel() {
      */
     fun getUserInfoCache() {
         if (SPUtils.getBoolean("isLogin", false)) {
-            AppDataBase.getDataBase()
-                .profileModelDao()
-                .getUserProfile()
-                .async()
-                .subscribe { model ->
-                    profileModel.set(model)
-                }
+//            AppDataBase.getDataBase()
+//                .profileModelDao()
+//                .getUserProfile()
+//                .async()
+//                .subscribe { model ->
+//                    profileModel.set(model)
+//                }
         }
     }
 
@@ -47,7 +47,6 @@ class PersonalViewModel @Inject constructor() : AutoDisposeViewModel() {
     }
 
 
-
     /**
      * 退出登录
      */
@@ -57,21 +56,21 @@ class PersonalViewModel @Inject constructor() : AutoDisposeViewModel() {
         SPUtils.setBoolean("isLogin", false)
         val model = ProfileModel()
         model.username = App.instance().getString(R.string.please_login)
-        model.avatar = null
+        model.avatar = ""
         profileModel.set(model)
     }
 
     /**
      * 我的回复
      */
-    fun gotoUserRepliesPage(){
+    fun gotoUserRepliesPage() {
 
     }
 
     /**
      * 我发表的主题
      */
-    fun gotoUserTopicsPage(){
+    fun gotoUserTopicsPage() {
 
     }
 }
