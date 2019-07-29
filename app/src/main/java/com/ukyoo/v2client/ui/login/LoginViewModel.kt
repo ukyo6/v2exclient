@@ -2,13 +2,16 @@ package com.ukyoo.v2client.ui.login
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Status
 import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.repository.LoginRepository
-import com.ukyoo.v2client.util.ToastUtil
+import com.ukyoo.v2client.util.Event
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(private val repository: LoginRepository) : AutoDisposeViewModel() {
@@ -17,6 +20,13 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     val password = ObservableField<String>()
     val verifyCode = ObservableField<String>()
 
+    //Toast
+    private val _toastEvent = MutableLiveData<Event<String>>()
+    val toastEvent: LiveData<Event<String>> = _toastEvent
+
+    //UserProfiler
+    val loginEvent = MutableLiveData<Resource<ProfileModel>>()
+
     /**
      * 登录
      */
@@ -24,18 +34,15 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         val userNameVal = username.get()
         val pwdVal = password.get()
         val verifyCodeVal = verifyCode.get()
+
+
+
         when {
-            userNameVal.isNullOrBlank() -> {
-                ToastUtil.shortShow("请输入用户名")
-            }
-            pwdVal.isNullOrBlank() -> {
-                ToastUtil.shortShow("请输入密码")
-            }
-            verifyCodeVal.isNullOrBlank() -> {
-                ToastUtil.shortShow("请输入验证码")
-            }
+            userNameVal.isNullOrBlank() -> _toastEvent.value = Event("请输入用户名")
+            pwdVal.isNullOrBlank() ->  _toastEvent.value = Event("请输入密码")
+            verifyCodeVal.isNullOrBlank() -> _toastEvent.value = Event("请输入验证码")
             else -> {
-                repository.login(userNameVal, pwdVal, verifyCodeVal)
+                loginEvent.value = repository.login(userNameVal, pwdVal, verifyCodeVal).value
             }
         }
     }
@@ -52,9 +59,11 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         repository.getLoginData()
     }
 
+    fun hehe(){
 
-    //用户信息(节点收藏 主题收藏 特别关注)
-    val userProfiler: LiveData<Resource<ProfileModel>> = MutableLiveData()
+        LiveDataReactiveStreams.fromPublisher(Flowable.just(2))
+    }
+
 
 
 }

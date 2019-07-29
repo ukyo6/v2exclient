@@ -73,7 +73,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 登录
      */
-    fun login(username: String, password: String, verifyCode: String): LiveData<Resource<ProfileModel>> {
+    fun login(username: String, password: String, verifyCode: String): MutableLiveData<Resource<ProfileModel>> {
         val result = MutableLiveData<Resource<ProfileModel>>()
 
         val params = HashMap<String, String>()

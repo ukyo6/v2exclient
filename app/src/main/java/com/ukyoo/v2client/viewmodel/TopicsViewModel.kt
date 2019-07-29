@@ -17,7 +17,7 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Au
 
     private val param: MutableLiveData<Param> = MutableLiveData()
 
-    fun setTopicName(name: String) {
+    fun setNodeName(name: String) {
         param.value = Param("", name)
     }
 

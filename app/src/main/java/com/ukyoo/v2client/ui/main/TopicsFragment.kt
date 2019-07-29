@@ -90,7 +90,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         val tab = arguments?.getString(TAB_ID)
 
         if (nodeName != null) {
-            viewModel.setTopicName(nodeName)
+            viewModel.setNodeName(nodeName)
         } else if (tab != null) {
             viewModel.setNodeId(tab)
         }

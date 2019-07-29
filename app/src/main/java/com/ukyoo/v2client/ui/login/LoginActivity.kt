@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.ukyoo.v2client.R
@@ -10,6 +11,7 @@ import com.ukyoo.v2client.databinding.ActivityLoginBinding
 import com.ukyoo.v2client.event.LoginSuccessEvent
 import com.ukyoo.v2client.navigator.LoginNavigator
 import com.ukyoo.v2client.util.RxBus
+import com.ukyoo.v2client.util.setUpToast
 
 /**
  * 登录
@@ -25,11 +27,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginNavigator {
         //刷新验证码
         viewModel.refreshVerifyImg()
 
-        //登录成功获取个人信息 观察者
-        viewModel.userProfiler.observe(this@LoginActivity, Observer {
-            if (it.status == Status.SUCCESS && it?.data != null) {
-                finish()
-            }
+        //Toast 观察者
+        setUpToast(this@LoginActivity, viewModel.toastEvent)
+
+        //跳转个人信息页 观察者
+        viewModel.loginEvent.observe(this@LoginActivity, Observer {
+//            RxBus.default.post(it.data)
+            finish()
         })
     }
 
