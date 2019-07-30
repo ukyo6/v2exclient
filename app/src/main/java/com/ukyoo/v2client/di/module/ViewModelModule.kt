@@ -48,8 +48,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(PersonalViewModel::class)
-    abstract fun providePersonViewModel(viewModel: PersonalViewModel): ViewModel
+    @ViewModelKey(ProfilerViewModel::class)
+    abstract fun providePersonViewModel(viewModel: ProfilerViewModel): ViewModel
 
     @Binds
     @IntoMap

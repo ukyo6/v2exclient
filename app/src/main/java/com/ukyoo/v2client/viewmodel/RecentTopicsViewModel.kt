@@ -3,11 +3,13 @@ package com.ukyoo.v2client.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class RecentTopicsViewModel @Inject constructor(val repository: UserInfoRepository) : AutoDisposeViewModel() {
@@ -29,6 +31,11 @@ class RecentTopicsViewModel @Inject constructor(val repository: UserInfoReposito
         value.ifExists { userName, page ->
             repository.getUserTopics(userName, page)
         }
+    }
+
+    fun haha(){
+        Flowable.just(1)
+            .autoDisposable(this)
     }
 
     /**

@@ -16,7 +16,7 @@ import com.ukyoo.v2client.entity.ProfileModel
 @Database(entities = [NodeModel::class, ProfileModel::class], version = 3)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun nodeModelDao(): NodeModelDao
-    abstract fun profileModelDao(): ProfileModelDao
+    abstract fun profileModelDao(): ProfilerDao
 
     companion object {
         private val MIGRATION_2_3: Migration = object : Migration(2, 3) {

@@ -16,8 +16,6 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 
-
-
 fun <T> Flowable<T>.async(withDelay: Long = 0): Flowable<T> =
     this.subscribeOn(Schedulers.io()).delay(withDelay, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
 
@@ -29,9 +27,6 @@ fun <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> 
 
 fun <T> Flowable<T>.bindLifeCycle(owner: LifecycleOwner): FlowableSubscribeProxy<T> =
     this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
-
-fun <T> T.apply(f: T.() -> Unit): T { f(); return this }
-
 
 
 fun isNetworkConnected(): Boolean {
