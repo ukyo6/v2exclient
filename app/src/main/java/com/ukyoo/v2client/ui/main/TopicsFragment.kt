@@ -3,6 +3,8 @@ package com.ukyoo.v2client.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orhanobut.logger.Logger
@@ -17,6 +19,7 @@ import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
 import com.ukyoo.v2client.util.adapter.TopicListAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
+import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
 
 /**
  * 单个主题列表页  (技术/创意/好玩...)
@@ -57,6 +60,13 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         topicsAdapter = TopicListAdapter(R.layout.item_topic)
         mBinding.recyclerView.run {
             layoutManager = LinearLayoutManager(mContext)
+            addItemDecoration(
+                LinearLayoutDecoration(
+                    mContext, LinearLayout.VERTICAL,
+                    1, ContextCompat.getColor(mContext, R.color.divider_color)
+                )
+            )
+
             adapter = topicsAdapter
         }
 

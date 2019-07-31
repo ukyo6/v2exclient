@@ -45,12 +45,6 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
 
 
         })
-
-
-
-
-
-
     }
 
     override fun getLayoutId(): Int {
