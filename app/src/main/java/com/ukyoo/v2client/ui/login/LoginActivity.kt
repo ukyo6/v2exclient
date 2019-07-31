@@ -21,7 +21,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         //刷新验证码
         if (viewModel.verifyImgUrlLiveData.value == null) {
-            viewModel.refreshVerifyImg()
+            viewModel.clickRefreshVerifyImg()
         }
 
         mBinding.btnLogin.setOnClickListener {
@@ -44,10 +44,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun subscribeUi() {
+
+        mBinding.ivVerifycode.setOnClickListener {
+            viewModel.clickRefreshVerifyImg()
+        }
+
+        viewModel.verifyImgUrlLiveData.observe(this@LoginActivity, Observer {
+            //展示验证码
+        })
+
+
         //跳转个人信息页
         viewModel.loginResultLiveData.observe(this@LoginActivity, Observer {
             when (it.status) {
-                Status.LOADING -> println(1)
+                Status.LOADING -> {}
                 Status.ERROR -> ToastUtil.shortShow(it.message)
                 Status.EMPTY ->{}
                 Status.SUCCESS -> {

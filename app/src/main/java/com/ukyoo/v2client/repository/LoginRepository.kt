@@ -30,7 +30,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 从登录页面获取cookies
      */
-    fun getLoginData(): LiveData<Resource<String>> {
+    fun getVerifyUrl(): LiveData<Resource<String>> {
         val verifyUrl = MutableLiveData<Resource<String>>()
 
         //清除cookie

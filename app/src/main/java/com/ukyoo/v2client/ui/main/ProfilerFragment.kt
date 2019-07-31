@@ -57,7 +57,6 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
             startActivity(Intent(activity, LoginActivity::class.java))
         }
 
-        viewModel.getProfiler()
 
         subScribeUi()
     }

@@ -15,8 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.di.component.ActivityComponent
 import com.ukyoo.v2client.di.module.ActivityModule
-import com.ukyoo.v2client.util.dispatchFailure
-import com.ukyoo.v2client.util.toast
 import javax.inject.Inject
 
 

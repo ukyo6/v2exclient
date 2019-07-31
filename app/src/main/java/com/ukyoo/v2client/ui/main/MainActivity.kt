@@ -4,9 +4,9 @@ import android.os.Bundle
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityMainBinding
+import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import com.ukyoo.v2client.util.bindLifeCycle
-import com.ukyoo.v2client.util.toast
 import io.reactivex.Single
 
 
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onBackPressed() {
         if (!isQuit) {
-            toast(msg = "再按一次退出程序")
+            ToastUtil.shortShow("再按一次退出程序")
             isQuit = true
             //在两秒钟之后isQuit会变成false
             Single.just(isQuit)

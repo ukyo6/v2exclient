@@ -3,7 +3,10 @@ package com.ukyoo.v2client.ui.userinfo
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
@@ -24,15 +27,30 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
 
     private var mUsername: String = ""
 
-    //get viewModel by di
-    private val viewModel by lazy {
-        getInjectViewModel<UserInfoViewModel>()
-    }
+    private val viewModel by lazy { getInjectViewModel<UserInfoViewModel>() }
 
 
     override fun initView() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
+
+        setSupportActionBar(mBinding.toolbar)
+        supportActionBar?.run {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+
+
+        mBinding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
+
+
+        })
+
+
+
+
+
+
     }
 
     override fun getLayoutId(): Int {

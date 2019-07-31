@@ -1,10 +1,8 @@
 package com.ukyoo.v2client.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
-import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.repository.ProfilerRepository
@@ -14,7 +12,7 @@ import javax.inject.Inject
 class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepository) : AutoDisposeViewModel() {
 
 
-    val userProfilerLiveData = MutableLiveData<Resource<ProfileModel>>()
+    val userProfilerLiveData = repository.getUserProfiler()
 
     /**
      * 登录
@@ -23,9 +21,7 @@ class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepo
 
     }
 
-    fun getProfiler(){
-        userProfilerLiveData.value = repository.getUserProfiler().value
-    }
+
 
 
     /**

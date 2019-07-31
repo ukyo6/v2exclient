@@ -19,7 +19,7 @@
 		android:layout_height="match_parent">
 
 		<ImageView
-			app:blurBg="@{vm.profileModel.avatar}"
+			app:blurBg="@{vm.userProfilerLiveData.data.avatar}"
 			android:id="@+id/iv_blur_bg"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -32,7 +32,7 @@
 			app:layout_constraintTop_toTopOf="parent"
 			android:layout_marginStart="30dp"
 			android:layout_marginTop="30dp"
-			app:url="@{vm.profileModel.avatar}"
+			app:url="@{vm.userProfilerLiveData.data.avatar}"
 			android:id="@+id/iv_avatar"
 			android:layout_width="80dp"
 			android:layout_height="80dp"
@@ -40,7 +40,7 @@
 			tools:src="@drawable/user"/>
 
 		<TextView
-			android:text="@{vm.profileModel.username}"
+			android:text="@{vm.userProfilerLiveData.data.username}"
 			android:layout_marginStart="20dp"
 			app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
 			app:layout_constraintTop_toTopOf="@+id/iv_avatar"

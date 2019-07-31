@@ -89,6 +89,9 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
 
+        setSupportActionBar(mBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
         mEnterLayout.setDefaultHint("评论主题")
 //        mEnterLayout.hide()

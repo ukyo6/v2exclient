@@ -32,13 +32,12 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     //验证码
     private val _refreshVerifyEvent = MutableLiveData<Unit>()
 
-    fun refreshVerifyImg() {
+    fun clickRefreshVerifyImg() {
         _refreshVerifyEvent.value = Unit
     }
 
-    //验证码结果
     val verifyImgUrlLiveData: LiveData<Resource<String>> = Transformations.switchMap(_refreshVerifyEvent) {
-        repository.getLoginData()
+        repository.getVerifyUrl()
     }
 
     data class LoginParam(
