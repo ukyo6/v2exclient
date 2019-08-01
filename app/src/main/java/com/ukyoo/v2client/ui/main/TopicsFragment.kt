@@ -25,7 +25,6 @@ import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
  * 单个主题列表页  (技术/创意/好玩...)
  */
 class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
-    ToTopOrRefreshContract,
     ItemClickPresenter<TopicModel> {
 
 
@@ -123,17 +122,17 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
     /**
      * scrollToTop or refresh
      */
-    override fun toTopOrRefresh() {
-        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
-            val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
-            if (layoutManager.findLastVisibleItemPosition() > 5) {
-                mBinding.recyclerView.smoothScrollToPosition(0)
-            } else {
-                mBinding.recyclerView.smoothScrollToPosition(0)
-                loadData(true, null)
-            }
-        }
-    }
+//    override fun toTopOrRefresh() {
+//        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
+//            val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
+//            if (layoutManager.findLastVisibleItemPosition() > 5) {
+//                mBinding.recyclerView.smoothScrollToPosition(0)
+//            } else {
+//                mBinding.recyclerView.smoothScrollToPosition(0)
+//                loadData(true, null)
+//            }
+//        }
+//    }
 
     /**
      * 点击条目跳转详情页

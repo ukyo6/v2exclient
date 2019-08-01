@@ -28,10 +28,11 @@
 			<com.google.android.material.tabs.TabLayout
 				android:id="@+id/tab_layout"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:tabIndicatorColor="@color/colorAccent"
+				android:layout_height="48dp"
 				app:tabMode="scrollable"
-				app:tabPaddingStart="16dp"
+				app:tabPaddingStart="12dp"
+				app:tabIndicatorHeight="2dp"
+				app:tabTextAppearance="@style/TabLayoutTextStyle"
 				app:tabSelectedTextColor="@color/colorAccent"
 				app:tabTextColor="@color/colorAccentAlpha"/>
 

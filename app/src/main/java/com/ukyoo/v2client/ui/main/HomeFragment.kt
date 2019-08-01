@@ -69,12 +69,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(p0: TabLayout.Tab?) {
                     //refresh topicFragment
-                    val abstractPagerAdapter = viewpager.adapter as BaseViewPagerAdapter
-                    abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
-                        if (it is ToTopOrRefreshContract) {
-                            it.toTopOrRefresh()
-                        }
-                    }
+//                    val abstractPagerAdapter = viewpager.adapter as BaseViewPagerAdapter
+//                    abstractPagerAdapter.getItem(mBinding.viewpager.currentItem).let {
+//                        if (it is ToTopOrRefreshContract) {
+//                            it.toTopOrRefresh()
+//                        }
+//                    }
                 }
 
                 override fun onTabUnselected(p0: TabLayout.Tab?) {

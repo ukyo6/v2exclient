@@ -19,11 +19,13 @@
 	<!--android:onClick="@{(v)->presenter.onItemClick(v,item)}"-->
 
 	<androidx.constraintlayout.widget.ConstraintLayout
-		android:padding="10dp"
+		android:padding="16dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
 		<TextView
+			android:alpha="0.87"
+			android:textColor="@color/colorBlack"
 			tools:text="123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -32,11 +34,11 @@
 			android:id="@+id/title"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:textColor="@color/colorBlack"
-			android:textSize="14sp"/>
+			android:textSize="@dimen/textsize_subhead"/>
 
 		<TextView
-			android:textColor="@color/gray"
+			android:textColor="@color/colorBlack"
+			android:alpha="0.87"
 			android:layout_marginTop="10dp"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toBottomOf="@+id/title"
@@ -46,14 +48,14 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
 			tools:text="2010年1月1日"
-			android:textSize="14sp"/>
+			android:textSize="@dimen/textsize_body"/>
 
 
 		<TextView
 			android:textColor="@color/gray"
 			android:paddingLeft="5dp"
 			android:paddingRight="5dp"
-			android:layout_marginStart="10dp"
+			android:layout_marginStart="16dp"
 			app:layout_constraintTop_toTopOf="@+id/tv_time"
 			app:layout_constraintStart_toEndOf="@+id/tv_time"
 			android:text="@{item.node.title}"
@@ -63,7 +65,8 @@
 			android:layout_below="@+id/title"
 			android:background="#e5e5e5"
 			tools:text="V2ex"
-			android:textSize="14sp"/>
+			android:alpha="0.54"
+			android:textSize="@dimen/textsize_body"/>
 
 		<ImageView
 			android:src="@drawable/comments_icon"
@@ -80,8 +83,8 @@
 			android:text="@{String.valueOf(item.replies)}"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintBottom_toBottomOf="parent"
-			android:textSize="14sp"
-			android:textColor="@color/gray"
+			android:alpha="0.87"
+			android:textSize="@dimen/textsize_body"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 
