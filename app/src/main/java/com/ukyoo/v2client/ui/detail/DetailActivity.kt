@@ -2,13 +2,15 @@ package com.ukyoo.v2client.ui.detail
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.uber.autodispose.AutoDispose.autoDisposable
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
@@ -21,8 +23,8 @@ import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
 import com.ukyoo.v2client.widget.EnterLayout
-import io.reactivex.Flowable
-import java.util.ArrayList
+import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
+import java.util.*
 
 /**
  *  详情页
@@ -51,7 +53,18 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         mTopicId.let { outState?.putInt("topic_id", it) }
     }
 
-    var isJsonApi: Boolean = false
+
+    override fun initView() {
+        getComponent().inject(this)
+        mBinding.setVariable(BR.vm, viewModel)
+
+        setSupportActionBar(mBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
+        mEnterLayout.setDefaultHint("评论主题")
+//        mEnterLayout.hide()
+    }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         //设置topicId
@@ -60,8 +73,28 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             viewModel.setTopicId(mTopicId)
         }
 
+        //重试的回调
+        mBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.retry()
+            }
+        }
+
         val mDetailAdapter = DetailAdapter(emptyList())
-        viewModel.topicAndReplies.observe(this@DetailActivity, Observer { resource ->//观察者
+        //回复列表
+        mBinding.recyclerview.run {
+            layoutManager = LinearLayoutManager(mContext)
+            adapter = mDetailAdapter
+            addItemDecoration(
+                LinearLayoutDecoration(
+                    mContext, LinearLayout.VERTICAL,
+                    1, ContextCompat.getColor(mContext, R.color.divider_color)
+                )
+            )
+        }
+
+        //观察列表数据
+        viewModel.topicAndReplies.observe(this@DetailActivity, Observer { resource ->
 
             if(resource.data == null){
                 mDetailAdapter.setNewData(emptyList())
@@ -74,36 +107,12 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
                 mDetailAdapter.setNewData(list)
             }
         })
-
-        //回复列表
-        mBinding.recyclerview.run {
-            layoutManager = LinearLayoutManager(mContext)
-            adapter = mDetailAdapter
-        }
     }
 
 
     private lateinit var mEnterLayout: EnterLayout
 
-    override fun initView() {
-        getComponent().inject(this)
-        mBinding.setVariable(BR.vm, viewModel)
 
-        setSupportActionBar(mBinding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
-        mEnterLayout.setDefaultHint("评论主题")
-//        mEnterLayout.hide()
-
-
-        //重试的回调
-        mBinding.retryCallback = object : RetryCallback {
-            override fun retry() {
-                viewModel.retry()
-            }
-        }
-    }
 
     private var onClickSend: View.OnClickListener = View.OnClickListener {
         val content = mEnterLayout.getContent()

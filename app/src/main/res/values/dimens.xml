@@ -4,4 +4,11 @@
 	<dimen name="text_margin">16dp</dimen>
 	<dimen name="default_margin">8dp</dimen>
 
+
+	<dimen name="textsize_caption">13sp</dimen>
+	<dimen name="textsize_body">15sp</dimen>
+	<dimen name="textsize_subhead">17sp</dimen>
+	<dimen name="textsize_headline">24sp</dimen>
+	<dimen name="textsize_button">15sp</dimen>
+
 </resources>

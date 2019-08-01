@@ -22,82 +22,72 @@
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:onClick="@{(v) -> presenter.onItemClick(v,item)}"
-		android:layout_marginTop="8dp"
-		android:paddingLeft="16dp"
-		android:paddingRight="16dp"
+		android:padding="16dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
 		<com.ukyoo.v2client.widget.CircleImageView
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
 			app:url="@{item.member.avatar}"
 			android:id="@+id/iv_avatar"
-			android:layout_width="36dp"
-			android:layout_height="36dp"
+			android:layout_width="40dp"
+			android:layout_height="40dp"
 			android:scaleType="centerCrop"
 			tools:src="@drawable/user"/>
 
 		<TextView
+			android:layout_marginStart="16dp"
+			app:layout_constraintTop_toTopOf="parent"
 			android:text="@{item.member.username}"
 			android:id="@+id/replier"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
-			tools:text="author"
-			android:textColor="#3bbd79"
-			android:textSize="12sp"
-			app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-			android:layout_marginStart="8dp"/>
+			tools:text="小明"
+			android:alpha="0.87"
+			android:textColor="@color/colorBlack"
+			android:textSize="@dimen/textsize_body"
+			app:layout_constraintStart_toEndOf="@+id/iv_avatar"/>
 
 		<TextView
 			android:text="@{item.created}"
+			app:layout_goneMarginStart="16dp"
 			android:id="@+id/time"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
 			tools:text="1分钟前"
-			android:textColor="#aaa"
-			android:textSize="12sp"
+			android:textColor="@color/colorBlack"
+			android:alpha="0.54"
+			android:textSize="@dimen/textsize_caption"
 			app:layout_constraintStart_toEndOf="@+id/replier"
+			app:layout_constraintBottom_toBottomOf="@+id/replier"
 			android:layout_marginStart="8dp"/>
 
 		<TextView
+			app:layout_constraintTop_toTopOf="parent"
 			android:text="@{@string/which_floor(index)}"
 			android:id="@+id/which_floor"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
 			tools:text="第1楼"
-			android:textColor="#aaa"
-			android:textSize="12sp"
+			android:alpha="0.54"
+			android:textColor="@color/colorBlack"
+			android:textSize="@dimen/textsize_caption"
 			app:layout_constraintEnd_toEndOf="parent"/>
 
 		<com.ukyoo.v2client.widget.RichTextView
 			tools:text="内容"
 			app:richTexts="@{item.contentRendered}"
 			android:id="@+id/content"
+			android:textColor="@color/colorBlack"
+			android:textSize="@dimen/textsize_body"
+			android:alpha="0.87"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:gravity="start"
+			android:layout_marginTop="5dp"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toBottomOf="@+id/replier"
 			app:layout_constraintStart_toStartOf="@+id/replier"/>
-
-		<CheckBox
-			android:id="@+id/commentBtn"
-			android:layout_width="50dp"
-			android:layout_height="22dp"
-			android:layout_alignParentEnd="true"
-			android:button="@drawable/checkbox_comment"
-			app:layout_constraintTop_toBottomOf="@+id/content"
-			android:layout_marginTop="8dp"
-			app:layout_constraintEnd_toEndOf="parent"/>
-
-		<View
-			style="@style/divider_line"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 

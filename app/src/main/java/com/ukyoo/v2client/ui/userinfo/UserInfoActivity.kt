@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
@@ -19,11 +20,16 @@ import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.BaseViewPagerAdapter
 import com.ukyoo.v2client.viewmodel.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlin.math.abs
 
 /**
  *  用户信息界面
  */
-class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> {
+class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> ,AppBarLayout.OnOffsetChangedListener{
+    override fun onOffsetChanged(p0: AppBarLayout?, verticalOffset: Int) {
+        val offsetPercent = abs(verticalOffset * 1.0f) / mBinding.appBar.totalScrollRange
+        mBinding.toolbar.alpha = offsetPercent
+    }
 
     private var mUsername: String = ""
 
@@ -37,15 +43,17 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
-            setDisplayShowTitleEnabled(false)
         }
 
-
-        mBinding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
-
-
-        })
+        mBinding.appBar.addOnOffsetChangedListener(this)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mBinding.appBar.removeOnOffsetChangedListener(this)
+    }
+
 
     override fun getLayoutId(): Int {
         return R.layout.activity_userinfo

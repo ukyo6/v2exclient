@@ -42,6 +42,8 @@ public class RichTextView extends AppCompatTextView {
 //            return;
 //        }
 
+
+
         Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this), null);
         SpannableStringBuilder htmlSpannable;
         if (spanned instanceof SpannableStringBuilder) {
@@ -51,8 +53,8 @@ public class RichTextView extends AppCompatTextView {
         }
 
         ImageSpan[] spans = htmlSpannable.getSpans(0, htmlSpannable.length(), ImageSpan.class);
-        final ArrayList<String> imageUrls = new ArrayList<String>();
-        final ArrayList<String> imagePositions = new ArrayList<String>();
+        final ArrayList<String> imageUrls = new ArrayList<>();
+        final ArrayList<String> imagePositions = new ArrayList<>();
         for (ImageSpan span : spans) {
             final String imageUrl = span.getSource();
             final int start = htmlSpannable.getSpanStart(span);

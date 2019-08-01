@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.google.android.material.math.MathUtils
 import com.orhanobut.logger.Logger
 import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
@@ -61,10 +62,6 @@ class DetailViewModel @Inject constructor(
      * 获取回复需要的ONCE
      */
     fun getReplyOnce(topicId: Int) {
-
-        Flowable.just(1)
-
-
 
         htmlService.getReplyOnce(topicId)
             .async()
