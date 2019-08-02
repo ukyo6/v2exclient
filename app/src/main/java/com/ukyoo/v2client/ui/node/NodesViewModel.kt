@@ -2,6 +2,7 @@ package com.ukyoo.v2client.ui.node
 
 import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
+import androidx.lifecycle.MutableLiveData
 import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.api.JsonService
@@ -10,7 +11,6 @@ import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NodesViewModel @Inject constructor(private var apiService: JsonService) : AutoDisposeViewModel() {
@@ -19,6 +19,9 @@ class NodesViewModel @Inject constructor(private var apiService: JsonService) : 
     lateinit var nodeModelDao: NodeModelDao
 
     var nodesList = ObservableArrayList<NodeModel>()
+
+
+    val nodesListLiveData =  MutableLiveData<ArrayList<NodeModel>>()
 
     //网络请求数据 保存到db
     fun loadData() {
@@ -57,15 +60,15 @@ class NodesViewModel @Inject constructor(private var apiService: JsonService) : 
         }
 
         //根据条件查询
-        nodeModelDao
-            .queryNodesByName("%$name%")
-            .async()
-            .throttleFirst(100,TimeUnit.MILLISECONDS) //限制一下搜索的频率
-            .subscribe({
-                nodesList.clear()
-                nodesList.addAll(it)
-            }, {
-                ToastUtil.shortShow("查询失败")
-            })
+//        nodeModelDao
+//            .queryNodesByName("%$name%")
+//            .async()
+//            .throttleFirst(100,TimeUnit.MILLISECONDS) //限制一下搜索的频率
+//            .subscribe({
+//                nodesList.clear()
+//                nodesList.addAll(it)
+//            }, {
+//                ToastUtil.shortShow("查询失败")
+//            })
     }
 }

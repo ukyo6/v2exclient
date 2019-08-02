@@ -6,6 +6,7 @@ import android.os.Parcelable
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
@@ -56,6 +57,14 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
         viewModel.loadData()
+
+        subscribeUi()
+    }
+
+    private fun subscribeUi() {
+        viewModel.nodesListLiveData.observe(this@NodesFragment, Observer {
+
+        })
     }
 
 

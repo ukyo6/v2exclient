@@ -51,8 +51,6 @@
 			app:layout_constraintStart_toEndOf="@+id/iv_avatar"/>
 
 		<TextView
-			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="16dp"
 			android:text="@{item.created}"
 			android:id="@+id/time"
 			android:layout_width="wrap_content"
@@ -60,13 +58,12 @@
 			tools:text="1分钟前"
 			android:textColor="@color/black_54"
 			android:textSize="@dimen/textsize_caption"
-			app:layout_constraintBottom_toBottomOf="@+id/replier"
-			android:layout_marginStart="16dp"/>
+			android:layout_marginStart="16dp"
+			app:layout_constraintStart_toEndOf="@+id/which_floor"
+			app:layout_constraintTop_toTopOf="@+id/which_floor"/>
 
 		<TextView
-			app:layout_constraintStart_toEndOf="@+id/replier"
-			app:layout_constraintBottom_toBottomOf="@+id/replier"
-			android:layout_marginStart="16dp"
+			android:layout_marginTop="5dp"
 			android:text="@{@string/which_floor(index)}"
 			android:id="@+id/which_floor"
 			android:layout_width="wrap_content"
@@ -74,7 +71,8 @@
 			tools:text="第1楼"
 			android:textColor="@color/black_54"
 			android:textSize="@dimen/textsize_caption"
-			/>
+			app:layout_constraintTop_toBottomOf="@+id/replier"
+			app:layout_constraintStart_toStartOf="@+id/replier"/>
 
 		<com.ukyoo.v2client.widget.RichTextView
 			tools:text="内容"
@@ -87,8 +85,8 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="5dp"
-			app:layout_constraintEnd_toEndOf="@+id/time"
-			app:layout_constraintTop_toBottomOf="@+id/replier"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/which_floor"
 			app:layout_constraintStart_toStartOf="@+id/replier"/>
 
 		<View
