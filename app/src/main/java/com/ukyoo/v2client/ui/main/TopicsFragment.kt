@@ -60,13 +60,6 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
         topicsAdapter = TopicListAdapter(R.layout.item_topic)
         mBinding.recyclerView.run {
             layoutManager = LinearLayoutManager(mContext)
-            addItemDecoration(
-                LinearLayoutDecoration(
-                    mContext, LinearLayout.VERTICAL,
-                    SizeUtils.dp2px(mContext,1f), ContextCompat.getColor(mContext, R.color.black_12)
-                )
-            )
-
             adapter = topicsAdapter
         }
 

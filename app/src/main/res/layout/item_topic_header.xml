@@ -17,28 +17,29 @@
 
 
 	<androidx.constraintlayout.widget.ConstraintLayout
-		android:padding="16dp"
+		android:paddingTop="16dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
 
 		<TextView
+			android:layout_marginStart="16dp"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			android:text="@{item.title}"
 			android:id="@+id/text_title"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			tools:text="@string/topic"
 			android:textColor="@color/black_87"
-			android:alpha="0.87"
 			android:textSize="@dimen/textsize_headline"/>
 
 
 		<com.ukyoo.v2client.widget.CircleImageView
 			android:layout_marginTop="16dp"
 			app:layout_constraintTop_toBottomOf="@+id/text_title"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintStart_toStartOf="@+id/text_title"
 			app:url="@{item.member.avatar}"
 			android:id="@+id/iv_avatar"
 			android:layout_width="40dp"
@@ -46,19 +47,8 @@
 			android:scaleType="centerCrop"
 			tools:src="@drawable/user"/>
 
-
 		<TextView
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="@+id/iv_avatar"
-			android:text="@{item.node.title}"
-			android:id="@+id/text_node"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="@dimen/textsize_body"
-			tools:text="Python"/>
-
-
-		<TextView
+			android:fontFamily="sans-serif-medium"
 			android:layout_marginStart="16dp"
 			app:layout_constraintStart_toEndOf="@+id/iv_avatar"
 			app:layout_constraintTop_toTopOf="@+id/iv_avatar"
@@ -67,16 +57,15 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			tools:text="author"
-			android:alpha="0.87"
 			android:textColor="@color/black_87"
 			android:textSize="@dimen/textsize_subhead"/>
 
 
 		<TextView
 			android:layout_marginStart="16dp"
-			app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-			app:layout_constraintTop_toBottomOf="@+id/text_author"
-			android:layout_marginTop="5dp"
+			app:layout_constraintStart_toEndOf="@+id/text_author"
+			app:layout_constraintBottom_toBottomOf="@+id/text_author"
+			app:layout_goneMarginStart="16dp"
 			android:text="@{item.created}"
 			android:id="@+id/text_timeline"
 			android:layout_width="wrap_content"
@@ -89,9 +78,9 @@
 
 
 		<TextView
-			android:layout_marginStart="16dp"
-			app:layout_constraintStart_toEndOf="@+id/text_timeline"
-			app:layout_constraintTop_toTopOf="@+id/text_timeline"
+			android:layout_marginTop="5dp"
+			app:layout_constraintTop_toBottomOf="@+id/text_author"
+			app:layout_constraintStart_toStartOf="@+id/text_author"
 			android:text="@{@string/item_node_reply_num(item.replies)}"
 			android:id="@+id/text_replies"
 			android:layout_width="wrap_content"
@@ -107,13 +96,23 @@
 			app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
 			app:richTexts="@{item.contentRendered}"
 			android:id="@+id/text_content"
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:alpha="0.87"
 			android:textSize="@dimen/textsize_body"
 			android:textColor="@color/black_87"
 			android:lineSpacingMultiplier="1.25"
-			tools:text="帖子内容"/>
+			tools:text="帖子内容"
+			app:layout_constraintStart_toStartOf="@+id/text_title"
+			app:layout_constraintEnd_toEndOf="@+id/text_title"/>
+
+
+		<View
+			android:layout_marginTop="16dp"
+			android:layout_width="0dp"
+			app:layout_constraintTop_toBottomOf="@+id/text_content"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			style="@style/divider_line"/>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 

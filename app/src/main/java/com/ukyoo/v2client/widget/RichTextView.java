@@ -42,9 +42,8 @@ public class RichTextView extends AppCompatTextView {
 //            return;
 //        }
 
-
-
         Spanned spanned = Html.fromHtml(text, new AsyncImageGetter(getContext(), this), null);
+
         SpannableStringBuilder htmlSpannable;
         if (spanned instanceof SpannableStringBuilder) {
             htmlSpannable = (SpannableStringBuilder) spanned;

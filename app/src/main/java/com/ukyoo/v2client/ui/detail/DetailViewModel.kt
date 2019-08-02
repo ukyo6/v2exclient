@@ -30,7 +30,7 @@ class DetailViewModel @Inject constructor(
     var replyContent = ObservableField<String>()  //回复内容
 
     //topicId
-    private val _topicId: MutableLiveData<Int> = MutableLiveData()
+    private val _topicId = MutableLiveData<Int>()
 
     fun setTopicId(topicId: Int) {
         if (_topicId.value == topicId) {

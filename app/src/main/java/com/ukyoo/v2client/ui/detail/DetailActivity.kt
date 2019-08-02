@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -17,6 +18,7 @@ import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
+import com.ukyoo.v2client.entity.TopicInfo
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.InputUtils
@@ -86,12 +88,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = mDetailAdapter
-            addItemDecoration(
-                LinearLayoutDecoration(
-                    mContext, LinearLayout.VERTICAL,
-                    SizeUtils.dp2px(mContext,1f), ContextCompat.getColor(mContext, R.color.black_12)
-                )
-            )
         }
 
         //观察列表数据
@@ -102,9 +98,12 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             } else {
                 val topicInfo = resource.data.topicInfo
                 val replies = resource.data.replies
-                val list = ArrayList<MultiItemEntity>()
-                list.add(topicInfo as MultiItemEntity)
-                list.addAll(replies as List<MultiItemEntity>)
+                mBinding.toolbar.title = topicInfo?.node?.title //title
+
+                val list = ArrayList<MultiItemEntity>().apply {
+                    add(topicInfo as MultiItemEntity)
+                    addAll(replies as List<MultiItemEntity>)
+                }
                 mDetailAdapter.setNewData(list)
             }
         })
