@@ -70,7 +70,7 @@
 						app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
 						app:layout_constraintLeft_toLeftOf="@+id/iv_avatar"
 						tools:text="小白"
-						android:textColor="@color/colorBlack"
+						android:textColor="@color/black_87"
 						android:textSize="25sp"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
 					<TextView
 						android:drawableStart="@drawable/date"
 						android:text="@{vm.userInfo.getRegisterTimeAndNum()}"
-						android:textColor="@color/colorBlack"
+						android:textColor="@color/black_87"
 						android:maxLines="2"
 						app:layout_constraintLeft_toLeftOf="@+id/tv_username"
 						app:layout_constraintTop_toBottomOf="@+id/tv_username"

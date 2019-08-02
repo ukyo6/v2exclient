@@ -25,7 +25,7 @@
 
 		<TextView
 			android:alpha="0.87"
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_87"
 			tools:text="123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
 			android:textSize="@dimen/textsize_subhead"/>
 
 		<TextView
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_87"
 			android:alpha="0.87"
 			android:layout_marginTop="10dp"
 			app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,6 @@
 
 
 		<TextView
-			android:textColor="@color/gray"
 			android:paddingLeft="5dp"
 			android:paddingRight="5dp"
 			android:layout_marginStart="16dp"
@@ -65,7 +64,7 @@
 			android:layout_below="@+id/title"
 			android:background="#e5e5e5"
 			tools:text="V2ex"
-			android:alpha="0.54"
+			android:textColor="@color/black_54"
 			android:textSize="@dimen/textsize_body"/>
 
 		<ImageView

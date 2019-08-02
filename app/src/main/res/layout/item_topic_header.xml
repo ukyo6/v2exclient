@@ -30,7 +30,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			tools:text="@string/topic"
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_87"
 			android:alpha="0.87"
 			android:textSize="@dimen/textsize_headline"/>
 
@@ -68,7 +68,7 @@
 			android:layout_height="wrap_content"
 			tools:text="author"
 			android:alpha="0.87"
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_87"
 			android:textSize="@dimen/textsize_subhead"/>
 
 
@@ -84,8 +84,7 @@
 			android:layout_alignBottom="@+id/iv_avatar"
 			android:layout_toEndOf="@id/iv_avatar"
 			tools:text="一分钟前"
-			android:alpha="0.54"
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_54"
 			android:textSize="@dimen/textsize_caption"/>
 
 
@@ -100,8 +99,7 @@
 			android:layout_alignTop="@+id/text_timeline"
 			android:layout_toEndOf="@+id/text_timeline"
 			tools:text="1个回复"
-			android:alpha="0.54"
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_54"
 			android:textSize="@dimen/textsize_caption"/>
 
 		<com.ukyoo.v2client.widget.RichTextView
@@ -113,7 +111,7 @@
 			android:layout_height="wrap_content"
 			android:alpha="0.87"
 			android:textSize="@dimen/textsize_body"
-			android:textColor="@color/colorBlack"
+			android:textColor="@color/black_87"
 			android:lineSpacingMultiplier="1.25"
 			tools:text="帖子内容"/>
 

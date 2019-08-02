@@ -17,6 +17,7 @@ import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
+import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.adapter.TopicListAdapter
 import com.ukyoo.v2client.viewmodel.TopicsViewModel
 import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
@@ -62,7 +63,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>(),
             addItemDecoration(
                 LinearLayoutDecoration(
                     mContext, LinearLayout.VERTICAL,
-                    1, ContextCompat.getColor(mContext, R.color.divider_color)
+                    SizeUtils.dp2px(mContext,1f), ContextCompat.getColor(mContext, R.color.black_12)
                 )
             )
 

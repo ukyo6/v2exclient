@@ -20,6 +20,7 @@ import com.ukyoo.v2client.databinding.ActivityDetailBinding
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.InputUtils
+import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
 import com.ukyoo.v2client.widget.EnterLayout
@@ -88,7 +89,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             addItemDecoration(
                 LinearLayoutDecoration(
                     mContext, LinearLayout.VERTICAL,
-                    1, ContextCompat.getColor(mContext, R.color.divider_color)
+                    SizeUtils.dp2px(mContext,1f), ContextCompat.getColor(mContext, R.color.black_12)
                 )
             )
         }
@@ -96,7 +97,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         //观察列表数据
         viewModel.topicAndReplies.observe(this@DetailActivity, Observer { resource ->
 
-            if(resource.data == null){
+            if(resource?.data == null){
                 mDetailAdapter.setNewData(emptyList())
             } else {
                 val topicInfo = resource.data.topicInfo

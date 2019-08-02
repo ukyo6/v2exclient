@@ -25,11 +25,7 @@ import kotlin.math.abs
 /**
  *  用户信息界面
  */
-class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> ,AppBarLayout.OnOffsetChangedListener{
-    override fun onOffsetChanged(p0: AppBarLayout?, verticalOffset: Int) {
-        val offsetPercent = abs(verticalOffset * 1.0f) / mBinding.appBar.totalScrollRange
-        mBinding.toolbar.alpha = offsetPercent
-    }
+class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> {
 
     private var mUsername: String = ""
 
@@ -44,14 +40,6 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
         }
-
-        mBinding.appBar.addOnOffsetChangedListener(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        mBinding.appBar.removeOnOffsetChangedListener(this)
     }
 
 

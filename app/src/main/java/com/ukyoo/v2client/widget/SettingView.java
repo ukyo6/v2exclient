@@ -43,7 +43,7 @@ public class SettingView extends RelativeLayout {
         int iv_right = mTypedArray.getResourceId(R.styleable.SettingViews_img_right, R.drawable.more);
         boolean rightVisible = mTypedArray.getBoolean(R.styleable.SettingViews_right_visible, true);
         boolean leftVisible = mTypedArray.getBoolean(R.styleable.SettingViews_left_visible, true);
-        int textColor = mTypedArray.getColor(R.styleable.SettingViews_text_color1, ContextCompat.getColor(context, R.color.colorBlack));
+        int textColor = mTypedArray.getColor(R.styleable.SettingViews_text_color1, ContextCompat.getColor(context, R.color.black_87));
         float textSize = mTypedArray.getDimension(R.styleable.SettingViews_text_size1, SizeUtils.sp2px(context, 15));
 
         initView(context);

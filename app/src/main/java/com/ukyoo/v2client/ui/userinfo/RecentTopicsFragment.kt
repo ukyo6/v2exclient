@@ -46,7 +46,7 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
             addItemDecoration(
                 LinearLayoutDecoration(
                     mContext, LinearLayout.VERTICAL,
-                    1, ContextCompat.getColor(mContext, R.color.divider_color)
+                    SizeUtils.dp2px(mContext,1f), ContextCompat.getColor(mContext, R.color.black_12)
                 )
             )
         }
