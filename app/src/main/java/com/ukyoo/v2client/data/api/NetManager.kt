@@ -160,7 +160,7 @@ object NetManager {
 
     private fun getHttpClient2(): OkHttpClient {
         return OkHttpClient.Builder()
-            .followRedirects(false)  //禁制OkHttp的重定向操作，我们自己处理重定向
+            .followRedirects(false)  //禁止OkHttp的重定向操作，我们自己处理重定向
             .followSslRedirects(false)
             .cookieJar(persistentCookieJar)   //为OkHttp设置自动携带Cookie的功能
             .connectTimeout(10, TimeUnit.SECONDS)

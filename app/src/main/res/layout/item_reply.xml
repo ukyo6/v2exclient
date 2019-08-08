@@ -21,13 +21,14 @@
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
+		android:paddingEnd="16dp"
+		android:paddingStart="16dp"
 		android:onClick="@{(v) -> presenter.onItemClick(v,item)}"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
 		<com.ukyoo.v2client.widget.CircleImageView
 			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginStart="16dp"
 			android:layout_marginTop="16dp"
 			app:layout_constraintStart_toStartOf="parent"
 			app:url="@{item.member.avatar}"
