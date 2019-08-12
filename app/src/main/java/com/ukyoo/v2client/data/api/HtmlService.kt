@@ -45,13 +45,13 @@ interface HtmlService {
 
     //获取回复需要的参数
     @GET("t/{topicId}")
-    fun getReplyOnce(@Path("topicId") topicId: Int): Single<String>
+    fun getReplyOnce(@Path("topicId") topicId: Int?): Flowable<String>
 
     //回复
     @Headers("Origin: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")
     @FormUrlEncoded
     @POST("t/{topicId}")
-    fun reply(@Header("Referer") refer:String, @Path("topicId") topicId: Int, @Field("content") content: String, @Field("once") once: String): Single<String>
+    fun reply(@Header("Referer") refer:String, @Path("topicId") topicId: Int?, @Field("content") content: String?, @Field("once") once: String): Flowable<String>
 
 
 }

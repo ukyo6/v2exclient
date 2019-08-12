@@ -18,7 +18,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     @Inject
     lateinit var manager: FragmentManager
 
-    override fun initView() {
+    private fun initView() {
         //inject
         getComponent().inject(this)
         //初始化viewpager
@@ -55,13 +55,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         mBinding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_home -> {
-                    mBinding.viewpager.setCurrentItem(0, false)
+                    mBinding.viewpager.currentItem = 0
                 }
                 R.id.nav_repos -> {
-                    mBinding.viewpager.setCurrentItem(1, false)
+                    mBinding.viewpager.currentItem = 1
                 }
                 R.id.nav_profile -> {
-                    mBinding.viewpager.setCurrentItem(2, false)
+                    mBinding.viewpager.currentItem = 2
                 }
             }
             true
@@ -69,8 +69,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-
-
+        initView()
     }
 
     override fun getLayoutId(): Int {

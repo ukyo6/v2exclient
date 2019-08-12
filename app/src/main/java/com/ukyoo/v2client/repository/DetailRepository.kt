@@ -1,8 +1,10 @@
 package com.ukyoo.v2client.repository
 
+import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
@@ -10,11 +12,13 @@ import com.ukyoo.v2client.data.entity.*
 import com.ukyoo.v2client.entity.*
 import com.ukyoo.v2client.util.ContentUtils
 import com.ukyoo.v2client.util.ErrorHanding
+import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import retrofit2.HttpException
 import java.util.ArrayList
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -26,9 +30,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class DetailRepository @Inject constructor(
-    @Named("non_cached")
-    var htmlService: HtmlService,
-    var jsonService: JsonService
+    @Named("non_cached") private val htmlService: HtmlService,
+    @Named("cached") private val htmlService2: HtmlService,
+    private val jsonService: JsonService
 ) {
 
     var replyList = ObservableArrayList<ReplyModel>()
@@ -93,7 +97,7 @@ class DetailRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading(null)
+                result.value = Resource.loading()
             }
             .subscribe({ data ->
                 result.value = Resource.success(data)
@@ -284,6 +288,30 @@ class DetailRepository @Inject constructor(
         topic.member = userInfo
         topic.node = nodeInfo
         return topic
+    }
+
+    /**
+     * 获取回复需要的ONCE
+     */
+    fun reply(topicId: Int?, replyContents: String?): Flowable<String> {
+        return htmlService2.getReplyOnce(topicId)
+            .flatMap { content ->
+                val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
+                val matcher = pattern.matcher(content)
+                if (matcher.find()) {
+                    val once = matcher.group(1)
+                    //回复
+                    if (TextUtils.isEmpty(replyContents)) {
+                        return@flatMap Flowable.error<String>(IllegalStateException("回复内容不得为空"))
+                    }
+
+                    val url = "https://www.v2ex.com/t/$topicId"
+                    return@flatMap htmlService2.reply(url, topicId, replyContents, once)
+
+                } else {
+                    Flowable.error<String>(IllegalStateException("请登录"))
+                }
+            }
     }
 }
 

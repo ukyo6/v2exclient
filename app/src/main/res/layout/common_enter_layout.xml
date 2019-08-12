@@ -31,7 +31,7 @@
 			<EditText
 				android:background="@color/white"
 				android:layout_marginStart="20dp"
-				android:hint="评论主题"
+				android:hint="@string/make_comment"
 				android:text="@={replyContent}"
 				android:id="@+id/comment"
 				android:width="0dp"

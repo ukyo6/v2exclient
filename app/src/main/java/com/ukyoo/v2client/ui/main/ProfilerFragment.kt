@@ -39,24 +39,24 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
     }
 
 
-    override fun initView() {
+    private fun initView() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
+
+        //跳转登录页
+        mBinding.ivAvatar.setOnClickListener {
+            startActivity(Intent(activity, LoginActivity::class.java))
+        }
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-
+        initView()
         //登录后返回
         RxBus.toFlowable(ProfileModel::class.java)
             .bindLifeCycle(this)
             .subscribe {
-                //                viewModel.setUserProfiler(it.model)
+                viewModel.setUserProfiler(it)
             }
-
-        mBinding.ivAvatar.setOnClickListener {
-            startActivity(Intent(activity, LoginActivity::class.java))
-        }
-
 
         subScribeUi()
     }
@@ -73,23 +73,15 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
                 Status.ERROR -> {
                     ToastUtil.shortShow(it.message)
                 }
-                Status.EMPTY -> {
-                    mBinding.ivAvatar.setOnClickListener {
-                        startActivity(Intent(activity, LoginActivity::class.java))
-                    }
-                }
             }
         })
+
+        mBinding.ivAvatar.setOnClickListener {
+            startActivity(Intent(activity, LoginActivity::class.java))
+        }
     }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_personal
     }
-
-
-    //退出登录
-    fun signOut() {
-        NetManager.clearCookie()
-    }
-
 }

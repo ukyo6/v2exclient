@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto">
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -14,16 +15,27 @@
 			name="presenter"
 			type="com.ukyoo.v2client.base.Presenter"/>
 
+		<variable
+			name="retryCallback"
+			type="com.ukyoo.v2client.inter.RetryCallback"/>
+
+		<import type="com.ukyoo.v2client.data.Resource"/>
+
+		<import type="androidx.lifecycle.LiveData"/>
+
 	</data>
 
 
-	<LinearLayout
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
 
 		<androidx.appcompat.widget.Toolbar
+			android:elevation="3dp"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
@@ -35,11 +47,28 @@
 
 
 		<androidx.recyclerview.widget.RecyclerView
+			tools:listitem="@layout/item_node"
+			app:layout_constraintTop_toBottomOf="@id/toolbar"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			android:id="@+id/recyclerview"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"/>
+			android:layout_width="0dp"
+			android:layout_height="0dp"/>
 
 
-	</LinearLayout>
+		<include
+			layout="@layout/loading_state"
+			app:resource="@{(Resource) vm.nodesLiveData}"
+			app:callback="@{() -> retryCallback.retry()}"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
+
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

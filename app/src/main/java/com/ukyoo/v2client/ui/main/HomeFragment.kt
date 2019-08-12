@@ -17,9 +17,7 @@ import javax.inject.Inject
  *  首页, 包含最新,最热节点
  */
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    override fun isLazyLoad(): Boolean {
-        return true
-    }
+    override fun isLazyLoad() = true
 
     @Inject
     lateinit var manager: FragmentManager
@@ -32,11 +30,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private val viewModel: HomeViewModel by lazy {
-        getInjectViewModel<HomeViewModel>()
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_home
     }
 
-    override fun initView() {
+    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+
         //inject
         getComponent().inject(this)
         //set viewpager and tablayout
@@ -84,12 +83,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             })
         }
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_home
-    }
-
-    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
     }
 }

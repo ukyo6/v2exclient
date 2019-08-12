@@ -20,7 +20,7 @@ class ProfilerRepository @Inject constructor(@Named("cached") var htmlService: H
     /**
      * 获取用户基本信息
      */
-     fun getUserProfiler() : LiveData<Resource<ProfileModel>> {
+     fun getUserProfiler() : MutableLiveData<Resource<ProfileModel>> {
 
         val result = MutableLiveData<Resource<ProfileModel>>()
 

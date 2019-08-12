@@ -11,6 +11,5 @@ package com.ukyoo.v2client.data
 enum class Status {
     SUCCESS,
     ERROR,
-    LOADING,
-    EMPTY
+    LOADING
 }

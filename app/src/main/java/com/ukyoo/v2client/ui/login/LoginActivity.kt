@@ -59,7 +59,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             when (it.status) {
                 Status.LOADING -> {}
                 Status.ERROR -> ToastUtil.shortShow(it.message)
-                Status.EMPTY ->{}
                 Status.SUCCESS -> {
                     it.data?.let { it1 ->
                         RxBus.post(it1)

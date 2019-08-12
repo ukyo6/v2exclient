@@ -2,13 +2,7 @@ package com.ukyoo.v2client.ui.detail
 
 import android.os.Bundle
 import android.os.Handler
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -18,22 +12,24 @@ import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
-import com.ukyoo.v2client.entity.TopicInfo
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.InputUtils
-import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
 import com.ukyoo.v2client.widget.EnterLayout
-import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
 import java.util.*
 
 /**
  *  详情页
  */
 class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<Any> {
+
     private var mTopicId: Int = 0
+
+    private val mDetailAdapter  by lazy{DetailAdapter(emptyList())}
+
+    private lateinit var mEnterLayout: EnterLayout
 
 
     companion object {
@@ -67,6 +63,13 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         mEnterLayout = EnterLayout(mContext, mBinding.root, onClickSend)
         mEnterLayout.setDefaultHint("评论主题")
 //        mEnterLayout.hide()
+
+        //重试的回调
+        mBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                viewModel.retry()
+            }
+        }
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
@@ -76,14 +79,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             viewModel.setTopicId(mTopicId)
         }
 
-        //重试的回调
-        mBinding.retryCallback = object : RetryCallback {
-            override fun retry() {
-                viewModel.retry()
-            }
-        }
-
-        val mDetailAdapter = DetailAdapter(emptyList())
         //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
@@ -109,11 +104,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         })
     }
 
-
-    private lateinit var mEnterLayout: EnterLayout
-
-
-
     private var onClickSend: View.OnClickListener = View.OnClickListener {
         val content = mEnterLayout.getContent()
         if (content.isEmpty()) {
@@ -122,7 +112,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         }
         InputUtils.popSoftkeyboard(mContext, mEnterLayout.content, false)
 
-        viewModel.getReplyOnce(mTopicId)
+        viewModel.reply()
     }
 
 
@@ -142,9 +132,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         var replyToWho = ""
         mEnterLayout.clearContent()
         if (data is ReplyModel) {
-            val replyObj = data as ReplyModel
-            content.hint = "回复 " + replyObj.member.username
-            replyToWho = "@" + replyObj.member.username + " "
+            content.hint = "回复 " + data.member.username
+            replyToWho = "@" + data.member.username + " "
         }
 
         if (popKeyboard) {
