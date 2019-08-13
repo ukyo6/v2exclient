@@ -12,15 +12,15 @@ import com.ukyoo.v2client.data.entity.NodeModel
 class NodesAdapter(layoutResId: Int) :
     BaseQuickAdapter<NodeModel, NodesAdapter.VHolder>(layoutResId) {
 
-    override fun convert(helper: NodesAdapter.VHolder, item: NodeModel) {
+    override fun convert(helper: VHolder, item: NodeModel) {
         val binding = helper.binding
         binding.setVariable(BR.item, item)
 //        binding.setVariable(BR.presenter, mPresenter)
         binding.executePendingBindings()
     }
 
-    override fun createBaseViewHolder(view: View?): NodesAdapter.VHolder {
-        return NodesAdapter.VHolder(view)
+    override fun createBaseViewHolder(view: View?): VHolder {
+        return VHolder(view)
     }
 
 

@@ -12,7 +12,6 @@ import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
-import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
@@ -23,8 +22,10 @@ import java.util.*
 /**
  *  详情页
  */
-class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter<Any> {
+class DetailActivity : BaseActivity<ActivityDetailBinding>() {
     private var mTopicId: Int = 0
+
+    private val mDetailAdapter by lazy { DetailAdapter(emptyList()) }
 
 
     companion object {
@@ -74,17 +75,29 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
             }
         }
 
-        val mDetailAdapter = DetailAdapter(emptyList())
         //回复列表
         mBinding.recyclerview.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = mDetailAdapter
         }
 
+        mDetailAdapter.setOnItemClickListener { adapter, view, position ->
+            val item = adapter.data[position]
+            if (item is ReplyModel) {
+                //回复
+                prepareAddComment(item, true)
+            }
+        }
+
+        subscribeUi()
+    }
+
+    private fun subscribeUi() {
+
         //观察列表数据
         viewModel.topicAndReplies.observe(this@DetailActivity, Observer { resource ->
 
-            if(resource?.data == null){
+            if (resource?.data == null) {
                 mDetailAdapter.setNewData(emptyList())
             } else {
                 val topicInfo = resource.data.topicInfo
@@ -104,7 +117,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
     private lateinit var mEnterLayout: EnterLayout
 
 
-
     private var onClickSend: View.OnClickListener = View.OnClickListener {
         val content = mEnterLayout.getContent()
         if (content.isEmpty()) {
@@ -119,13 +131,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
 
     override fun getLayoutId(): Int {
         return R.layout.activity_detail
-    }
-
-    override fun onItemClick(v: View?, item: Any) {
-        if (item is ReplyModel) {
-            //回复
-            prepareAddComment(item, true)
-        }
     }
 
     private fun prepareAddComment(data: V2EXModel, popKeyboard: Boolean) {

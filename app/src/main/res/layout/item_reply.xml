@@ -14,16 +14,11 @@
 			name="index"
 			type="Integer"/>
 
-		<variable
-			name="presenter"
-			type="com.ukyoo.v2client.inter.ItemClickPresenter"/>
-
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:paddingEnd="16dp"
 		android:paddingStart="16dp"
-		android:onClick="@{(v) -> presenter.onItemClick(v,item)}"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 

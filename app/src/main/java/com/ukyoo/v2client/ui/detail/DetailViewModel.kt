@@ -4,7 +4,6 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.orhanobut.logger.Logger
 import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resource
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val repository: DetailRepository
 ) : AutoDisposeViewModel() {
-
 
     var replyContent = ObservableField<String>()  //回复内容
 
@@ -39,8 +37,29 @@ class DetailViewModel @Inject constructor(
         if (topicId == null) {
             AbsentLiveData.create()
         } else {
-            repository.getTopicInfoAndRepliesByTopicId(topicId, true)
+            getDetailInfo(topicId)
         }
+    }
+
+
+    private fun getDetailInfo(topicId: Int): LiveData<Resource<DetailModel>> {
+        val result = MutableLiveData<Resource<DetailModel>>()
+        repository.getTopicInfoAndReplies(topicId, true)
+            .async()
+            .doOnSubscribe {
+                result.value = Resource.loading()
+            }
+            .subscribe({ data ->
+                result.value = Resource.success(data)
+
+            }, { throwable ->
+                if (throwable is HttpException && throwable.code() == 302) {
+                    ToastUtil.shortShow("查看本主题需要登录")
+                } else {
+                    result.value = Resource.error(ErrorHanding.handleError(throwable))
+                }
+            })
+        return result
     }
 
 

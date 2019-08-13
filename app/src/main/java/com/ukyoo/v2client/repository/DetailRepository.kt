@@ -41,30 +41,8 @@ class DetailRepository @Inject constructor(
     var replyList = ObservableArrayList<ReplyModel>()
 
 
-    /**
-     *  查看主题信息和回复
-     */
-    fun getTopicInfoAndRepliesByTopicId(topicId: Int, isRefresh: Boolean): LiveData<Resource<DetailModel>> {
-        val result = MutableLiveData<Resource<DetailModel>>()
-
-        htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
-            .map { response ->
-                return@map parse(response, true, topicId)
-            }
-            .async()
-            .doOnSubscribe {
-                result.value = Resource.loading()
-            }
-            .subscribe({ data ->
-                result.value = Resource.success(data)
-            }, {
-                result.value = Resource.error(ErrorHanding.handleError(it), null)
-            })
-
-        return result
-
-//            .subscribe({
-        //更新主题和回复列表
+    //            .subscribe({
+    //更新主题和回复列表
 //                loadMore.set(it.currentPage < it.totalPage)
 //
 //                if (isRefresh) {
@@ -79,6 +57,17 @@ class DetailRepository @Inject constructor(
 //            }, {
 //
 //            })
+
+
+    /**
+     *  查看主题信息和回复
+     */
+    fun getTopicInfoAndReplies(topicId: Int, isRefresh: Boolean): Flowable<DetailModel> {
+
+        return htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
+            .map { response ->
+                return@map parse(response, true, topicId)
+            }
     }
 
 
@@ -110,13 +99,12 @@ class DetailRepository @Inject constructor(
         //解析页码
         val pages = ContentUtils.parsePage(body)
 
-        return DetailModel()
-            .apply {
-                replies = replyList
-                topicInfo = topic
-                currentPage = pages[0]
-                totalPage = pages[1]
-            }
+        return DetailModel().apply {
+            replies = replyList
+            topicInfo = topic
+            currentPage = pages[0]
+            totalPage = pages[1]
+        }
     }
 
     private fun parseReplyModel(element: Element): ReplyItem {
@@ -250,7 +238,7 @@ class DetailRepository @Inject constructor(
     /**
      * 获取回复需要的ONCE
      */
-    fun makeReply(topicId: Int, replyContent: String) : Flowable<String>{
+    fun makeReply(topicId: Int, replyContent: String): Flowable<String> {
         return htmlService2.getReplyOnce(topicId)
             .flatMap { content ->
                 val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")

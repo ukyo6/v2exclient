@@ -10,10 +10,6 @@
 			name="item"
 			type="com.ukyoo.v2client.entity.TopicModel"/>
 
-		<variable
-			name="presenter"
-			type="com.ukyoo.v2client.inter.ItemClickPresenter"/>
-
 	</data>
 
 		<!--android:onClick="@{(v)->presenter.onItemClick(v,item)}"-->

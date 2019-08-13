@@ -25,6 +25,7 @@
 		android:layout_height="match_parent">
 
 		<androidx.appcompat.widget.Toolbar
+			android:elevation="3dp"
 			app:layout_constraintTop_toTopOf="parent"
 			app:title="登录V2EX"
 			android:id="@+id/toolbar"

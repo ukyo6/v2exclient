@@ -53,7 +53,7 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
 
-        //登录后返回
+        //登录后返回个人信息页
         RxBus.toFlowable(ProfileModel::class.java)
             .bindLifeCycle(this)
             .subscribe {

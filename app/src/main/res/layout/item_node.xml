@@ -10,10 +10,6 @@
 			name="item"
 			type="com.ukyoo.v2client.data.entity.NodeModel"/>
 
-		<variable
-			name="presenter"
-			type="com.ukyoo.v2client.inter.ItemClickPresenter"/>
-
 		<import type="android.view.View"/>
 
 		<import type="android.text.Html"/>
@@ -23,7 +19,6 @@
 
 
 	<androidx.cardview.widget.CardView
-		android:onClick="@{(v)->presenter.onItemClick(v,item)}"
 		android:id="@+id/card_container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

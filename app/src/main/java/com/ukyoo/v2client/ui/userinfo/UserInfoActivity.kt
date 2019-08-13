@@ -1,31 +1,21 @@
 package com.ukyoo.v2client.ui.userinfo
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.widget.Toolbar
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.databinding.ActivityUserinfoBinding
-import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
-import com.ukyoo.v2client.ui.detail.DetailActivity
 import com.ukyoo.v2client.util.adapter.BaseViewPagerAdapter
 import com.ukyoo.v2client.viewmodel.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlin.math.abs
 
 /**
  *  用户信息界面
  */
-class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPresenter<TopicModel> {
+class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(){
 
     private var mUsername: String = ""
 
@@ -112,9 +102,4 @@ class UserInfoActivity : BaseActivity<ActivityUserinfoBinding>(), ItemClickPrese
 //        mBinding.toolbar.title = username
     }
 
-    override fun onItemClick(v: View?, item: TopicModel) {
-        val intent = Intent(mContext, DetailActivity::class.java)
-        intent.putExtra("topicId", item.id)  //topicId
-        startActivity(intent)
-    }
 }

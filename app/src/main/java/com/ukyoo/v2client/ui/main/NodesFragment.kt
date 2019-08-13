@@ -12,17 +12,15 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentNodesBinding
 import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.node.NodeActivity
 import com.ukyoo.v2client.ui.node.NodesViewModel
 import com.ukyoo.v2client.util.adapter.NodesAdapter
-import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 
 /**
  * @desc 所有节点
  * @author hewei
  */
-class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<NodeModel> {
+class NodesFragment : BaseFragment<FragmentNodesBinding>() {
 
     private val mNodesAdapter by lazy { NodesAdapter(R.layout.item_node) }
 
@@ -46,14 +44,21 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
     override fun initView() {
         getComponent().inject(this)
+        mBinding.vm = viewModel
 
         val appCompatActivity = activity as AppCompatActivity
         appCompatActivity.setSupportActionBar(mBinding.toolbar)
 
-        mBinding.vm = viewModel
         mBinding.recyclerview.run {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = mNodesAdapter
+        }
+
+        mNodesAdapter.setOnItemClickListener { adapter, _, position ->
+            val item = adapter.data[position]
+            val intent = Intent(mContext, NodeActivity::class.java)
+            intent.putExtra("model", item as Parcelable)
+            mContext.startActivity(intent)
         }
     }
 
@@ -76,15 +81,6 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_nodes
-    }
-
-    /**
-     * item click
-     */
-    override fun onItemClick(v: View?, item: NodeModel) {
-        val intent = Intent(mContext, NodeActivity::class.java)
-        intent.putExtra("model", item as Parcelable)
-        mContext.startActivity(intent)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

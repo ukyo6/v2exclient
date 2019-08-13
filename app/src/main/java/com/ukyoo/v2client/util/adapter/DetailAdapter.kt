@@ -22,14 +22,14 @@ class DetailAdapter(data: List<MultiItemEntity>) : BaseMultiItemQuickAdapter<Mul
     }
 
     override fun convert(helper: BaseViewHolder?, item: MultiItemEntity?) {
-        val binding = (helper as TopicListAdapter.VHolder).binding
+        val binding = (helper as VHolder).binding
         binding.setVariable(BR.item, item)
 //        binding.setVariable(BR.presenter, mPresenter)
         binding.executePendingBindings()
     }
 
-    override fun createBaseViewHolder(view: View?): TopicListAdapter.VHolder {
-        return TopicListAdapter.VHolder(view)
+    override fun createBaseViewHolder(view: View?): VHolder {
+        return VHolder(view)
     }
 
     override fun getItemView(layoutResId: Int, parent: ViewGroup): View {
