@@ -77,7 +77,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         super.onActivityCreated(savedInstanceState)
         mContext = activity ?: throw Exception("activity 为null")
         retainInstance = true
-        initView()
 
         this.savedInstanceState = savedInstanceState
         isPrepared = true
@@ -137,7 +136,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     }
 
-    abstract fun initView()
     abstract override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?)
 
     abstract fun getLayoutId(): Int

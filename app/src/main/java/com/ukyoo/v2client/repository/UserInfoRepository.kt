@@ -54,7 +54,7 @@ class UserInfoRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading(null)
+                result.value = Resource.loading()
             }
             .subscribe({ data ->
                 result.value = Resource.success(data)
@@ -77,7 +77,7 @@ class UserInfoRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading(null)
+                result.value = Resource.loading()
             }
             .subscribe({ data ->
                 result.value = Resource.success(data)

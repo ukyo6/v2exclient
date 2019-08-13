@@ -23,9 +23,9 @@ interface JsonService {
     @GET("/api/topics/show.json")
     fun queryTopicsByName(@Query("node_name") name: String): Flowable<ArrayList<TopicModel>>
 
-    //所有节点
+    //所有节点 -
     @GET("/api/nodes/all.json")
-    fun getAllNodes(): Single<ArrayList<NodeModel>>
+    fun getAllNodes(): Flowable<ArrayList<NodeModel>>
 
     //节点信息
     @GET("nodes/show.json")

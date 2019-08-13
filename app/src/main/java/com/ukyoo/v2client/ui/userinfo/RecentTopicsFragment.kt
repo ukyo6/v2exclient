@@ -35,7 +35,7 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
         }
     }
 
-    override fun initView() {
+    private fun initView() {
         getComponent().inject(this)
         mBinding.vm = viewModel
 
@@ -62,6 +62,8 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
     lateinit var repliesAdapter: UserTopicsAdapter
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        initView()
+
         //设置参数
         viewModel.setUserNameAndPage((arguments?.getString("userName") ?: ""),1)
         //观察者

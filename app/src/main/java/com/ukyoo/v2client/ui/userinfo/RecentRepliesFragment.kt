@@ -35,7 +35,7 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
         getInjectViewModel<RecentRepliesViewModel>()
     }
 
-    override fun initView() {
+    private fun initView() {
         getComponent().inject(this)
 
         mBinding.vm = viewModel
@@ -63,6 +63,7 @@ class RecentRepliesFragment : BaseFragment<FragmentRecentRepliesBinding>() {
     lateinit var repliesAdapter: UserRepliesAdapter
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        initView()
 
         //设置参数
         viewModel.setUserNameAndPage((arguments?.getString("userName") ?: ""), 1)

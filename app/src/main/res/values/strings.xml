@@ -19,6 +19,7 @@
 	<string name="pwd">密码</string>
 	<string name="login">登录</string>
 	<string name="replyto">回复了</string>
+	<string name="make_comment">评论主题</string>
 
 	<string-array name="v2ex_favorite_tab_titles">
 		<item>技术</item>
