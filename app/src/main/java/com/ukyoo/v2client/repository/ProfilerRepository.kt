@@ -1,14 +1,9 @@
 package com.ukyoo.v2client.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.db.AppDataBase
 import com.ukyoo.v2client.entity.ProfileModel
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.async
-import com.ukyoo.v2client.util.bindLifeCycle
+import io.reactivex.Flowable
 import org.jsoup.Jsoup
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -20,25 +15,14 @@ class ProfilerRepository @Inject constructor(@Named("cached") var htmlService: H
     /**
      * 获取用户基本信息
      */
-     fun getUserProfiler() : LiveData<Resource<ProfileModel>> {
-
-        val result = MutableLiveData<Resource<ProfileModel>>()
-
-        htmlService.getProfiler()
+     fun getUserProfiler() : Flowable<ProfileModel> {
+        return htmlService.getProfiler()
             .map {
                 val profileModel = parseProfilerModel(it)
                 //存到db  子线程
                 AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
                 return@map profileModel
             }
-            .async()
-            .subscribe({
-                result.value = Resource.success(it)
-            }, {
-                result.value = Resource.error(ErrorHanding.handleError(it))
-            })
-
-        return result
     }
 
     /**
@@ -47,10 +31,13 @@ class ProfilerRepository @Inject constructor(@Named("cached") var htmlService: H
     private fun parseProfilerModel(responseBody: String) : ProfileModel{
         val model = ProfileModel()
 
-
         val doc = Jsoup.parse(responseBody)
         val body = doc.body()
         val elements = body.getElementsByAttributeValue("id", "Rightbar")
+        if(elements[0].getElementsByAttributeValue("href", "/signin").size >0){  //未登录
+            return model
+        }
+
         val found = intArrayOf(0, 0, 0, 0)
         for (el in elements) {
             if (found[0] == 1 && found[1] == 1 && found[2] == 1 && found[3] == 1)

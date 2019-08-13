@@ -14,48 +14,105 @@
 
 	</data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:fitsSystemWindows="true">
 
-		<ImageView
-			app:blurBg="@{vm.userProfilerLiveData.data.avatar}"
-			android:id="@+id/iv_blur_bg"
+		<com.google.android.material.appbar.AppBarLayout
+			android:id="@+id/app_bar"
+			android:fitsSystemWindows="true"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:theme="@style/AppTheme.AppBarOverlay">
+
+			<com.google.android.material.appbar.CollapsingToolbarLayout
+				app:titleEnabled="false"
+				android:id="@+id/toolbar_layout"
+				android:fitsSystemWindows="true"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:toolbarId="@+id/toolbar"
+				app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+				app:contentScrim="?attr/colorPrimary">
+
+				<androidx.constraintlayout.widget.ConstraintLayout
+					android:background="@color/white"
+					android:paddingBottom="10dp"
+					app:layout_collapseMode="parallax"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+
+					<ImageView
+						app:layout_constraintTop_toTopOf="parent"
+						app:blurBg="@{vm.userProfilerLiveData.data.avatar}"
+						android:id="@+id/iv_blur_bg"
+						android:layout_width="match_parent"
+						android:layout_height="130dp"
+						android:scaleType="centerCrop"
+						app:layout_collapseMode="parallax"/>
+
+					<com.ukyoo.v2client.widget.CircleImageView
+						app:border_color="@color/white"
+						app:border_width="2dp"
+						app:layout_constraintLeft_toLeftOf="parent"
+						app:url="@{vm.userProfilerLiveData.data.avatar}"
+						android:id="@+id/iv_avatar"
+						android:layout_width="80dp"
+						android:layout_height="80dp"
+						android:scaleType="centerCrop"
+						tools:src="@drawable/user"
+						android:layout_marginStart="16dp"
+						app:layout_constraintTop_toBottomOf="@+id/iv_blur_bg"
+						app:layout_constraintBottom_toBottomOf="@+id/iv_blur_bg"/>
+
+					<TextView
+						android:layout_marginTop="5dp"
+						android:text="@{vm.userProfilerLiveData.data.username}"
+						app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
+						app:layout_constraintLeft_toLeftOf="@+id/iv_avatar"
+						tools:text="小白"
+						android:textColor="@color/black_87"
+						android:textSize="25sp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/tv_username"/>
+
+
+				</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+				<androidx.appcompat.widget.Toolbar
+					app:title="@{vm.userProfilerLiveData.data.username}"
+					app:layout_collapseMode="pin"
+					android:id="@+id/toolbar"
+					android:layout_width="match_parent"
+					android:layout_height="?attr/actionBarSize"
+					app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+			</com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+			<com.google.android.material.tabs.TabLayout
+				app:tabIndicatorHeight="3dp"
+				android:id="@+id/tab_layout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:tabIndicatorColor="@color/colorAccent"
+				app:tabMode="scrollable"
+				app:tabPaddingStart="16dp"
+				app:tabSelectedTextColor="@color/colorAccent"
+				app:tabTextColor="@color/colorAccentAlpha"/>
+
+
+		</com.google.android.material.appbar.AppBarLayout>
+
+		<androidx.viewpager.widget.ViewPager
+			android:id="@+id/viewpager"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:scaleType="centerCrop"
-			app:layout_collapseMode="parallax"/>
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-		<com.ukyoo.v2client.widget.CircleImageView
-			android:onClick="@{() -> vm.callToLogin()}"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginStart="30dp"
-			android:layout_marginTop="30dp"
-			app:url="@{vm.userProfilerLiveData.data.avatar}"
-			android:id="@+id/iv_avatar"
-			android:layout_width="80dp"
-			android:layout_height="80dp"
-			android:scaleType="centerCrop"
-			tools:src="@drawable/user"/>
-
-		<TextView
-			android:text="@{vm.userProfilerLiveData.data.username}"
-			android:layout_marginStart="20dp"
-			app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-			app:layout_constraintTop_toTopOf="@+id/iv_avatar"
-			tools:text="小白"
-			android:textColor="@color/black_87"
-			android:textSize="25sp"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/tv_username"/>
-
-
-
-
-
-
-	</androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

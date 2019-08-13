@@ -34,13 +34,16 @@ object ErrorHanding {
             || throwable is SocketException
         ) {
             message = "网络连接失败，请检查网络!"
+        } else if (throwable is CustomException) {
+            message = throwable.message.toString()
         } else {
             message = "未知异常，请检查网络"          //未知错误
-        }//        else if (throwable instanceof ServerException) {
-        //            message = throwable.getMessage();
-        //        }
+        }
         return message
     }
+
+    class CustomException(msg: String) : Exception(msg)
+
 
     fun getProblemFromHtmlResponse(response: String): String {
         val errorPattern = Pattern.compile("<div class=\"problem\">(.*)</div>")

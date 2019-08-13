@@ -2,13 +2,7 @@ package com.ukyoo.v2client.ui.detail
 
 import android.os.Bundle
 import android.os.Handler
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -18,15 +12,12 @@ import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.entity.ReplyModel
 import com.ukyoo.v2client.data.entity.V2EXModel
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
-import com.ukyoo.v2client.entity.TopicInfo
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.util.InputUtils
-import com.ukyoo.v2client.util.SizeUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
 import com.ukyoo.v2client.widget.EnterLayout
-import com.ukyoo.v2client.widget.itemdecoration.LinearLayoutDecoration
 import java.util.*
 
 /**
@@ -122,7 +113,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>(), ItemClickPresenter
         }
         InputUtils.popSoftkeyboard(mContext, mEnterLayout.content, false)
 
-        viewModel.getReplyOnce(mTopicId)
+        viewModel.reply()
     }
 
 

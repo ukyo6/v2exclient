@@ -1,8 +1,11 @@
 package com.ukyoo.v2client.repository
 
+import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.orhanobut.logger.Logger
+import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
@@ -10,11 +13,13 @@ import com.ukyoo.v2client.data.entity.*
 import com.ukyoo.v2client.entity.*
 import com.ukyoo.v2client.util.ContentUtils
 import com.ukyoo.v2client.util.ErrorHanding
+import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import retrofit2.HttpException
 import java.util.ArrayList
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -27,59 +32,14 @@ import javax.inject.Singleton
 @Singleton
 class DetailRepository @Inject constructor(
     @Named("non_cached")
-    var htmlService: HtmlService,
-    var jsonService: JsonService
+    private val htmlService: HtmlService,
+    @Named("cached")
+    private val htmlService2: HtmlService,
+    private val jsonService: JsonService
 ) {
 
     var replyList = ObservableArrayList<ReplyModel>()
 
-    /**
-     *  回复列表
-     */
-    private fun getRepliesByTopicId(topicId: Int, isRefresh: Boolean): LiveData<List<ReplyModel>> {
-        val list: LiveData<List<ReplyModel>> = MutableLiveData()
-
-        jsonService.getRepliesByTopicId(topicId)
-            .async()
-            .map {
-                if (isRefresh) {
-                    replyList.clear()
-                }
-                replyList.addAll(it)
-                return@map it
-            }.doOnSubscribe {
-
-            }.doFinally {
-
-            }.subscribe({
-
-            }, {
-
-            })
-
-        return list
-    }
-
-
-    /**
-     *  查看主题信息
-     */
-    fun getTopicInfo(topicId: Int) {
-
-        jsonService.getTopicByTopicId(topicId)
-            .async()
-            .doOnSubscribe {
-
-            }.doFinally {
-
-            }.subscribe({
-                //                mTopic = it[0]
-
-                getRepliesByTopicId(topicId, true)
-            }, {
-
-            })
-    }
 
     /**
      *  查看主题信息和回复
@@ -87,13 +47,13 @@ class DetailRepository @Inject constructor(
     fun getTopicInfoAndRepliesByTopicId(topicId: Int, isRefresh: Boolean): LiveData<Resource<DetailModel>> {
         val result = MutableLiveData<Resource<DetailModel>>()
 
-        htmlService.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
+        htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
             .map { response ->
                 return@map parse(response, true, topicId)
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading(null)
+                result.value = Resource.loading()
             }
             .subscribe({ data ->
                 result.value = Resource.success(data)
@@ -285,5 +245,44 @@ class DetailRepository @Inject constructor(
         topic.node = nodeInfo
         return topic
     }
+
+
+    /**
+     * 获取回复需要的ONCE
+     */
+    fun makeReply(topicId: Int, replyContent: String) : Flowable<String>{
+        return htmlService2.getReplyOnce(topicId)
+            .flatMap { content ->
+                val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
+                val matcher = pattern.matcher(content)
+                if (matcher.find()) {
+                    val once = matcher.group(1)
+
+                    if (TextUtils.isEmpty(replyContent)) {
+                        Flowable.error(ErrorHanding.CustomException("回复内容不得为空"))
+                    } else {
+                        //回复
+                        val url = "https://www.v2ex.com/t/$topicId"
+                        htmlService2.reply(url, topicId, replyContent, once)
+                    }
+                } else {
+                    Flowable.error(ErrorHanding.CustomException("请检查登录"))
+                }
+            }
+    }
+
+
+//    .subscribe({ response ->
+//        ErrorHanding.getProblemFromHtmlResponse(response).apply {
+//            ToastUtil.shortShow(this)
+//            Logger.d(this)
+//        }
+//    }, { throwable ->
+//        if (throwable is HttpException && throwable.code() == 302) {
+//            Logger.d("回复成功了")
+//        } else {
+//            ToastUtil.shortShow(ErrorHanding.handleError(throwable))
+//        }
+//    })
 }
 

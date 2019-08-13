@@ -1,53 +1,53 @@
 package com.ukyoo.v2client.viewmodel
 
+import androidx.lifecycle.MutableLiveData
+import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.App
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
+import com.ukyoo.v2client.data.Resource
 import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.repository.ProfilerRepository
+import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.SPUtils
+import com.ukyoo.v2client.util.async
+import com.ukyoo.v2client.util.bindLifeCycle
 import javax.inject.Inject
 
 class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepository) : AutoDisposeViewModel() {
 
 
-    val userProfilerLiveData = repository.getUserProfiler()
+//    val userProfilerLiveData = repository.getUserProfiler()
+    val userProfilerLiveData = MutableLiveData<Resource<ProfileModel>>()
 
-    /**
-     * 登录
-     */
-    fun callToLogin() {
 
+    fun refreshProfiler(){
+        repository.getUserProfiler()
+            .async()
+            .autoDisposable(this)
+            .subscribe({
+                if(it.username.isEmpty()) {
+                    userProfilerLiveData.value = Resource.empty()
+                } else {
+                    userProfilerLiveData.value = Resource.success(it)
+                }
+            }, {
+                userProfilerLiveData.value = Resource.error(ErrorHanding.handleError(it))
+            })
     }
 
 
 
+    fun setUserProfiler(model: ProfileModel) {
+        userProfilerLiveData.value = Resource.success(model)
+    }
 
     /**
      * 退出登录
      */
-    fun exitLogin() {
+    fun signOut() {
         NetManager.clearCookie()
-
-        SPUtils.setBoolean("isLogin", false)
-        val model = ProfileModel()
-        model.username = App.instance().getString(R.string.please_login)
-        model.avatar = ""
-//        profileModel.setValue(null)
-    }
-
-    /**
-     * 我的回复
-     */
-    fun gotoUserRepliesPage() {
-
-    }
-
-    /**
-     * 我发表的主题
-     */
-    fun gotoUserTopicsPage() {
-
+        userProfilerLiveData.setValue(null)
     }
 }

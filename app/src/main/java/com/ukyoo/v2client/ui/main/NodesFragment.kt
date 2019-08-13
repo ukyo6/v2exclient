@@ -15,6 +15,7 @@ import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.inter.ItemClickPresenter
 import com.ukyoo.v2client.ui.node.NodeActivity
 import com.ukyoo.v2client.ui.node.NodesViewModel
+import com.ukyoo.v2client.util.adapter.NodesAdapter
 import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
 
 /**
@@ -22,6 +23,10 @@ import com.ukyoo.v2client.util.adapter.SingleTypeAdapter
  * @author hewei
  */
 class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<NodeModel> {
+
+    private val mNodesAdapter by lazy { NodesAdapter(R.layout.item_node) }
+
+
     override fun isLazyLoad(): Boolean {
         return true
     }
@@ -48,11 +53,8 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
         mBinding.vm = viewModel
         mBinding.recyclerview.run {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = SingleTypeAdapter(mContext, R.layout.item_node, viewModel.nodesList).apply {
-                itemPresenter = this@NodesFragment
-            }
+            adapter = mNodesAdapter
         }
-
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
@@ -63,7 +65,11 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>(), ItemClickPresenter<N
 
     private fun subscribeUi() {
         viewModel.nodesListLiveData.observe(this@NodesFragment, Observer {
-
+            if (it == null) {
+                mNodesAdapter.setNewData(emptyList())
+            } else {
+                mNodesAdapter.setNewData(it)
+            }
         })
     }
 
