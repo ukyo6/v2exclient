@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.repository.LoginRepository
 import com.ukyoo.v2client.util.Event
@@ -24,7 +24,7 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     }
 
     //登录结果
-    val loginResultLiveData: LiveData<Resource<ProfileModel>> = Transformations.switchMap(_loginParam) {
+    val loginResultLiveData: LiveData<Resources<ProfileModel>> = Transformations.switchMap(_loginParam) {
         repository.login(it)
     }
 
@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         _refreshVerifyEvent.value = Unit
     }
 
-    val verifyImgUrlLiveData: LiveData<Resource<String>> = Transformations.switchMap(_refreshVerifyEvent) {
+    val verifyImgUrlLiveData: LiveData<Resources<String>> = Transformations.switchMap(_refreshVerifyEvent) {
         repository.getVerifyUrl()
     }
 

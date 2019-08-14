@@ -9,7 +9,7 @@
 
 		<import type="com.ukyoo.v2client.data.Status"/>
 
-		<import type="com.ukyoo.v2client.data.Resource"/>
+		<import type="com.ukyoo.v2client.data.Resources"/>
 
 		<import type="androidx.lifecycle.LiveData"/>
 
@@ -40,7 +40,7 @@
 
 		<include
 			layout="@layout/loading_state"
-			app:resource="@{(Resource) vm.userTopics}"
+			app:resources="@{(Resources) vm.userTopics}"
 			app:callback="@{() -> retryCallback.retry()}"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

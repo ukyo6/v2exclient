@@ -4,7 +4,7 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.TopicModel
@@ -24,8 +24,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class TopicsRepository @Inject constructor(
-    @Named("non_cached")
-    private val htmlService: HtmlService,
+    @Named("non_cached") private val htmlService: HtmlService,
     private val jsonService: JsonService
 ) {
 
@@ -33,9 +32,9 @@ class TopicsRepository @Inject constructor(
     /**
      * 根据tabId请求列表
      */
-    fun loadDataByTab(isRefresh: Boolean, tabId: String): LiveData<Resource<ArrayList<TopicModel>>> {
+    fun loadDataByTab(isRefresh: Boolean, tabId: String): LiveData<Resources<ArrayList<TopicModel>>> {
 
-        val result = MutableLiveData<Resource<ArrayList<TopicModel>>>()
+        val result = MutableLiveData<Resources<ArrayList<TopicModel>>>()
 
         htmlService.queryTopicsByTab(tabId)
             .map { responseStr ->
@@ -43,12 +42,12 @@ class TopicsRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading()
+                result.value = Resources.loading()
             }
             .subscribe({ data ->
-                result.value = Resource.success(data)
+                result.value = Resources.success(data)
             }, {
-                result.value = Resource.error(ErrorHanding.handleError(it))
+                result.value = Resources.error(ErrorHanding.handleError(it))
             })
 
         return result

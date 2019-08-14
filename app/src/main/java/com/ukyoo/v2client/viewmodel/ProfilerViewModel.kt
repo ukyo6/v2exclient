@@ -2,45 +2,35 @@ package com.ukyoo.v2client.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.uber.autodispose.autoDisposable
-import com.ukyoo.v2client.App
-import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.repository.ProfilerRepository
 import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.SPUtils
 import com.ukyoo.v2client.util.async
-import com.ukyoo.v2client.util.bindLifeCycle
 import javax.inject.Inject
 
 class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepository) : AutoDisposeViewModel() {
 
 
-//    val userProfilerLiveData = repository.getUserProfiler()
-    val userProfilerLiveData = MutableLiveData<Resource<ProfileModel>>()
+    val userProfilerLiveData = MutableLiveData<Resources<ProfileModel>>()
 
 
-    fun refreshProfiler(){
+    fun refreshProfiler() {
         repository.getUserProfiler()
             .async()
             .autoDisposable(this)
             .subscribe({
-                if(it.username.isEmpty()) {
-                    userProfilerLiveData.value = Resource.empty()
-                } else {
-                    userProfilerLiveData.value = Resource.success(it)
-                }
+                userProfilerLiveData.value = Resources.success(it)
             }, {
-                userProfilerLiveData.value = Resource.error(ErrorHanding.handleError(it))
+                userProfilerLiveData.value = Resources.error(ErrorHanding.handleError(it))
             })
     }
 
 
-
     fun setUserProfiler(model: ProfileModel) {
-        userProfilerLiveData.value = Resource.success(model)
+        userProfilerLiveData.value = Resources.success(model)
     }
 
     /**
@@ -48,6 +38,6 @@ class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepo
      */
     fun signOut() {
         NetManager.clearCookie()
-        userProfilerLiveData.setValue(null)
+        userProfilerLiveData.value = null
     }
 }

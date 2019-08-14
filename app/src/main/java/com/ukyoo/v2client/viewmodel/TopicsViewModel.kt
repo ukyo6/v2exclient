@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.AbsentLiveData
@@ -26,7 +26,7 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Au
     }
 
     //主题列表
-    val topics: LiveData<Resource<ArrayList<TopicModel>>> = Transformations.switchMap(param) { value ->
+    val topics: LiveData<Resources<ArrayList<TopicModel>>> = Transformations.switchMap(param) { value ->
         value.ifExists { nodeId, nodeName ->
             if (nodeId.isNotBlank()) {
                 repository.loadDataByTab(true, nodeId)

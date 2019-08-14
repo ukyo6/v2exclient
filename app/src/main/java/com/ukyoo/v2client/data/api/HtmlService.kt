@@ -24,11 +24,11 @@ interface HtmlService {
 ////        "User-Agent: Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
 ////    )
     @GET("/signin")
-    fun signin(): Single<Response<String>>
+    fun signin(): Flowable<Response<String>>
 
     //登录 -
     @POST("/signin")
-    fun login(@HeaderMap headers: Map<String, String>, @QueryMap params: Map<String, String>): Single<String>
+    fun login(@HeaderMap headers: Map<String, String>, @QueryMap params: Map<String, String>): Flowable<String>
 
     //获取用户创建的主题 -
     @Headers("Referer: https://www.v2ex.com", "Content-Type: application/x-www-form-urlencoded")

@@ -42,7 +42,7 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>() {
         }
     }
 
-    override fun initView() {
+    private fun initView() {
         getComponent().inject(this)
         mBinding.vm = viewModel
 
@@ -63,17 +63,18 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>() {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        viewModel.loadData()
+        initView()
 
+        viewModel.setQueryName("")
         subscribeUi()
     }
 
     private fun subscribeUi() {
-        viewModel.nodesListLiveData.observe(this@NodesFragment, Observer {
+        viewModel.nodesLiveData.observe(this@NodesFragment, Observer {
             if (it == null) {
                 mNodesAdapter.setNewData(emptyList())
             } else {
-                mNodesAdapter.setNewData(it)
+                mNodesAdapter.setNewData(it.data)
             }
         })
     }
@@ -96,7 +97,7 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>() {
         searchView.queryHint = "输入节点名字"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { viewModel.queryByName(it) }
+                newText?.let { viewModel.setQueryName(it) }
                 return true
             }
 

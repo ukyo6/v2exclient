@@ -46,12 +46,13 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
     }
 
 
-    override fun initView() {
+    private fun initView() {
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        initView()
 
         //登录后返回个人信息页
         RxBus.toFlowable(ProfileModel::class.java)
@@ -60,6 +61,11 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
                 viewModel.setUserProfiler(it)
             }
 
+        //跳转登录页
+        mBinding.ivAvatar.setOnClickListener {
+            startActivity(Intent(activity, LoginActivity::class.java))
+        }
+
         //刷新个人信息
         viewModel.refreshProfiler()
 
@@ -67,7 +73,7 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
     }
 
     private fun subScribeUi() {
-        viewModel.userProfilerLiveData.observe(this@ProfilerFragment, Observer {
+        viewModel.userProfilerLiveData.observe(this@ProfilerFragment, Observer { it ->
             when (it.status) {
                 Status.LOADING -> {
 
@@ -114,12 +120,7 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
                 Status.ERROR -> {
                     ToastUtil.shortShow(it.message)
                 }
-                Status.EMPTY -> {
-                    //跳转登录页
-                    mBinding.ivAvatar.setOnClickListener {
-                        startActivity(Intent(activity, LoginActivity::class.java))
-                    }
-                }
+
             }
         })
     }

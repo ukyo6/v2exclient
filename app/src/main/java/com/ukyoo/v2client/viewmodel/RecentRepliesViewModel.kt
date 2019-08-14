@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.entity.UserReplyModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
@@ -28,7 +28,7 @@ class RecentRepliesViewModel @Inject constructor(val repository: UserInfoReposit
     }
 
     //用户的回复列表
-    var userReplies: LiveData<Resource<ArrayList<UserReplyModel>>> = Transformations.switchMap(param) { value ->
+    var userReplies: LiveData<Resources<ArrayList<UserReplyModel>>> = Transformations.switchMap(param) { value ->
 
         value.ifExists { userName, page ->
             repository.getUserReplies(userName, page)

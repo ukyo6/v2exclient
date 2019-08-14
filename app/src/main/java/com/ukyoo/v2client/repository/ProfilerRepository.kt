@@ -8,7 +8,9 @@ import org.jsoup.Jsoup
 import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
+@Singleton
 class ProfilerRepository @Inject constructor(@Named("cached") var htmlService: HtmlService) {
 
 

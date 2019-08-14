@@ -28,7 +28,7 @@ class PhotoBrowseActivity : BaseActivity<ActivityPhotobrowseBinding>() {
         }
     }
 
-    private lateinit var mPhohoUrls: ArrayList<String>
+    private lateinit var mPhotoUrls: ArrayList<String>
     private var mPosition: Int = 0
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class PhotoBrowseActivity : BaseActivity<ActivityPhotobrowseBinding>() {
 
     override fun initView() {
         if (intent.hasExtra(IMAGES)) {
-            mPhohoUrls = intent.getSerializableExtra(IMAGES) as ArrayList<String>
+            mPhotoUrls = intent.getSerializableExtra(IMAGES) as ArrayList<String>
         }
 
         if (intent.hasExtra(POSITION)) {
@@ -54,13 +54,13 @@ class PhotoBrowseActivity : BaseActivity<ActivityPhotobrowseBinding>() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    mBinding.toolbar.title = "图片(" + (position + 1) + "/" + mPhohoUrls.size + ")"
+                    mBinding.toolbar.title = "图片(" + (position + 1) + "/" + mPhotoUrls.size + ")"
                 }
             })
         }
 
 
-        mBinding.toolbar.title = "图片(" + (mPosition + 1) + "/" + mPhohoUrls.size + ")"
+        mBinding.toolbar.title = "图片(" + (mPosition + 1) + "/" + mPhotoUrls.size + ")"
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mBinding.toolbar.setNavigationOnClickListener {
@@ -71,7 +71,7 @@ class PhotoBrowseActivity : BaseActivity<ActivityPhotobrowseBinding>() {
 
     internal inner class ImgAdapter : PagerAdapter() {
         override fun getCount(): Int {
-            return mPhohoUrls.size
+            return mPhotoUrls.size
         }
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -86,7 +86,7 @@ class PhotoBrowseActivity : BaseActivity<ActivityPhotobrowseBinding>() {
             )
 
             GlideApp.with(mContext)
-                .load(mPhohoUrls[position])
+                .load(mPhotoUrls[position])
                 .placeholder(R.drawable.ic_default_img)
                 .error(R.drawable.ic_default_img)
                 .into(photoView)

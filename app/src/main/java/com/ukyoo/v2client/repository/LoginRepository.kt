@@ -3,7 +3,7 @@ package com.ukyoo.v2client.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.db.AppDataBase
 import com.ukyoo.v2client.entity.ProfileModel
@@ -14,10 +14,12 @@ import retrofit2.HttpException
 import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * 登录数据源
  */
+@Singleton
 class LoginRepository @Inject constructor(@Named("cached") var htmlService: HtmlService) {
 
     //请求参数的key
@@ -30,8 +32,8 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 从登录页面获取cookies
      */
-    fun getVerifyUrl(): LiveData<Resource<String>> {
-        val verifyUrl = MutableLiveData<Resource<String>>()
+    fun getVerifyUrl(): LiveData<Resources<String>> {
+        val verifyUrl = MutableLiveData<Resources<String>>()
 
         //清除cookie
 //        NetManager.clearCookie()
@@ -60,7 +62,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                         val endIndex = verifyStr.indexOf("\')")
 
                         verifyUrl.value =
-                            Resource.success("https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex))
+                            Resources.success("https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex))
                         break@loopOuter
                     }
                 }
@@ -75,8 +77,8 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 登录
      */
-    fun login(param: LoginViewModel.LoginParam): LiveData<Resource<ProfileModel>> {
-        val result = MutableLiveData<Resource<ProfileModel>>()
+    fun login(param: LoginViewModel.LoginParam): LiveData<Resources<ProfileModel>> {
+        val result = MutableLiveData<Resources<ProfileModel>>()
 
         val params = HashMap<String, String>()
         params[nameVal] = param.userName
@@ -94,13 +96,13 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
             .async()
             .doOnSubscribe {
                 //loading status
-                result.value = Resource.loading()
+                result.value = Resources.loading()
             }
             .subscribe({
                 ErrorHanding.getProblemFromHtmlResponse(it).apply {
                     //error status
                     Logger.d(this)
-                    result.value = Resource.error(this)
+                    result.value = Resources.error(this)
                 }
             }, {
                 if (it is HttpException && it.code() == 302) {
@@ -109,7 +111,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                 } else {
                     //error status
                     Logger.d(ErrorHanding.handleError(it))
-                    result.value = Resource.error(ErrorHanding.handleError(it))
+                    result.value = Resources.error(ErrorHanding.handleError(it))
                 }
             })
 
@@ -120,7 +122,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 获取用户基本信息
      */
-    private fun getUserProfiler(result: MutableLiveData<Resource<ProfileModel>>) {
+    private fun getUserProfiler(result: MutableLiveData<Resources<ProfileModel>>) {
 
         htmlService.getProfiler()
             .map {
@@ -131,9 +133,9 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
             }
             .async()
             .subscribe({
-                result.value = Resource.success(it)
+                result.value = Resources.success(it)
             }, {
-                result.value = Resource.error(ErrorHanding.handleError(it))
+                result.value = Resources.error(ErrorHanding.handleError(it))
             })
     }
 

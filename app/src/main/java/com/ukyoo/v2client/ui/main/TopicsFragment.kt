@@ -44,7 +44,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
         }
     }
 
-    override fun initView() {
+    private fun initView() {
         getComponent().inject(this)
         mBinding.vm = viewModel
 
@@ -80,6 +80,8 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
 
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+        initView()
+
         val nodeName = arguments?.getString(NODE_NAME)
         val tab = arguments?.getString(TAB_ID)
 

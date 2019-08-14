@@ -4,10 +4,9 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.entity.UserReplyModel
@@ -29,8 +28,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class UserInfoRepository @Inject constructor(
-    @Named("non_cached")
-    private val htmlService: HtmlService,
+    @Named("non_cached") private val htmlService: HtmlService,
     private val jsonService: JsonService
 ) {
 
@@ -39,14 +37,13 @@ class UserInfoRepository @Inject constructor(
      */
     fun getUserInfo(username: String): Flowable<UserInfoModel> {
         return jsonService.getUserInfo(username)
-            .async()
     }
 
     /**
      * 获取创建的主题
      */
-    fun getUserTopics(userName: String, page: Int): LiveData<Resource<ArrayList<TopicModel>>> {
-        val result = MutableLiveData<Resource<ArrayList<TopicModel>>>()
+    fun getUserTopics(userName: String, page: Int): LiveData<Resources<ArrayList<TopicModel>>> {
+        val result = MutableLiveData<Resources<ArrayList<TopicModel>>>()
 
         htmlService.getUserTopics(userName, page)
             .map { responseStr ->
@@ -54,12 +51,12 @@ class UserInfoRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading()
+                result.value = Resources.loading()
             }
             .subscribe({ data ->
-                result.value = Resource.success(data)
+                result.value = Resources.success(data)
             }, {
-                result.value = Resource.error(ErrorHanding.handleError(it), null)
+                result.value = Resources.error(ErrorHanding.handleError(it), null)
             })
 
         return result
@@ -68,8 +65,8 @@ class UserInfoRepository @Inject constructor(
     /**
      * 获取用户回复
      */
-    fun getUserReplies(userName: String, page: Int): LiveData<Resource<ArrayList<UserReplyModel>>> {
-        val result = MutableLiveData<Resource<ArrayList<UserReplyModel>>>()
+    fun getUserReplies(userName: String, page: Int): LiveData<Resources<ArrayList<UserReplyModel>>> {
+        val result = MutableLiveData<Resources<ArrayList<UserReplyModel>>>()
 
         htmlService.getUserReplies(userName, page)
             .map { responseStr ->
@@ -77,12 +74,12 @@ class UserInfoRepository @Inject constructor(
             }
             .async()
             .doOnSubscribe {
-                result.value = Resource.loading()
+                result.value = Resources.loading()
             }
             .subscribe({ data ->
-                result.value = Resource.success(data)
+                result.value = Resources.success(data)
             }, {
-                result.value = Resource.error(ErrorHanding.handleError(it), null)
+                result.value = Resources.error(ErrorHanding.handleError(it), null)
             })
         return result
     }

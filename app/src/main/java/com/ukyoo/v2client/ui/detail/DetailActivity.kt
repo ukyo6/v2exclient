@@ -71,7 +71,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         //重试的回调
         mBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                viewModel.retry()
+                viewModel.refreshDetail()
             }
         }
 

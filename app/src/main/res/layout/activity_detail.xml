@@ -9,7 +9,7 @@
 
 		<import type="com.ukyoo.v2client.data.Status"/>
 
-		<import type="com.ukyoo.v2client.data.Resource"/>
+		<import type="com.ukyoo.v2client.data.Resources"/>
 
 		<variable
 			name="vm"
@@ -36,7 +36,7 @@
 			android:id="@+id/toolbar"
 			app:layout_constraintTop_toTopOf="parent"
 			android:layout_width="match_parent"
-			android:elevation="5dp"
+			android:elevation="3dp"
 			android:layout_height="?attr/actionBarSize"
 			app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
@@ -84,7 +84,7 @@
 
 		<include
 			layout="@layout/loading_state"
-			app:resource="@{(Resource) vm.topicAndReplies}"
+			app:resources="@{(Resources) vm.topicAndReplies}"
 			app:callback="@{() -> retryCallback.retry()}"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

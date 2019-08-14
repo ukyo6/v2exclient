@@ -1,19 +1,12 @@
 package com.ukyoo.v2client.ui.detail
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import com.uber.autodispose.autoDisposable
+import androidx.lifecycle.*
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.entity.DetailModel
 import com.ukyoo.v2client.repository.DetailRepository
 import com.ukyoo.v2client.util.AbsentLiveData
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.ToastUtil
-import com.ukyoo.v2client.util.async
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class DetailViewModel @Inject constructor(
@@ -32,61 +25,46 @@ class DetailViewModel @Inject constructor(
         _topicId.value = topicId
     }
 
-    //主题信息和回复列表
-    val topicAndReplies: LiveData<Resource<DetailModel>> = Transformations.switchMap(_topicId) { topicId ->
+    /**
+     *  主题信息和回复列表
+     */
+    val topicAndReplies: LiveData<Resources<DetailModel>> = Transformations.switchMap(_topicId) { topicId ->
         if (topicId == null) {
             AbsentLiveData.create()
         } else {
-            getDetailInfo(topicId)
+            repository.getTopicInfoAndReplies(topicId, true)
         }
     }
 
 
-    private fun getDetailInfo(topicId: Int): LiveData<Resource<DetailModel>> {
-        val result = MutableLiveData<Resource<DetailModel>>()
-        repository.getTopicInfoAndReplies(topicId, true)
-            .async()
-            .doOnSubscribe {
-                result.value = Resource.loading()
+    val replyResult: LiveData<Resources<String>> = MutableLiveData<Resources<String>>()
+
+
+    class DirectData<Y> {
+
+        val result = MediatorLiveData<Y>()
+
+        private var mSource: LiveData<Y>? = null
+
+        fun addSource(newLiveData: LiveData<Y>) {
+            if (mSource === newLiveData) {
+                return
             }
-            .subscribe({ data ->
-                result.value = Resource.success(data)
+            if (mSource != null) {
+                result.removeSource(mSource!!)
+            }
+            mSource = newLiveData
+            if (mSource != null) {
+                result.addSource(mSource!!, Observer { y -> result.setValue(y) })
+            }
 
-            }, { throwable ->
-                if (throwable is HttpException && throwable.code() == 302) {
-                    ToastUtil.shortShow("查看本主题需要登录")
-                } else {
-                    result.value = Resource.error(ErrorHanding.handleError(throwable))
-                }
-            })
-        return result
+        }
     }
-
-
-    /**
-     * 回复
-     */
-    fun reply() {
-        repository.makeReply(_topicId.value!!, replyContent.get()!!)
-            .async()
-            .autoDisposable(this)
-            .subscribe({ response ->
-                ToastUtil.shortShow(ErrorHanding.getProblemFromHtmlResponse(response))
-
-            }, { throwable ->
-                if (throwable is HttpException && throwable.code() == 302) {
-                    ToastUtil.shortShow("回复成功")
-                } else {
-                    ToastUtil.shortShow(ErrorHanding.handleError(throwable))
-                }
-            })
-    }
-
 
     /**
      * 重试
      */
-    fun retry() {
+    fun refreshDetail() {
         _topicId.value?.let {
             _topicId.value = it
         }

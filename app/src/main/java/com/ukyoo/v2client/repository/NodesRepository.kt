@@ -1,16 +1,15 @@
 package com.ukyoo.v2client.repository
 
-import android.text.TextUtils
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.db.NodeModelDao
 import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.util.ToastUtil
 import io.reactivex.Flowable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class NodesRepository @Inject constructor
-    (
+@Singleton
+class NodesRepository @Inject constructor(
     private val jsonService: JsonService,
     private val nodeModelDao: NodeModelDao
 ) {

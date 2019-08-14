@@ -5,12 +5,13 @@ import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
-import com.uber.autodispose.autoDisposable
-import com.ukyoo.v2client.data.Resource
+import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.data.entity.*
-import com.ukyoo.v2client.entity.*
+import com.ukyoo.v2client.data.entity.ReplyModel
+import com.ukyoo.v2client.entity.DetailModel
+import com.ukyoo.v2client.entity.ReplyItem
+import com.ukyoo.v2client.entity.TopicInfo
 import com.ukyoo.v2client.util.ContentUtils
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.ToastUtil
@@ -20,7 +21,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import retrofit2.HttpException
-import java.util.ArrayList
+import java.util.*
 import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,10 +32,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class DetailRepository @Inject constructor(
-    @Named("non_cached")
-    private val htmlService: HtmlService,
-    @Named("cached")
-    private val htmlService2: HtmlService,
+    @Named("non_cached") private val htmlService: HtmlService,
+    @Named("cached") private val htmlService2: HtmlService,
     private val jsonService: JsonService
 ) {
 
@@ -62,12 +61,71 @@ class DetailRepository @Inject constructor(
     /**
      *  查看主题信息和回复
      */
-    fun getTopicInfoAndReplies(topicId: Int, isRefresh: Boolean): Flowable<DetailModel> {
+    fun getTopicInfoAndReplies(topicId: Int, isRefresh: Boolean): LiveData<Resources<DetailModel>> {
 
-        return htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
+        val result = MutableLiveData<Resources<DetailModel>>()
+
+        htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
             .map { response ->
                 return@map parse(response, true, topicId)
             }
+            .async()
+            .doOnSubscribe { result.setValue(Resources.loading()) }
+            .subscribe({
+                result.setValue(Resources.success(it))
+            }, {
+                if (it is HttpException && it.code() == 302) {    //重定向到登录页
+                    Logger.d(it.response()?.headers()?.get("location"))
+
+                    ToastUtil.shortShow("查看本主题需要登录") //TODO:
+                } else {
+                    val errMsg = ErrorHanding.handleError(it)
+                    result.setValue(Resources.error(errMsg))
+                }
+            })
+        return result
+    }
+
+    /**
+     * 获取回复需要的ONCE
+     */
+    fun makeReply(topicId: Int, replyContent: String): LiveData<Resources<String>> {
+
+        val result = MutableLiveData<Resources<String>>()
+
+        htmlService2.getReplyOnce(topicId)
+            .flatMap { content ->
+                val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
+                val matcher = pattern.matcher(content)
+                if (matcher.find()) {
+                    val once = matcher.group(1)
+
+                    if (TextUtils.isEmpty(replyContent)) {
+                        Flowable.error(ErrorHanding.CustomException("回复内容不得为空"))
+                    } else {
+                        //回复
+                        val url = "https://www.v2ex.com/t/$topicId"
+                        htmlService2.reply(url, topicId, replyContent, once)
+                    }
+                } else {
+                    Flowable.error(ErrorHanding.CustomException("请检查登录"))
+                }
+            }
+            .async()
+            .doOnSubscribe { result.setValue(Resources.loading()) }
+            .subscribe({
+                val errMsg = ErrorHanding.getProblemFromHtmlResponse(it)
+                result.setValue(Resources.error(errMsg))
+
+            }, { throwable ->
+                if (throwable is HttpException && throwable.code() == 302) {  //重定向 回复成功刷新
+                    result.setValue(Resources.success("回复成功"))
+                } else {
+                    result.setValue(Resources.error(ErrorHanding.handleError(throwable)))
+                }
+            })
+
+        return result
     }
 
 
@@ -233,44 +291,5 @@ class DetailRepository @Inject constructor(
         topic.node = nodeInfo
         return topic
     }
-
-
-    /**
-     * 获取回复需要的ONCE
-     */
-    fun makeReply(topicId: Int, replyContent: String): Flowable<String> {
-        return htmlService2.getReplyOnce(topicId)
-            .flatMap { content ->
-                val pattern = Pattern.compile("<input type=\"hidden\" value=\"([0-9]+)\" name=\"once\" />")
-                val matcher = pattern.matcher(content)
-                if (matcher.find()) {
-                    val once = matcher.group(1)
-
-                    if (TextUtils.isEmpty(replyContent)) {
-                        Flowable.error(ErrorHanding.CustomException("回复内容不得为空"))
-                    } else {
-                        //回复
-                        val url = "https://www.v2ex.com/t/$topicId"
-                        htmlService2.reply(url, topicId, replyContent, once)
-                    }
-                } else {
-                    Flowable.error(ErrorHanding.CustomException("请检查登录"))
-                }
-            }
-    }
-
-
-//    .subscribe({ response ->
-//        ErrorHanding.getProblemFromHtmlResponse(response).apply {
-//            ToastUtil.shortShow(this)
-//            Logger.d(this)
-//        }
-//    }, { throwable ->
-//        if (throwable is HttpException && throwable.code() == 302) {
-//            Logger.d("回复成功了")
-//        } else {
-//            ToastUtil.shortShow(ErrorHanding.handleError(throwable))
-//        }
-//    })
 }
 

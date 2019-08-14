@@ -11,7 +11,7 @@
 
 		<import type="androidx.lifecycle.LiveData"/>
 
-		<import type="com.ukyoo.v2client.data.Resource"/>
+		<import type="com.ukyoo.v2client.data.Resources"/>
 
 		<variable
 			name="vm"
