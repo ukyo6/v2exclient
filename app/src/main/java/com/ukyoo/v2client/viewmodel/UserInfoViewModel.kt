@@ -11,6 +11,7 @@ import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 /**
@@ -37,19 +38,20 @@ class UserInfoViewModel @Inject constructor(
     }
 
     private fun getUserInfo(userName: String): LiveData<Resources<UserInfoModel>> {
+
         val result = MutableLiveData<Resources<UserInfoModel>>()
 
         repository.getUserInfo(userName)
             .async()
-            .doOnSubscribe {
+            .startWith {
                 result.value = Resources.loading()
             }
+            .doOnSubscribe { result.value = Resources.loading() }
             .autoDisposable(this)
-            .subscribe({
-                result.value = Resources.success(it)
-            }, {
-                result.value = Resources.error(ErrorHanding.handleError(it))
-            })
+            .subscribe(
+                { result.value = Resources.success(it) },
+                { result.value = Resources.error(ErrorHanding.handleError(it)) }
+            )
         return result
     }
 }
