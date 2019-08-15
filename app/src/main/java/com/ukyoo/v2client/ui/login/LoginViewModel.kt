@@ -23,9 +23,17 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         _loginParam.value = param
     }
 
-    //登录结果
+    /**
+     * 登录结果
+     */
     val loginResultLiveData: LiveData<Resources<ProfileModel>> = Transformations.switchMap(_loginParam) {
         repository.login(it)
+    }
+
+    private fun login(param: LoginParam) {
+        repository.login(param)
+
+
     }
 
 
@@ -36,6 +44,9 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         _refreshVerifyEvent.value = Unit
     }
 
+    /**
+     * 验证码
+     */
     val verifyImgUrlLiveData: LiveData<Resources<String>> = Transformations.switchMap(_refreshVerifyEvent) {
         repository.getVerifyUrl()
     }

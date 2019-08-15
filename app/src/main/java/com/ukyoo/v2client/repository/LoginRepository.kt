@@ -74,6 +74,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     }
 
 
+
     /**
      * 登录
      */
@@ -105,8 +106,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                     result.value = Resources.error(this)
                 }
             }, {
-                if (it is HttpException && it.code() == 302) {
-                    //redirect
+                if (it is HttpException && it.code() == 302) {  //重定向到首页 获取用户信息
                     getUserProfiler(result)
                 } else {
                     //error status

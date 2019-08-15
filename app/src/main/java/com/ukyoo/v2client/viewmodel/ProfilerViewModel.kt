@@ -21,11 +21,10 @@ class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepo
         repository.getUserProfiler()
             .async()
             .autoDisposable(this)
-            .subscribe({
-                userProfilerLiveData.value = Resources.success(it)
-            }, {
-                userProfilerLiveData.value = Resources.error(ErrorHanding.handleError(it))
-            })
+            .subscribe(
+                { userProfilerLiveData.value = Resources.success(it) },
+                { userProfilerLiveData.value = Resources.error(ErrorHanding.handleError(it)) }
+            )
     }
 
 

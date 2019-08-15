@@ -14,40 +14,9 @@ import javax.inject.Inject
 
 class NodesViewModel @Inject constructor(val repository: NodesRepository) : AutoDisposeViewModel() {
 
-    private fun getAll(): MutableLiveData<Resources<List<NodeModel>>> {
-        val result = MutableLiveData<Resources<List<NodeModel>>>()
-        repository.getAllNodes()
-            .async()
-            .doOnSubscribe {
-                result.value = Resources.loading()
-            }
-            .autoDisposable(this@NodesViewModel)
-            .subscribe({
-                result.value = Resources.success(it)
-            }, { msg ->
-                result.value = Resources.error(ErrorHanding.handleError(msg))
-            })
-        return result
-    }
-
-    private fun search(searchName: String): MutableLiveData<Resources<List<NodeModel>>> {
-        val result = MutableLiveData<Resources<List<NodeModel>>>()
-        repository.queryByName(searchName)
-            .async()
-            .doOnSubscribe {
-                result.value = Resources.loading()
-            }
-            .autoDisposable(this@NodesViewModel)
-            .subscribe({
-                result.value = Resources.success(it)
-            }, { msg ->
-                result.value = Resources.error(ErrorHanding.handleError(msg))
-            })
-        return result
-    }
-
-
+    //节点名称
     private val _queryName = MutableLiveData<String>()
+
     fun setQueryName(queryName: String) {
         if (_queryName.value == queryName) {
             return
@@ -55,7 +24,9 @@ class NodesViewModel @Inject constructor(val repository: NodesRepository) : Auto
         _queryName.value = queryName
     }
 
-    //查询的数据
+    /**
+     *  根据节点名称查询数据
+     */
     val nodesLiveData: LiveData<Resources<List<NodeModel>>> = Transformations.switchMap(_queryName) { searchName ->
         if (searchName.isNullOrBlank()) {
             getAll()
@@ -72,4 +43,35 @@ class NodesViewModel @Inject constructor(val repository: NodesRepository) : Auto
             _queryName.value = it
         }
     }
+
+
+    private fun getAll(): LiveData<Resources<List<NodeModel>>> {
+        val result = MutableLiveData<Resources<List<NodeModel>>>()
+
+        repository.getAllNodes()
+            .async()
+            .doOnSubscribe { result.value = Resources.loading() }
+            .autoDisposable(this@NodesViewModel)
+            .subscribe(
+                { result.value = Resources.success(it) },
+                { msg -> result.value = Resources.error(ErrorHanding.handleError(msg)) }
+            )
+        return result
+    }
+
+    private fun search(searchName: String): LiveData<Resources<List<NodeModel>>> {
+        val result = MutableLiveData<Resources<List<NodeModel>>>()
+
+        repository.queryByName(searchName)
+            .async()
+            .doOnSubscribe { result.value = Resources.loading() }
+            .autoDisposable(this@NodesViewModel)
+            .subscribe(
+                { result.value = Resources.success(it) },
+                { msg -> result.value = Resources.error(ErrorHanding.handleError(msg)) }
+            )
+        return result
+    }
+
+
 }

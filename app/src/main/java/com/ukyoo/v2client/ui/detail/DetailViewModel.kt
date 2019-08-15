@@ -61,6 +61,10 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+    }
+
     /**
      * 重试
      */
