@@ -3,11 +3,16 @@ package com.ukyoo.v2client.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resources
+import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.repository.LoginRepository
+import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.Event
+import com.ukyoo.v2client.util.ToastUtil
+import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(private val repository: LoginRepository) : AutoDisposeViewModel() {
@@ -27,13 +32,24 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
      * 登录结果
      */
     val loginResultLiveData: LiveData<Resources<ProfileModel>> = Transformations.switchMap(_loginParam) {
-        repository.login(it)
+        login(it)
     }
 
-    private fun login(param: LoginParam) {
+    private fun login(param: LoginParam): LiveData<Resources<ProfileModel>> {
+        val result = MutableLiveData<Resources<ProfileModel>>()
+
         repository.login(param)
-
-
+            .async()
+            .autoDisposable(this)
+            .subscribe(
+                { data ->
+                    result.value = Resources.success(data)
+                },
+                { error ->
+                    result.value = Resources.error(ErrorHanding.handleError(error))
+                }
+            )
+        return result
     }
 
 
@@ -48,7 +64,23 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
      * 验证码
      */
     val verifyImgUrlLiveData: LiveData<Resources<String>> = Transformations.switchMap(_refreshVerifyEvent) {
+
+    }
+
+    private fun getVerifyUrl() {
+
         repository.getVerifyUrl()
+            .async()
+            .doOnSubscribe { }
+            .autoDisposable(this)
+            .subscribe(
+                { data ->
+
+                },
+                { error ->
+                    ToastUtil.shortShow(ErrorHanding.handleError(error))
+                }
+            )
     }
 
     data class LoginParam(
@@ -57,3 +89,4 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         val verifyCode: String
     )
 }
+

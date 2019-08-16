@@ -3,11 +3,14 @@ package com.ukyoo.v2client.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.repository.TopicsRepository
 import com.ukyoo.v2client.util.AbsentLiveData
+import com.ukyoo.v2client.util.ErrorHanding
+import com.ukyoo.v2client.util.async
 import javax.inject.Inject
 
 /**
@@ -29,12 +32,34 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Au
     val topics: LiveData<Resources<ArrayList<TopicModel>>> = Transformations.switchMap(param) { value ->
         value.ifExists { nodeId, nodeName ->
             if (nodeId.isNotBlank()) {
-                repository.loadDataByTab(true, nodeId)
+                loadTopicData(nodeId)
             } else {
-                repository.loadDataByTab(true, nodeName)
+                loadTopicData(nodeName)
             }
         }
     }
+
+    /**
+     * 主题列表
+     */
+    private fun loadTopicData(tabId: String): LiveData<Resources<ArrayList<TopicModel>>> {
+        val result = MutableLiveData<Resources<ArrayList<TopicModel>>>()
+
+        repository.loadDataByTab(true, tabId)
+            .async()
+            .doOnSubscribe { result.value = Resources.loading() }
+            .autoDisposable(this)
+            .subscribe(
+                { data ->
+                    result.value = Resources.success(data)
+                },
+                { error ->
+                    result.value = Resources.error(ErrorHanding.handleError(error))
+                }
+            )
+        return result
+    }
+
 
     /**
      * 重试

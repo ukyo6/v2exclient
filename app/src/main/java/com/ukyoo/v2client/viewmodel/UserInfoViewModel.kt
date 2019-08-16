@@ -38,14 +38,10 @@ class UserInfoViewModel @Inject constructor(
     }
 
     private fun getUserInfo(userName: String): LiveData<Resources<UserInfoModel>> {
-
         val result = MutableLiveData<Resources<UserInfoModel>>()
 
         repository.getUserInfo(userName)
             .async()
-            .startWith {
-                result.value = Resources.loading()
-            }
             .doOnSubscribe { result.value = Resources.loading() }
             .autoDisposable(this)
             .subscribe(

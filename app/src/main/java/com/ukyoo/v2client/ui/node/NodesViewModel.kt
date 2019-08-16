@@ -53,8 +53,12 @@ class NodesViewModel @Inject constructor(val repository: NodesRepository) : Auto
             .doOnSubscribe { result.value = Resources.loading() }
             .autoDisposable(this@NodesViewModel)
             .subscribe(
-                { result.value = Resources.success(it) },
-                { msg -> result.value = Resources.error(ErrorHanding.handleError(msg)) }
+                { data ->
+                    result.value = Resources.success(data)
+                },
+                { error ->
+                    result.value = Resources.error(ErrorHanding.handleError(error))
+                }
             )
         return result
     }
@@ -67,8 +71,12 @@ class NodesViewModel @Inject constructor(val repository: NodesRepository) : Auto
             .doOnSubscribe { result.value = Resources.loading() }
             .autoDisposable(this@NodesViewModel)
             .subscribe(
-                { result.value = Resources.success(it) },
-                { msg -> result.value = Resources.error(ErrorHanding.handleError(msg)) }
+                { data ->
+                    result.value = Resources.success(data)
+                },
+                { error ->
+                    result.value = Resources.error(ErrorHanding.handleError(error))
+                }
             )
         return result
     }

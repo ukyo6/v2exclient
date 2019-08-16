@@ -125,7 +125,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         }
         InputUtils.popSoftkeyboard(mContext, mEnterLayout.content, false)
 
-        viewModel.reply()
+//        viewModel.reply()
     }
 
 

@@ -1,15 +1,11 @@
 package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.entity.TopicModel
 import com.ukyoo.v2client.util.ContentUtils
-import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
@@ -32,25 +28,11 @@ class TopicsRepository @Inject constructor(
     /**
      * 根据tabId请求列表
      */
-    fun loadDataByTab(isRefresh: Boolean, tabId: String): LiveData<Resources<ArrayList<TopicModel>>> {
-
-        val result = MutableLiveData<Resources<ArrayList<TopicModel>>>()
-
-        htmlService.queryTopicsByTab(tabId)
+    fun loadDataByTab(isRefresh: Boolean, tabId: String): Flowable<ArrayList<TopicModel>> {
+        return htmlService.queryTopicsByTab(tabId)
             .map { responseStr ->
                 parse(responseStr)
             }
-            .async()
-            .doOnSubscribe {
-                result.value = Resources.loading()
-            }
-            .subscribe({ data ->
-                result.value = Resources.success(data)
-            }, {
-                result.value = Resources.error(ErrorHanding.handleError(it))
-            })
-
-        return result
     }
 
 

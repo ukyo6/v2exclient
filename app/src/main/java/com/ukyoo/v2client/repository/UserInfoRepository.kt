@@ -1,22 +1,17 @@
 package com.ukyoo.v2client.repository
 
 import android.text.TextUtils
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.UserInfoModel
 import com.ukyoo.v2client.entity.UserReplyModel
 import com.ukyoo.v2client.util.ContentUtils
-import com.ukyoo.v2client.util.ErrorHanding
-import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -42,46 +37,22 @@ class UserInfoRepository @Inject constructor(
     /**
      * 获取创建的主题
      */
-    fun getUserTopics(userName: String, page: Int): LiveData<Resources<ArrayList<TopicModel>>> {
-        val result = MutableLiveData<Resources<ArrayList<TopicModel>>>()
-
-        htmlService.getUserTopics(userName, page)
+    fun getUserTopics(userName: String, page: Int): Flowable<ArrayList<TopicModel>> {
+        return htmlService.getUserTopics(userName, page)
             .map { responseStr ->
                 parseTopics(responseStr)
             }
-            .async()
-            .doOnSubscribe {
-                result.value = Resources.loading()
-            }
-            .subscribe({ data ->
-                result.value = Resources.success(data)
-            }, {
-                result.value = Resources.error(ErrorHanding.handleError(it), null)
-            })
-
-        return result
     }
 
     /**
      * 获取用户回复
      */
-    fun getUserReplies(userName: String, page: Int): LiveData<Resources<ArrayList<UserReplyModel>>> {
-        val result = MutableLiveData<Resources<ArrayList<UserReplyModel>>>()
+    fun getUserReplies(userName: String, page: Int): Flowable<ArrayList<UserReplyModel>> {
 
-        htmlService.getUserReplies(userName, page)
+        return htmlService.getUserReplies(userName, page)
             .map { responseStr ->
                 parseReplies(responseStr)
             }
-            .async()
-            .doOnSubscribe {
-                result.value = Resources.loading()
-            }
-            .subscribe({ data ->
-                result.value = Resources.success(data)
-            }, {
-                result.value = Resources.error(ErrorHanding.handleError(it), null)
-            })
-        return result
     }
 
     private var mCurrentPage = 1

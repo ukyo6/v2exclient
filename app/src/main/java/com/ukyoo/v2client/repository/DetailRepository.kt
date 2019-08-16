@@ -40,22 +40,16 @@ class DetailRepository @Inject constructor(
     var replyList = ObservableArrayList<ReplyModel>()
 
 
-    //            .subscribe({
-    //更新主题和回复列表
-//                loadMore.set(it.currentPage < it.totalPage)
-//
-//                if (isRefresh) {
-//                    empty.set(it.replies.isEmpty())
-//                    replyList.clear()
-//                    multiDataList.clear()
-//                    multiDataList.add(it.topic) //主题内容
-//                }
-//
-//                replyList.addAll(it.replies)
-//                multiDataList.addAll(it.replies) //回复列表
-//            }, {
-//
-//            })
+    fun getDetail(topicId: Int, isRefresh: Boolean){
+        htmlService2.getTopicAndRepliesByTopicId(topicId, getPage(isRefresh))
+            .map { response ->
+                return@map parse(response, true, topicId)
+            }
+
+
+
+
+    }
 
 
     /**
@@ -77,7 +71,7 @@ class DetailRepository @Inject constructor(
                 if (it is HttpException && it.code() == 302) {    //重定向到登录页
                     Logger.d(it.response()?.headers()?.get("location"))
 
-                    ToastUtil.shortShow("查看本主题需要登录") //TODO:
+                    ToastUtil.shortShow("查看本主题需要登录")
                 } else {
                     val errMsg = ErrorHanding.handleError(it)
                     result.setValue(Resources.error(errMsg))

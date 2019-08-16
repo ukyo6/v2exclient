@@ -1,14 +1,12 @@
 package com.ukyoo.v2client.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.orhanobut.logger.Logger
-import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.db.AppDataBase
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.ui.login.LoginViewModel
-import com.ukyoo.v2client.util.*
+import com.ukyoo.v2client.util.ErrorHanding
+import io.reactivex.Flowable
+import io.reactivex.functions.Function
 import org.jsoup.Jsoup
 import retrofit2.HttpException
 import java.util.regex.Pattern
@@ -30,57 +28,53 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
 
 
     /**
-     * 从登录页面获取cookies
+     * 从登录页面获取cookie
+     * 用cookie刷新验证码
      */
-    fun getVerifyUrl(): LiveData<Resources<String>> {
-        val verifyUrl = MutableLiveData<Resources<String>>()
+    fun getVerifyUrl(): Flowable<String> {
 
         //清除cookie
 //        NetManager.clearCookie()
 
-        htmlService.signin()
-            .async()
-            .subscribe({ content ->
-                if (content?.body() == null) {
-                    return@subscribe
-                }
-                val body = Jsoup.parse(content.body())
-                val boxes = body.getElementsByClass("box")
+        return htmlService.signin()
+            .flatMap { content ->
+                if (content.body() != null) {
+                    val body = Jsoup.parse(content.body())
+                    val boxes = body.getElementsByClass("box")
 
-                loopOuter@ for (el in boxes) {
-                    val cell = el.getElementsByClass("cell")
-                    for (c in cell) {
-                        nameVal = c.getElementsByAttributeValue("type", "text").attr("name")
-                        passwordVal = c.getElementsByAttributeValue("type", "password").attr("name")
-                        once = c.getElementsByAttributeValue("name", "once").attr("value")
-                        if (nameVal.isEmpty() || passwordVal.isEmpty()) {
-                            continue
+                    val url: String
+
+                    for (el in boxes) {
+                        val cell = el.getElementsByClass("cell")
+                        for (c in cell) {
+                            nameVal = c.getElementsByAttributeValue("type", "text").attr("name")
+                            passwordVal = c.getElementsByAttributeValue("type", "password").attr("name")
+                            once = c.getElementsByAttributeValue("name", "once").attr("value")
+                            if (nameVal.isEmpty() || passwordVal.isEmpty()) {
+                                continue
+                            }
+                            verifyCodeVal = c.getElementsByAttributeValue("type", "text")[1].attr("name")
+                            val verifyStr =
+                                c.getElementsByAttributeValueContaining("style", "background-image").toString()
+                            val startIndex = verifyStr.indexOf("/_captcha?")
+                            val endIndex = verifyStr.indexOf("\')")
+                            //验证码链接
+                            url = "https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex)
+
+                            return@flatMap Flowable.just(url)
                         }
-                        verifyCodeVal = c.getElementsByAttributeValue("type", "text")[1].attr("name")
-                        val verifyStr = c.getElementsByAttributeValueContaining("style", "background-image").toString()
-                        val startIndex = verifyStr.indexOf("/_captcha?")
-                        val endIndex = verifyStr.indexOf("\')")
-
-                        verifyUrl.value =
-                            Resources.success("https://www.v2ex.com" + verifyStr.substring(startIndex, endIndex))
-                        break@loopOuter
                     }
                 }
-            }, {
-                ToastUtil.shortShow(ErrorHanding.handleError(it))
-            })
 
-        return verifyUrl
+                return@flatMap Flowable.error(ErrorHanding.CustomException("加载验证码失败"))
+            }
     }
-
 
 
     /**
      * 登录
      */
-    fun login(param: LoginViewModel.LoginParam): LiveData<Resources<ProfileModel>> {
-        val result = MutableLiveData<Resources<ProfileModel>>()
-
+    fun login(param: LoginViewModel.LoginParam): Flowable<ProfileModel> {
         val params = HashMap<String, String>()
         params[nameVal] = param.userName
         params["once"] = once
@@ -92,50 +86,37 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
         headers["Referer"] = "https://www.v2ex.com/signin"
         headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-        htmlService
-            .login(headers, params)
-            .async()
-            .doOnSubscribe {
-                //loading status
-                result.value = Resources.loading()
-            }
-            .subscribe({
-                ErrorHanding.getProblemFromHtmlResponse(it).apply {
-                    //error status
-                    Logger.d(this)
-                    result.value = Resources.error(this)
-                }
-            }, {
-                if (it is HttpException && it.code() == 302) {  //重定向到首页 获取用户信息
-                    getUserProfiler(result)
+        return htmlService.login(headers, params)
+            .onErrorResumeNext(Function {
+                if (it is HttpException && it.code() == 302) {
+                    Flowable.just("Redirect")
                 } else {
-                    //error status
-                    Logger.d(ErrorHanding.handleError(it))
-                    result.value = Resources.error(ErrorHanding.handleError(it))
+                    Flowable.error(it)
                 }
             })
-
-        return result
+            .flatMap {
+                if ("Redirect" == it) {
+                    return@flatMap getUserProfiler()
+                } else {
+                    val errMsg = ErrorHanding.getProblemFromHtmlResponse(it)
+                    return@flatMap Flowable.error(ErrorHanding.CustomException(errMsg))
+                }
+            }
     }
 
 
     /**
      * 获取用户基本信息
      */
-    private fun getUserProfiler(result: MutableLiveData<Resources<ProfileModel>>) {
+    private fun getUserProfiler(): Flowable<ProfileModel> {
 
-        htmlService.getProfiler()
-            .map {
-                val profileModel = parseProfilerModel(it)
+        return htmlService.getProfiler()
+            .map(Function<String, ProfileModel> { t ->
+                val profileModel = parseProfilerModel(t)
                 //存到db  子线程
                 AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
-                return@map profileModel
-            }
-            .async()
-            .subscribe({
-                result.value = Resources.success(it)
-            }, {
-                result.value = Resources.error(ErrorHanding.handleError(it))
+
+                return@Function profileModel
             })
     }
 
@@ -143,7 +124,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
     /**
      * 解析个人信息
      */
-    private fun parseProfilerModel(responseBody: String) : ProfileModel{
+    private fun parseProfilerModel(responseBody: String): ProfileModel {
         val model = ProfileModel()
 
 
