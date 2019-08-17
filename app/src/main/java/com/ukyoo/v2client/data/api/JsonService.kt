@@ -1,9 +1,9 @@
 package com.ukyoo.v2client.data.api
 
 import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.data.entity.ReplyModel
-import com.ukyoo.v2client.entity.UserInfoModel
+import com.ukyoo.v2client.entity.ReplyItem
 import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.entity.UserInfoModel
 import io.reactivex.Flowable
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -42,6 +42,6 @@ interface JsonService {
 
     //所有回复
     @GET("/api/replies/show.json")
-    fun getRepliesByTopicId(@Query("topic_id") name: Int): Single<ArrayList<ReplyModel>>
+    fun getRepliesByTopicId(@Query("topic_id") name: Int): Single<ArrayList<ReplyItem>>
 
 }

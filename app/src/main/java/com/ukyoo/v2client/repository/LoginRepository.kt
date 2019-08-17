@@ -66,7 +66,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                     }
                 }
 
-                return@flatMap Flowable.error(ErrorHanding.CustomException("加载验证码失败"))
+                Flowable.error<String>(ErrorHanding.CustomException("加载验证码失败"))
             }
     }
 
@@ -99,7 +99,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
                     return@flatMap getUserProfiler()
                 } else {
                     val errMsg = ErrorHanding.getProblemFromHtmlResponse(it)
-                    return@flatMap Flowable.error(ErrorHanding.CustomException(errMsg))
+                    return@flatMap Flowable.error<ProfileModel>(ErrorHanding.CustomException(errMsg))
                 }
             }
     }

@@ -19,10 +19,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
-        //刷新验证码
-        if (viewModel.verifyImgUrlLiveData.value == null) {
-            viewModel.clickRefreshVerifyImg()
-        }
 
         mBinding.btnLogin.setOnClickListener {
             val userNameVal = mBinding.tvUsername.text.toString()
@@ -39,15 +35,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }
         }
 
+        //进入页面加载验证码
+        viewModel.getVerifyUrl()
 
         subscribeUi()
     }
 
     private fun subscribeUi() {
-
-        mBinding.ivVerifycode.setOnClickListener {
-            viewModel.clickRefreshVerifyImg()
-        }
 
         viewModel.verifyImgUrlLiveData.observe(this@LoginActivity, Observer {
             //展示验证码

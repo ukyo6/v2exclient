@@ -53,32 +53,26 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     }
 
 
-    //验证码
-    private val _refreshVerifyEvent = MutableLiveData<Unit>()
 
-    fun clickRefreshVerifyImg() {
-        _refreshVerifyEvent.value = Unit
-    }
 
     /**
      * 验证码
      */
-    val verifyImgUrlLiveData: LiveData<Resources<String>> = Transformations.switchMap(_refreshVerifyEvent) {
+    val verifyImgUrlLiveData = MutableLiveData<Resources<String>>()
 
-    }
-
-    private fun getVerifyUrl() {
-
+    fun getVerifyUrl() {
         repository.getVerifyUrl()
             .async()
             .doOnSubscribe { }
             .autoDisposable(this)
             .subscribe(
                 { data ->
-
+                    verifyImgUrlLiveData.setValue(Resources.success(data))
                 },
                 { error ->
-                    ToastUtil.shortShow(ErrorHanding.handleError(error))
+                    val errMsg = ErrorHanding.handleError(error)
+                    ToastUtil.shortShow(errMsg)
+                    verifyImgUrlLiveData.setValue(Resources.error(errMsg))
                 }
             )
     }

@@ -25,6 +25,7 @@ class DetailAdapter(data: List<MultiItemEntity>) : BaseMultiItemQuickAdapter<Mul
         val binding = (helper as VHolder).binding
         binding.setVariable(BR.item, item)
 //        binding.setVariable(BR.presenter, mPresenter)
+        helper.addOnClickListener(R.id.iv_avatar)
         binding.executePendingBindings()
     }
 

@@ -13,7 +13,6 @@ import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.databinding.FragmentPersonalBinding
 import com.ukyoo.v2client.entity.ProfileModel
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
-import com.ukyoo.v2client.navigator.PersonalNavigator
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.ui.userinfo.RecentRepliesFragment
 import com.ukyoo.v2client.ui.userinfo.RecentTopicsFragment
@@ -27,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 /**
  * 个人中心
  */
-class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNavigator {
+class ProfilerFragment : BaseFragment<FragmentPersonalBinding>() {
 
     companion object {
         fun newInstance(bundle: Bundle): ProfilerFragment {
@@ -40,11 +39,6 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>(), PersonalNaviga
     private val viewModel by lazy { getInjectViewModel<ProfilerViewModel>() }
 
     override fun isLazyLoad(): Boolean = true
-
-    override fun gotoLogin() {
-        startActivity(Intent(activity, LoginActivity::class.java))
-    }
-
 
     private fun initView() {
         getComponent().inject(this)

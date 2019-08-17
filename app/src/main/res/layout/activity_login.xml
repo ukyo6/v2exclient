@@ -106,7 +106,7 @@
 
 		<ImageView
 			app:verifyUrl="@{vm.verifyImgUrlLiveData.data}"
-			android:onClick="@{() -> vm.clickRefreshVerifyImg()}"
+			android:onClick="@{() -> vm.getVerifyUrl()}"
 			android:layout_marginEnd="5dp"
 			app:layout_constraintLeft_toRightOf="@+id/text_input_verify"
 			app:layout_constraintRight_toRightOf="@+id/guideline2"

@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.ui.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -9,10 +10,12 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.ukyoo.v2client.BR
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
-import com.ukyoo.v2client.data.entity.ReplyModel
-import com.ukyoo.v2client.data.entity.V2EXModel
+import com.ukyoo.v2client.data.Status
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
+import com.ukyoo.v2client.entity.ReplyItem
+import com.ukyoo.v2client.entity.TopicInfo
 import com.ukyoo.v2client.inter.RetryCallback
+import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
 import com.ukyoo.v2client.util.InputUtils
 import com.ukyoo.v2client.util.ToastUtil
 import com.ukyoo.v2client.util.adapter.DetailAdapter
@@ -83,17 +86,33 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
 
         mDetailAdapter.setOnItemClickListener { adapter, view, position ->
             val item = adapter.data[position]
-            if (item is ReplyModel) {
+            if (item is ReplyItem) {
                 //回复
                 prepareAddComment(item, true)
             }
         }
 
+        mDetailAdapter.setOnItemChildClickListener { adapter, view, position ->
+            //查看个人信息
+            if (view.id == R.id.iv_avatar) {
+                val item = adapter.data[position]
+
+                var userName = ""
+                when (item) {
+                    is ReplyItem -> userName = item.member?.username ?: ""
+                    is TopicInfo -> userName = item.member?.username ?: ""
+                }
+                val intent = Intent(mContext, UserInfoActivity::class.java)
+                intent.putExtra("username", userName)
+                startActivity(intent)
+            }
+        }
+
+
         subscribeUi()
     }
 
     private fun subscribeUi() {
-
         //观察列表数据
         viewModel.topicAndReplies.observe(this@DetailActivity, Observer { resource ->
 
@@ -111,6 +130,15 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
                 mDetailAdapter.setNewData(list)
             }
         })
+
+        //观察回复结果
+        viewModel.replyResult.observe(this@DetailActivity, Observer {
+            when (it.status) {
+                Status.SUCCESS -> ToastUtil.shortShow("回复成功")
+                Status.ERROR -> ToastUtil.shortShow(it.message)
+                Status.LOADING -> {}
+            }
+        })
     }
 
 
@@ -125,7 +153,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         }
         InputUtils.popSoftkeyboard(mContext, mEnterLayout.content, false)
 
-//        viewModel.reply()
+        viewModel.reply(mTopicId, content)
     }
 
 
@@ -133,15 +161,14 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         return R.layout.activity_detail
     }
 
-    private fun prepareAddComment(data: V2EXModel, popKeyboard: Boolean) {
+    private fun prepareAddComment(data: ReplyItem, popKeyboard: Boolean) {
         val content = mEnterLayout.content
         var replyToWho = ""
         mEnterLayout.clearContent()
-        if (data is ReplyModel) {
-            val replyObj = data as ReplyModel
-            content.hint = "回复 " + replyObj.member.username
-            replyToWho = "@" + replyObj.member.username + " "
-        }
+
+
+        content.hint = "回复 " + data.member?.username
+        replyToWho = "@" + data.member?.username + " "
 
         if (popKeyboard) {
             InputUtils.popSoftkeyboard(mContext, content, true)
