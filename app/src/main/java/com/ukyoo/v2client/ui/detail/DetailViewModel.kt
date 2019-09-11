@@ -23,7 +23,7 @@ class DetailViewModel @Inject constructor(
     //topicId
     private val _topicId = MutableLiveData<Int>()
 
-    fun setTopicId(topicId: Int) {
+    fun setTopicId(topicId: Int?) {
         if (_topicId.value == topicId) {
             return
         }
@@ -68,21 +68,23 @@ class DetailViewModel @Inject constructor(
     /**
      * 回复
      */
-    fun reply(topicId: Int, replyContent: String) {
-        repository.reply(topicId, replyContent)
-            .async()
-            .doOnSubscribe { replyResult.setValue(Resources.loading()) }
-            .autoDisposable(this)
-            .subscribe({
-                val errMsg = ErrorHanding.getProblemFromHtmlResponse(it)
-                replyResult.setValue(Resources.error(errMsg))
-            }, { throwable ->
-                if (throwable is HttpException && throwable.code() == 302) {  //重定向 回复成功刷新
-                    replyResult.setValue(Resources.success(Unit))
-                } else {
-                    replyResult.setValue(Resources.error(ErrorHanding.handleError(throwable)))
-                }
-            })
+    fun reply(topicId: Int?, replyContent: String) {
+        topicId?.let {
+            repository.reply(topicId, replyContent)
+                .async()
+                .doOnSubscribe { replyResult.setValue(Resources.loading()) }
+                .autoDisposable(this)
+                .subscribe({
+                    val errMsg = ErrorHanding.getProblemFromHtmlResponse(it)
+                    replyResult.setValue(Resources.error(errMsg))
+                }, { throwable ->
+                    if (throwable is HttpException && throwable.code() == 302) {  //重定向 回复成功刷新
+                        replyResult.setValue(Resources.success(Unit))
+                    } else {
+                        replyResult.setValue(Resources.error(ErrorHanding.handleError(throwable)))
+                    }
+                })
+        }
     }
 
 

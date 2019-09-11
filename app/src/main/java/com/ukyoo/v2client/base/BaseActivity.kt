@@ -66,22 +66,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         }
     }
 
-    /**
-     * 恢复数据的
-     */
-    open fun restoreArgs(savedInstanceState: Bundle?) {
-    }
-
-    /**
-     * 保存数据的
-     */
-    open fun saveArgs(outState: Bundle?){
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        saveArgs(outState)
-        super.onSaveInstanceState(outState)
-    }
 
 //    private val enterTransitionListener by lazy {
 //        @TargetApi(Build.VERSION_CODES.O)

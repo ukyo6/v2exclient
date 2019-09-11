@@ -26,7 +26,7 @@ import java.util.*
  *  详情页
  */
 class DetailActivity : BaseActivity<ActivityDetailBinding>() {
-    private var mTopicId: Int = 0
+    private var mTopicId: Int? = null
 
     private val mDetailAdapter by lazy { DetailAdapter(emptyList()) }
 
@@ -36,21 +36,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         const val ITEM_REPLY = 2
     }
 
-    //get viewModel by di
-    private val viewModel by lazy {
-        getInjectViewModel<DetailViewModel>()
-    }
-
-    override fun restoreArgs(savedInstanceState: Bundle?) {
-        super.restoreArgs(savedInstanceState)
-        mTopicId = savedInstanceState?.getInt("topic_id", -1) ?: -1
-    }
-
-    override fun saveArgs(outState: Bundle?) {
-        super.saveArgs(outState)
-        mTopicId.let { outState?.putInt("topic_id", it) }
-    }
-
+    private val viewModel by lazy { getInjectViewModel<DetailViewModel>() }
 
     override fun initView() {
         getComponent().inject(this)
@@ -136,7 +122,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
             when (it.status) {
                 Status.SUCCESS -> ToastUtil.shortShow("回复成功")
                 Status.ERROR -> ToastUtil.shortShow(it.message)
-                Status.LOADING -> {}
+                Status.LOADING -> {
+                }
             }
         })
     }
