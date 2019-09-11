@@ -8,7 +8,7 @@
 
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.entity.TopicModel"/>
+			type="com.ukyoo.v2client.data.entity.TopicModel"/>
 
 		<!--<variable-->
 		<!--name="presenter"-->

@@ -2,7 +2,7 @@ package com.ukyoo.v2client.repository
 
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.db.AppDataBase
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.ui.login.LoginViewModel
 import com.ukyoo.v2client.util.ErrorHanding
 import io.reactivex.Flowable

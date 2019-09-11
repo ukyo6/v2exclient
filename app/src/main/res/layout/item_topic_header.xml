@@ -11,7 +11,7 @@
 
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.entity.TopicInfo"/>
+			type="com.ukyoo.v2client.data.entity.TopicInfo"/>
 
 	</data>
 

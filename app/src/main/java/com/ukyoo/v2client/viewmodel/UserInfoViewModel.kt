@@ -6,12 +6,11 @@ import androidx.lifecycle.Transformations
 import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resources
-import com.ukyoo.v2client.entity.UserInfoModel
+import com.ukyoo.v2client.data.entity.UserInfoModel
 import com.ukyoo.v2client.repository.UserInfoRepository
 import com.ukyoo.v2client.util.AbsentLiveData
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
-import io.reactivex.Flowable
 import javax.inject.Inject
 
 /**

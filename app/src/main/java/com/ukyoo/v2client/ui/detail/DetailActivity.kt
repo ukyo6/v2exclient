@@ -12,8 +12,8 @@ import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseActivity
 import com.ukyoo.v2client.data.Status
 import com.ukyoo.v2client.databinding.ActivityDetailBinding
-import com.ukyoo.v2client.entity.ReplyItem
-import com.ukyoo.v2client.entity.TopicInfo
+import com.ukyoo.v2client.data.entity.ReplyItem
+import com.ukyoo.v2client.data.entity.TopicInfo
 import com.ukyoo.v2client.inter.RetryCallback
 import com.ukyoo.v2client.ui.userinfo.UserInfoActivity
 import com.ukyoo.v2client.util.InputUtils

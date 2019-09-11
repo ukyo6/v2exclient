@@ -10,7 +10,6 @@ import com.ukyoo.v2client.data.entity.NodeModel
 import com.ukyoo.v2client.repository.NodesRepository
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
-import io.reactivex.Flowable
 import javax.inject.Inject
 
 class NodesViewModel @Inject constructor(val repository: NodesRepository) : AutoDisposeViewModel() {

@@ -11,7 +11,7 @@ import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.data.Status
 import com.ukyoo.v2client.data.api.NetManager
 import com.ukyoo.v2client.databinding.FragmentPersonalBinding
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.ui.login.LoginActivity
 import com.ukyoo.v2client.ui.userinfo.RecentRepliesFragment

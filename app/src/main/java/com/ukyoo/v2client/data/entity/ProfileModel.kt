@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.entity
+package com.ukyoo.v2client.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

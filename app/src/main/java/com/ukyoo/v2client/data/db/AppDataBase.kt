@@ -5,9 +5,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ukyoo.v2client.App
-import com.ukyoo.v2client.data.entity.NodeModel
 import androidx.room.migration.Migration
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.NodeModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 
 
 /**
@@ -21,7 +21,6 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
         private val MIGRATION_2_3: Migration = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-
                 database.execSQL(
                     "CREATE TABLE IF NOT EXISTS `user_profile`(`uid` INTEGER NOT NULL, `username` TEXT, `avatar` TEXT,`nodes` INTEGER NOT NULL, `topics` INTEGER NOT NULL, `followings` INTEGER NOT NULL, `notifications` INTEGER NOT NULL,PRIMARY KEY(`uid`))"
                 )

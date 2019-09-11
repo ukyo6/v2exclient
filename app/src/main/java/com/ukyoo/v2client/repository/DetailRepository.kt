@@ -2,9 +2,9 @@ package com.ukyoo.v2client.repository
 
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.entity.DetailModel
-import com.ukyoo.v2client.entity.ReplyItem
-import com.ukyoo.v2client.entity.TopicInfo
+import com.ukyoo.v2client.data.entity.DetailModel
+import com.ukyoo.v2client.data.entity.ReplyItem
+import com.ukyoo.v2client.data.entity.TopicInfo
 import com.ukyoo.v2client.util.ContentUtils
 import com.ukyoo.v2client.util.ErrorHanding
 import io.reactivex.Flowable

@@ -4,7 +4,7 @@ import android.text.TextUtils
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.util.ContentUtils
 import com.ukyoo.v2client.util.async
 import io.reactivex.Flowable

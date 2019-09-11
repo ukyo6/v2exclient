@@ -1,9 +1,9 @@
 package com.ukyoo.v2client.data.api
 
 import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.entity.ReplyItem
-import com.ukyoo.v2client.entity.TopicModel
-import com.ukyoo.v2client.entity.UserInfoModel
+import com.ukyoo.v2client.data.entity.ReplyItem
+import com.ukyoo.v2client.data.entity.TopicModel
+import com.ukyoo.v2client.data.entity.UserInfoModel
 import io.reactivex.Flowable
 import io.reactivex.Single
 import retrofit2.http.GET

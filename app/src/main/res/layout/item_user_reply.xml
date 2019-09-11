@@ -8,7 +8,7 @@
 
 		<variable
 			name="item"
-			type="com.ukyoo.v2client.entity.UserReplyModel"/>
+			type="com.ukyoo.v2client.data.entity.UserReplyModel"/>
 
 	</data>
 

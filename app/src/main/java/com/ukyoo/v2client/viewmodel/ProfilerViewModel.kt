@@ -5,11 +5,10 @@ import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resources
 import com.ukyoo.v2client.data.api.NetManager
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.repository.ProfilerRepository
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.async
-import io.reactivex.Flowable
 import javax.inject.Inject
 
 class ProfilerViewModel @Inject constructor(private val repository: ProfilerRepository) : AutoDisposeViewModel() {

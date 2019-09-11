@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import io.reactivex.Flowable
 
 @Dao

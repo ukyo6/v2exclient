@@ -2,7 +2,7 @@ package com.ukyoo.v2client.repository
 
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.db.AppDataBase
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
 import java.util.regex.Pattern

@@ -6,8 +6,7 @@ import androidx.lifecycle.Transformations
 import com.uber.autodispose.autoDisposable
 import com.ukyoo.v2client.base.viewmodel.AutoDisposeViewModel
 import com.ukyoo.v2client.data.Resources
-import com.ukyoo.v2client.data.entity.NodeModel
-import com.ukyoo.v2client.entity.ProfileModel
+import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.repository.LoginRepository
 import com.ukyoo.v2client.util.ErrorHanding
 import com.ukyoo.v2client.util.Event

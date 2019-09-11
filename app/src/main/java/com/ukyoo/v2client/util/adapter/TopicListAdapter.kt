@@ -6,11 +6,10 @@ import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
-import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.ukyoo.v2client.R
-import com.ukyoo.v2client.entity.TopicModel
+import com.ukyoo.v2client.data.entity.TopicModel
 import com.ukyoo.v2client.util.GlideApp
 
 

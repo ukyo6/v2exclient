@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.entity
+package com.ukyoo.v2client.data.entity
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.ukyoo.v2client.ui.detail.DetailActivity
