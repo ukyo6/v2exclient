@@ -34,10 +34,8 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>() {
     }
 
     companion object {
-        fun newInstance(bundle: Bundle): NodesFragment {
-            val nodesFragment = NodesFragment()
-            nodesFragment.arguments = bundle
-            return nodesFragment
+        fun newInstance(): NodesFragment {
+            return NodesFragment()
         }
     }
 
@@ -61,7 +59,7 @@ class NodesFragment : BaseFragment<FragmentNodesBinding>() {
         }
     }
 
-    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+    override fun loadData(isRefresh: Boolean) {
         initView()
 
         viewModel.setQueryName("")

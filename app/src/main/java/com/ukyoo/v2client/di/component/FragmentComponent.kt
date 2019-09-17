@@ -16,7 +16,6 @@ import dagger.Subcomponent
 @Subcomponent(modules = [FragmentModule::class])
 interface FragmentComponent {
 
-    fun inject(fragment: MainFragment)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: NodesFragment)
     fun inject(fragment: ProfilerFragment)

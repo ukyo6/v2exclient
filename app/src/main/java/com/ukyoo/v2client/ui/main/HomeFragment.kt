@@ -7,10 +7,7 @@ import com.google.android.material.tabs.TabLayout
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentHomeBinding
-import com.ukyoo.v2client.inter.ToTopOrRefreshContract
 import com.ukyoo.v2client.util.adapter.BaseViewPagerAdapter
-import com.ukyoo.v2client.viewmodel.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 /**
@@ -23,10 +20,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var manager: FragmentManager
 
     companion object {
-        fun newInstance(bundle: Bundle): HomeFragment {
-            val homeFragment = HomeFragment()
-            homeFragment.arguments = bundle
-            return homeFragment
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
         }
     }
 
@@ -34,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return R.layout.fragment_home
     }
 
-    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+    override fun loadData(isRefresh: Boolean) {
 
         //inject
         getComponent().inject(this)

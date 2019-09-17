@@ -34,6 +34,7 @@ abstract class AppDataBase : RoomDatabase() {
                 App.instance(),
                 AppDataBase::class.java, "database-v2ex"
             )
+                .enableMultiInstanceInvalidation()
                 .addMigrations(MIGRATION_2_3)
                 .build()
         }

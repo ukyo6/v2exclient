@@ -29,10 +29,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class ProfilerFragment : BaseFragment<FragmentPersonalBinding>() {
 
     companion object {
-        fun newInstance(bundle: Bundle): ProfilerFragment {
-            val meFragment = ProfilerFragment()
-            meFragment.arguments = bundle
-            return meFragment
+        fun newInstance(): ProfilerFragment {
+            return ProfilerFragment()
         }
     }
 
@@ -45,7 +43,7 @@ class ProfilerFragment : BaseFragment<FragmentPersonalBinding>() {
         mBinding.setVariable(BR.vm, viewModel)
     }
 
-    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+    override fun loadData(isRefresh: Boolean) {
         initView()
 
         //登录后返回个人信息页

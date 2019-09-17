@@ -1,5 +1,6 @@
 package com.ukyoo.v2client.util.adapter
 
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter

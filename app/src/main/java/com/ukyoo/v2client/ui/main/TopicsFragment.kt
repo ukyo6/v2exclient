@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.R
 import com.ukyoo.v2client.base.BaseFragment
 import com.ukyoo.v2client.databinding.FragmentTopicBinding
@@ -19,14 +20,13 @@ import com.ukyoo.v2client.viewmodel.TopicsViewModel
  */
 class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
 
+    private val topicsAdapter by lazy { TopicListAdapter(R.layout.item_topic) }
 
-    lateinit var topicsAdapter: TopicListAdapter
+    private val viewModel by lazy { getInjectViewModel<TopicsViewModel>() }
 
-    override fun isLazyLoad(): Boolean = "lazyOpen" == arguments?.get(SOURCE)
 
-    //get viewModel by di
-    private val viewModel by lazy {
-        getInjectViewModel<TopicsViewModel>()
+    override fun isLazyLoad(): Boolean {
+        return "lazyOpen" == arguments?.get(SOURCE)
     }
 
     //fragment instance
@@ -48,7 +48,6 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
         getComponent().inject(this)
         mBinding.vm = viewModel
 
-        topicsAdapter = TopicListAdapter(R.layout.item_topic)
         mBinding.recyclerView.run {
             layoutManager = LinearLayoutManager(mContext)
             adapter = topicsAdapter
@@ -79,7 +78,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
     }
 
 
-    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+    override fun loadData(isRefresh: Boolean) {
         initView()
 
         val nodeName = arguments?.getString(NODE_NAME)
@@ -94,7 +93,7 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
         subscribeUi()
     }
 
-    private fun subscribeUi(){
+    private fun subscribeUi() {
         //观察者
         viewModel.topics.observe(this@TopicsFragment, Observer { resource ->
             if (resource.data != null) {
@@ -109,21 +108,4 @@ class TopicsFragment : BaseFragment<FragmentTopicBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_topic
     }
-
-    /**
-     * scrollToTop or refresh
-     */
-//    override fun toTopOrRefresh() {
-//        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
-//            val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
-//            if (layoutManager.findLastVisibleItemPosition() > 5) {
-//                mBinding.recyclerView.smoothScrollToPosition(0)
-//            } else {
-//                mBinding.recyclerView.smoothScrollToPosition(0)
-//                loadData(true, null)
-//            }
-//        }
-//    }
-
-
 }

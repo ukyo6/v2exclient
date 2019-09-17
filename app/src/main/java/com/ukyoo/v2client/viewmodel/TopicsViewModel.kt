@@ -21,11 +21,17 @@ class TopicsViewModel @Inject constructor(var repository: TopicsRepository) : Au
     private val param: MutableLiveData<Param> = MutableLiveData()
 
     fun setNodeName(name: String) {
+        if(name == param.value?.nodeName){
+            return
+        }
         param.value = Param("", name)
     }
 
     fun setNodeId(nodeId: String) {
-        param.value = Param(nodeId, "")
+        if(nodeId == param.value?.nodeId){
+            return
+        }
+        param.value = Param(nodeId,"")
     }
 
     //主题列表

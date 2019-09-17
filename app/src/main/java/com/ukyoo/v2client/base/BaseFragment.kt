@@ -18,13 +18,8 @@ import com.ukyoo.v2client.di.module.FragmentModule
 import javax.inject.Inject
 
 
-/**
- * 页面描述：fragment 基类
- *
- * Created by ditclear on 2017/9/27.
- */
 
-abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
+abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     protected lateinit var mBinding: VB
 
@@ -45,6 +40,10 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     private var fragmentComponent: FragmentComponent? = null
     private lateinit var fragmentComponentBuilder: FragmentComponent.Builder
+
+    inline fun <reified T : ViewModel> getInjectViewModel(): T =
+        ViewModelProviders.of(this, factory).get(T::class.java)
+
     @NonNull
     fun getComponent(): FragmentComponent {
         if (fragmentComponent != null) {
@@ -63,36 +62,24 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        restoreArgs(savedInstanceState)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
+        mBinding.setLifecycleOwner(this)
+        mBinding.executePendingBindings()
+        return mBinding.root
     }
-
-    inline fun <reified T : ViewModel> getInjectViewModel(): T =
-        ViewModelProviders.of(this, factory).get(T::class.java)
-
-    var savedInstanceState: Bundle? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mContext = activity ?: throw Exception("activity 为null")
-        retainInstance = true
 
-        this.savedInstanceState = savedInstanceState
         isPrepared = true
         if (isLazyLoad()) {
             lazyLoad()
         } else {
-            loadData(true, savedInstanceState)//数据请求
+            loadData(true)//数据请求
         }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
-        mBinding.setVariable(BR.presenter, this)
-        mBinding.setLifecycleOwner(this)
-        mBinding.executePendingBindings()
-        return mBinding.root
     }
 
     /**
@@ -124,36 +111,14 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         }
 
         if (!isLoaded) {
-            loadData(true, savedInstanceState)//数据请求
+            loadData(true)//数据请求
             isLoaded = true
         }
     }
 
-    /**
-     * 恢复数据的
-     */
-    open fun restoreArgs(savedInstanceState: Bundle?) {
-
-    }
-
-    abstract override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?)
+    abstract fun loadData(isRefresh: Boolean)
 
     abstract fun getLayoutId(): Int
 
     abstract fun isLazyLoad(): Boolean
-
-    protected fun <T> autoWired(key: String, default: T? = null): T? =
-        arguments?.let { findWired(it, key, default) }
-
-    private fun <T> findWired(bundle: Bundle, key: String, default: T? = null): T? {
-        return if (bundle.get(key) != null) {
-            try {
-                bundle.get(key) as T
-            } catch (e: ClassCastException) {
-                e.printStackTrace()
-                null
-            }
-        } else default
-
-    }
 }

@@ -61,7 +61,7 @@ class RecentTopicsFragment : BaseFragment<FragmentRecentTopicsBinding>() {
 
     lateinit var repliesAdapter: UserTopicsAdapter
 
-    override fun loadData(isRefresh: Boolean, savedInstanceState: Bundle?) {
+    override fun loadData(isRefresh: Boolean) {
         initView()
 
         //设置参数

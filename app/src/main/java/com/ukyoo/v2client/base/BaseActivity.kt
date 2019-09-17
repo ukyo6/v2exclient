@@ -18,11 +18,7 @@ import com.ukyoo.v2client.di.module.ActivityModule
 import javax.inject.Inject
 
 
-/**
- * 页面描述：
- *
- * Created by ditclear on 2017/9/27.
- */
+
 abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Presenter {
 
     protected lateinit var mBinding: VB
@@ -46,9 +42,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         return activityComponent as ActivityComponent
     }
 
-    inline fun <reified T : ViewModel> getInjectViewModel() = ViewModelProviders.of(this, factory).get(T::class.java).apply {
-
-    }
+    inline fun <reified T : ViewModel> getInjectViewModel() = ViewModelProviders.of(this, factory).get(T::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
