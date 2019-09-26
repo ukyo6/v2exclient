@@ -1,7 +1,7 @@
 package com.ukyoo.v2client.repository
 
 import com.ukyoo.v2client.data.api.HtmlService
-import com.ukyoo.v2client.data.db.AppDataBase
+import com.ukyoo.v2client.data.AppDataBase
 import com.ukyoo.v2client.data.entity.ProfileModel
 import io.reactivex.Flowable
 import org.jsoup.Jsoup
@@ -22,7 +22,7 @@ class ProfilerRepository @Inject constructor(@Named("cached") var htmlService: H
             .map {
                 val profileModel = parseProfilerModel(it)
                 //存到db  子线程
-                AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
+                AppDataBase.getDatabase().profileModelDao().saveUserProfile(profileModel)
                 return@map profileModel
             }
     }

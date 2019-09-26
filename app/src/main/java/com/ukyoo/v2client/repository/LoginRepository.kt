@@ -1,7 +1,7 @@
 package com.ukyoo.v2client.repository
 
 import com.ukyoo.v2client.data.api.HtmlService
-import com.ukyoo.v2client.data.db.AppDataBase
+import com.ukyoo.v2client.data.AppDataBase
 import com.ukyoo.v2client.data.entity.ProfileModel
 import com.ukyoo.v2client.ui.login.LoginViewModel
 import com.ukyoo.v2client.util.ErrorHanding
@@ -114,7 +114,7 @@ class LoginRepository @Inject constructor(@Named("cached") var htmlService: Html
             .map(Function<String, ProfileModel> { t ->
                 val profileModel = parseProfilerModel(t)
                 //存到db  子线程
-                AppDataBase.getDataBase().profileModelDao().saveUserProfile(profileModel)
+                AppDataBase.getDatabase().profileModelDao().saveUserProfile(profileModel)
 
                 return@Function profileModel
             })

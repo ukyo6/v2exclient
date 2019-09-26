@@ -1,7 +1,8 @@
 package com.ukyoo.v2client.repository
 
+import com.ukyoo.v2client.data.AppDataBase
 import com.ukyoo.v2client.data.api.JsonService
-import com.ukyoo.v2client.data.db.NodeModelDao
+import com.ukyoo.v2client.data.dao.NodeModelDao
 import com.ukyoo.v2client.data.entity.NodeModel
 import io.reactivex.Flowable
 import java.util.concurrent.TimeUnit
@@ -11,17 +12,17 @@ import javax.inject.Singleton
 @Singleton
 class NodesRepository @Inject constructor(
     private val jsonService: JsonService,
-    private val nodeModelDao: NodeModelDao
+    private val appDataBase: AppDataBase
 ) {
 
     //先看db有没有 没有就去请求全部的
     fun getAllNodes(): Flowable<List<NodeModel>> {
-        return nodeModelDao.getAll()
+        return appDataBase.nodeModelDao().getAll()
             .flatMap { dbData ->
                 if (dbData.isEmpty()) {
                     return@flatMap jsonService.getAllNodes()
                         .map {
-                            nodeModelDao.apply {
+                            appDataBase.nodeModelDao().apply {
                                 deleteAll()
                                 insertAll(it)
                             }
@@ -49,7 +50,7 @@ class NodesRepository @Inject constructor(
     //从db查询节点
     fun queryByName(name: String): Flowable<List<NodeModel>> {
         //根据条件查询
-        return nodeModelDao
+        return appDataBase.nodeModelDao()
             .queryNodesByName("%$name%")
             .throttleFirst(100, TimeUnit.MILLISECONDS) //限制一下搜索的频率
 

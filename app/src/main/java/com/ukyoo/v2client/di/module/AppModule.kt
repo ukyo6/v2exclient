@@ -4,8 +4,8 @@ import android.app.Application
 import com.ukyoo.v2client.data.api.HtmlService
 import com.ukyoo.v2client.data.api.JsonService
 import com.ukyoo.v2client.data.api.NetManager
-import com.ukyoo.v2client.data.db.AppDataBase
-import com.ukyoo.v2client.data.db.NodeModelDao
+import com.ukyoo.v2client.data.AppDataBase
+import com.ukyoo.v2client.data.dao.NodeModelDao
 import com.ukyoo.v2client.util.CONSTANT
 import dagger.Module
 import dagger.Provides
@@ -57,6 +57,6 @@ class AppModule(val app:Application){
 
     @Singleton
     @Provides
-    fun provideRoomDataBase():NodeModelDao = AppDataBase.getDataBase().nodeModelDao()
+    fun provideRoomDataBase():AppDataBase = AppDataBase.getDatabase()
 
 }

@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.data.db
+package com.ukyoo.v2client.data.dao
 
 import androidx.room.*
 import com.ukyoo.v2client.data.entity.NodeModel

@@ -70,7 +70,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
             adapter = mDetailAdapter
         }
 
-        mDetailAdapter.setOnItemClickListener { adapter, view, position ->
+        mDetailAdapter.setOnItemClickListener { adapter, _, position ->
             val item = adapter.data[position]
             if (item is ReplyItem) {
                 //回复

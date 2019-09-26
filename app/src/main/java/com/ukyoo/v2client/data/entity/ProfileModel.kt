@@ -5,8 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_profile")
 data class ProfileModel(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0,
+
 
     var username: String ="",
     var avatar: String ="",
@@ -15,4 +14,7 @@ data class ProfileModel(
     var topics: Int = 0,
     var followings: Int = 0,
     var notifications: Int = 0
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var uid: Int = 0
+}

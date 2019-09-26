@@ -1,4 +1,4 @@
-package com.ukyoo.v2client.data.db
+package com.ukyoo.v2client.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
