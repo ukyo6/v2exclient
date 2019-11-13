@@ -39,6 +39,9 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
     private val viewModel by lazy { getInjectViewModel<DetailViewModel>() }
 
     override fun initView() {
+
+
+
         getComponent().inject(this)
         mBinding.setVariable(BR.vm, viewModel)
 
@@ -75,6 +78,11 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
             if (item is ReplyItem) {
                 //回复
                 prepareAddComment(item, true)
+
+                val intent = Intent(mContext, DetailActivity1111::class.java)
+                intent.putExtra("topic_id", mTopicId)  //topicId
+                startActivity(intent)
+
             }
         }
 
