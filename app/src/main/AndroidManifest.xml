@@ -31,7 +31,6 @@
 		<activity android:name=".ui.node.NodeActivity"/>
 		<activity android:name="com.ukyoo.v2client.ui.login.LoginActivity"/>
 		<activity android:name="com.ukyoo.v2client.ui.detail.PhotoBrowseActivity"/>
-		<activity android:name="com.ukyoo.v2client.ui.detail.DetailActivity1111"/>
 
 		<activity
 			android:name=".ui.userinfo.UserInfoActivity" >
