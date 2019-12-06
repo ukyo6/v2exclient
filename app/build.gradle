@@ -24,6 +24,15 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file('./v2exclient.jks')
+            storePassword "v2exclient"
+            keyAlias "v2exclient"
+            keyPassword "v2exclient"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
