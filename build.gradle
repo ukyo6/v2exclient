@@ -15,7 +15,7 @@ buildscript {
         gradleVersion = '3.2.1'
         gsonVersion = '2.8.2'
         junitVersion = '4.12'
-        kotlinVersion = '1.3.41'
+        kotlinVersion = '1.3.61'
         ktlintVersion = '0.29.0'
         ktxVersion = '1.0.1'
         legacySupportVersion = '1.0.0'
@@ -36,9 +36,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        //美团walle
+        classpath 'com.meituan.android.walle:plugin:1.1.6'
     }
 }
 

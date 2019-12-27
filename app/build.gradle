@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'walle'
+
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -17,19 +19,28 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 
     signingConfigs {
         release {
             storeFile file('./v2exclient.jks')
             storePassword "v2exclient"
-            keyAlias "v2exclient"
+            keyAlias "v2ex"
             keyPassword "v2exclient"
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -56,6 +67,14 @@ android {
             dirs 'libs'
         }
     }
+}
+
+walle {
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}-${flavorName}.apk'
+    //configFile与channelFile两者必须存在一个，否则无法生成渠道包。两者都存在时优先执行configFile
+    channelFile = new File("${project.getProjectDir()}/channel")
+    //configFile = new File("${project.getProjectDir()}/config.json")
 }
 
 dependencies {
@@ -126,12 +145,11 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
 
-    implementation group: 'android.arch.lifecycle', name: 'reactivestreams', version: '1.1.1'
-
+    //eventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.2.0'
-
+    //leakCanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+    //walle
+    implementation 'com.meituan.android.walle:library:1.1.6'
 
 }
