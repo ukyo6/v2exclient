@@ -114,7 +114,7 @@ object ImageUtil {
 
         val rectF = RectF(0f, 0f, bgBitmap!!.width.toFloat(), bgBitmap!!.height.toFloat())
         // mCanvas.drawRoundRect(rectF,16,16,mPaint); 这个用来绘制圆角的哈
-        mCanvas.drawRect(rectF, mPaint)
+//        mCanvas.drawRect(rectF, mPaint)
         ivBg.setImageBitmap(bgBitmap)
     }
 }
