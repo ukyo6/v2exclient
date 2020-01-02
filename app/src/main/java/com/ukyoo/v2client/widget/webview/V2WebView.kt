@@ -23,7 +23,7 @@ class V2WebView(context: Context) : WebView(context) {
 
             val builder = Request.Builder()
             //构造请求
-            builder.url(url).method(webResourceRequest.getMethod(), null);
+            builder.url(url).method(webResourceRequest.getMethod(), null)
             val requestHeaders = webResourceRequest.requestHeaders
 
             if (requestHeaders.isNotEmpty()) {

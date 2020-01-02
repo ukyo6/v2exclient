@@ -4,13 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import com.github.moduth.blockcanary.BlockCanary
+import com.github.moduth.blockcanary.BlockCanaryContext
+import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.ukyoo.v2client.di.component.AppComponent
 import com.ukyoo.v2client.di.component.DaggerAppComponent
 import com.ukyoo.v2client.di.module.AppModule
 import com.ukyoo.v2client.util.SPUtils
-import com.orhanobut.logger.AndroidLogAdapter
-
 
 
 class App: Application() {
@@ -43,6 +44,9 @@ class App: Application() {
 
 
         SPUtils.init(instance())
+
+
+        BlockCanary.install(this, BlockCanaryContext()).start()
     }
 
     private fun getScreenSize() {

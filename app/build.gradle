@@ -152,4 +152,7 @@ dependencies {
     //walle
     implementation 'com.meituan.android.walle:library:1.1.6'
 
+    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
+    releaseImplementation 'com.github.markzhai:blockcanary-no-op:1.5.0'
+
 }

@@ -113,7 +113,10 @@ object NetManager {
                 "Mozilla/5.0 (Linux; U; Android 4.2.1; en-us; M040 Build/JOP40D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
             )
         } else {
-            builder.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko")
+            builder.addHeader(
+                "User-Agent",
+                "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
+            )
         }
         builder.build()
         chain.proceed(request)
@@ -156,7 +159,8 @@ object NetManager {
             .build()
     }
 
-    private var persistentCookieJar: PersistentCookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.instance()))
+    private var persistentCookieJar: PersistentCookieJar =
+        PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.instance()))
 
     private fun getHttpClient2(): OkHttpClient {
         return OkHttpClient.Builder()
@@ -175,7 +179,7 @@ object NetManager {
         persistentCookieJar.clear()
     }
 
-    private fun getHttpClient(): OkHttpClient {
+    fun getHttpClient(): OkHttpClient {
         val httpCacheDirectory = File(App.instance().cacheDir, "responses") //缓存位置大小
         val cache = Cache(httpCacheDirectory, (50 * 1024 * 1024).toLong())
 
